@@ -19,61 +19,62 @@ import java.util.stream.Collectors;
  * Created by fred on 09/07/17.
  */
 public class SuperinstructionCandidateDetector implements NodeVisitor {
-    private Map<SourceSection, Counter> activationProfiles;
+    private Map<Node, Counter> activations;
     Map<Pattern, Integer> patterns = new HashMap<>();
 
-    public SuperinstructionCandidateDetector(Map<SourceSection, Counter> activationProfiles) {
-        this.activationProfiles = activationProfiles;
+    public SuperinstructionCandidateDetector(Map<Node, Counter> activations) {
+        this.activations = activations;
     }
 
     public boolean visit(Node node) {
-        Counter activationCounter = activationProfiles.get(node.getSourceSection());
-        if(activationCounter == null
-                || node instanceof InstrumentableFactory.WrapperNode
-                || node instanceof RootNode) {
+        if(node instanceof InstrumentableFactory.WrapperNode
+                || node instanceof RootNode)
             return true;
-        } else {
+        Counter activationCounter = activations.get(node);
+        if(activationCounter != null) {
             Node childNode = node;
             assert !(node instanceof InstrumentableFactory.WrapperNode);
             Node parent = node.getParent();
             //assert !(parent instanceof EagerPrimitive);
-            if(parent instanceof InstrumentableFactory.WrapperNode) {
+            if (parent instanceof InstrumentableFactory.WrapperNode) {
                 childNode = parent;
                 parent = parent.getParent();
             }
             assert !(parent instanceof InstrumentableFactory.WrapperNode);
             int i = 0, childIndex = -1;
             ArrayList<String> childClassNames = new ArrayList<>();
-            for(Node child : NodeUtil.findNodeChildren(parent)) {
-                if(child == childNode) {
+            for (Node child : NodeUtil.findNodeChildren(parent)) {
+                if (child == childNode) {
                     childIndex = i;
                 }
-                if(child instanceof InstrumentableFactory.WrapperNode) {
+                if (child instanceof InstrumentableFactory.WrapperNode) {
                     child = ((InstrumentableFactory.WrapperNode) child).getDelegateNode();
                 }
-                /*if(child instanceof EagerPrimitive) {
-                    child = getPrimitive((EagerPrimitive)child);
-                }
-                */
+            /*if(child instanceof EagerPrimitive) {
+                child = getPrimitive((EagerPrimitive)child);
+            }
+            */
                 childClassNames.add(child.getClass().getName());
                 i++;
             }
             assert childIndex != -1;
-            /*if(parent instanceof EagerPrimitive) {
-                parent = getPrimitive((EagerPrimitive)parent);
-                childClassNames.remove(childClassNames.size() - 1); // TODO: because that's the primitive argument??
-            }*/
-            countPattern(parent, childClassNames, childIndex);
+        /*if(parent instanceof EagerPrimitive) {
+            parent = getPrimitive((EagerPrimitive)parent);
+            childClassNames.remove(childClassNames.size() - 1); // TODO: because that's the primitive argument??
+        }*/
+            countPattern(parent, childClassNames, childIndex, activationCounter.getValue());
+            return true;
+        } else {
             return true;
         }
     }
 
-    private void countPattern(Node parent, List<String> childClasses, int childIndex) {
+    private void countPattern(Node parent, List<String> childClasses, int childIndex, int increment) {
         Pattern pattern = new Pattern(parent.getClass().getName(),
                 childIndex,
                 childClasses);
         patterns.computeIfAbsent(pattern, k -> 0);
-        patterns.put(pattern, patterns.get(pattern) + 1);
+        patterns.put(pattern, patterns.get(pattern) + increment);
     }
 
     private Set<String> getParentClasses() {
@@ -120,9 +121,9 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
             }
         }
         List<Candidate> topCandidates = candidates.stream()
-                                        .filter(c -> !c.getParentClass().endsWith("SequenceNode"))
-                                        .sorted((Candidate c1, Candidate c2) ->
-                                                ((Integer)c1.getActivations()).compareTo(c2.getActivations()))
+                                        .filter(c -> !c.getParentClass().endsWith("SequenceNode")
+                                                  && !c.getParentClass().endsWith("Method"))
+                                        .sorted(Comparator.comparingInt(Candidate::getActivations).reversed())
                                         .limit(10)
                                         .collect(Collectors.toList());
         for(Candidate candidate : topCandidates) {

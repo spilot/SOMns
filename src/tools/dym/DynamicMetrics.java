@@ -105,7 +105,7 @@ public class DynamicMetrics extends TruffleInstrument {
   private final Map<SourceSection, ReadValueProfile>     localsReadProfiles;
   private final Map<SourceSection, Counter>              localsWriteProfiles;
 
-  private final Map<SourceSection, Counter>              activationProfiles;
+  private final Map<Node, Counter>                       activations;
 
   private final StructuralProbe structuralProbe;
 
@@ -139,7 +139,7 @@ public class DynamicMetrics extends TruffleInstrument {
     localsReadProfiles      = new HashMap<>();
     localsWriteProfiles     = new HashMap<>();
 
-    activationProfiles      = new HashMap<>();
+    activations      = new HashMap<>();
 
     rootNodes = new HashSet<>();
 
@@ -368,9 +368,7 @@ public class DynamicMetrics extends TruffleInstrument {
 
     addLoopBodyInstrumentation(instrumenter, loopProfileFactory);
 
-    addInstrumentation(instrumenter, activationProfiles,
-        new Class<?>[] {AnyNode.class}, NO_TAGS,
-        Counter::new, CountingNode<Counter>::new);
+    addActivationInstrumentation(instrumenter);
 
     instrumenter.attachLoadSourceSectionListener(
         SourceSectionFilter.newBuilder().tagIs(RootTag.class).build(),
@@ -378,6 +376,16 @@ public class DynamicMetrics extends TruffleInstrument {
         true);
 
     env.registerService(structuralProbe);
+  }
+
+  private void addActivationInstrumentation(final Instrumenter instrumenter) {
+    SourceSectionFilter filter = SourceSectionFilter.newBuilder().tagIs(AnyNode.class).build();
+    ExecutionEventNodeFactory factory = (final EventContext ctx) -> {
+      Counter p = activations.computeIfAbsent(ctx.getInstrumentedNode(),
+              k -> new Counter(ctx.getInstrumentedSourceSection()));
+      return new CountingNode<>(p);
+    };
+    instrumenter.attachFactory(filter, factory);
   }
 
   private void addLoopBodyInstrumentation(
@@ -409,7 +417,7 @@ public class DynamicMetrics extends TruffleInstrument {
   }
 
   private void identifySuperinstructionCandidates() {
-    SuperinstructionCandidateDetector detector = new SuperinstructionCandidateDetector(activationProfiles);
+    SuperinstructionCandidateDetector detector = new SuperinstructionCandidateDetector(activations);
     for (RootNode root : rootNodes) {
       root.accept(detector);
     }
