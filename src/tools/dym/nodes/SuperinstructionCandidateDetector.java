@@ -124,7 +124,7 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
                                         .filter(c -> !c.getParentClass().endsWith("SequenceNode")
                                                   && !c.getParentClass().endsWith("Method"))
                                         .sorted(Comparator.comparingInt(Candidate::getActivations).reversed())
-                                        .limit(10)
+                                        .limit(50)
                                         .collect(Collectors.toList());
         for(Candidate candidate : topCandidates) {
             System.out.println(String.format("%s -(%d)> %s: %d",
