@@ -311,7 +311,7 @@ public class DynamicMetrics extends TruffleInstrument {
   protected void onCreate(final Env env) {
     instrumenter = env.getInstrumenter();
 
-    addRootTagInstrumentation(instrumenter);
+ /*   addRootTagInstrumentation(instrumenter);
 
     ExecutionEventNodeFactory virtInvokeFactory = addInstrumentation(
         instrumenter, methodCallsiteProfiles,
@@ -366,7 +366,7 @@ public class DynamicMetrics extends TruffleInstrument {
         new Class<?>[] {LoopNode.class}, NO_TAGS,
         LoopProfile::new, LoopProfilingNode::new);
 
-    addLoopBodyInstrumentation(instrumenter, loopProfileFactory);
+    addLoopBodyInstrumentation(instrumenter, loopProfileFactory);*/
 
     addActivationInstrumentation(instrumenter);
 
