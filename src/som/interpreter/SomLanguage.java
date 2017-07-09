@@ -42,6 +42,7 @@ import tools.debugger.Tags.KeywordTag;
 import tools.debugger.Tags.LiteralTag;
 import tools.debugger.Tags.LocalVariableTag;
 import tools.debugger.Tags.StatementSeparatorTag;
+import tools.dym.Tags.AnyNode;
 import tools.dym.Tags.ArrayRead;
 import tools.dym.Tags.ArrayWrite;
 import tools.dym.Tags.BasicPrimitiveOperation;
@@ -96,7 +97,8 @@ import tools.dym.Tags.VirtualInvokeReceiver;
   EventualMessageSend.class, ChannelRead.class, ChannelWrite.class,
   ExpressionBreakpoint.class, CreatePromisePair.class, WhenResolved.class,
   WhenResolvedOnError.class, OnError.class, ActivityCreation.class,
-  ActivityJoin.class, Atomic.class, AcquireLock.class, ReleaseLock.class
+  ActivityJoin.class, Atomic.class, AcquireLock.class, ReleaseLock.class,
+  AnyNode.class
 })
 public final class SomLanguage extends TruffleLanguage<VM> {
 

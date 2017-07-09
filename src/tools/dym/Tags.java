@@ -115,4 +115,8 @@ public abstract class Tags {
   public final class OpLength extends Tags {
     private OpLength() { }
   }
+
+  public final class AnyNode extends Tags {
+    private AnyNode() { }
+  }
 }

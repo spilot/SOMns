@@ -36,6 +36,7 @@ import som.interpreter.nodes.dispatch.Dispatchable;
 import som.vm.NotYetImplementedException;
 import som.vmobjects.SInvokable;
 import tools.debugger.Tags.LiteralTag;
+import tools.dym.Tags.AnyNode;
 import tools.dym.Tags.BasicPrimitiveOperation;
 import tools.dym.Tags.CachedClosureInvoke;
 import tools.dym.Tags.CachedVirtualInvoke;
@@ -55,22 +56,7 @@ import tools.dym.Tags.OpClosureApplication;
 import tools.dym.Tags.PrimitiveArgument;
 import tools.dym.Tags.VirtualInvoke;
 import tools.dym.Tags.VirtualInvokeReceiver;
-import tools.dym.nodes.AllocationProfilingNode;
-import tools.dym.nodes.ArrayAllocationProfilingNode;
-import tools.dym.nodes.CallTargetNode;
-import tools.dym.nodes.ClosureTargetNode;
-import tools.dym.nodes.ControlFlowProfileNode;
-import tools.dym.nodes.CountingNode;
-import tools.dym.nodes.InvocationProfilingNode;
-import tools.dym.nodes.LateCallTargetNode;
-import tools.dym.nodes.LateClosureTargetNode;
-import tools.dym.nodes.LateReportResultNode;
-import tools.dym.nodes.LoopIterationReportNode;
-import tools.dym.nodes.LoopProfilingNode;
-import tools.dym.nodes.OperationProfilingNode;
-import tools.dym.nodes.ReadProfilingNode;
-import tools.dym.nodes.ReportReceiverNode;
-import tools.dym.nodes.ReportResultNode;
+import tools.dym.nodes.*;
 import tools.dym.profiles.AllocationProfile;
 import tools.dym.profiles.ArrayCreationProfile;
 import tools.dym.profiles.BranchProfile;
@@ -119,6 +105,8 @@ public class DynamicMetrics extends TruffleInstrument {
   private final Map<SourceSection, ReadValueProfile>     localsReadProfiles;
   private final Map<SourceSection, Counter>              localsWriteProfiles;
 
+  private final Map<SourceSection, Counter>              activationProfiles;
+
   private final StructuralProbe structuralProbe;
 
   private final Set<RootNode> rootNodes;
@@ -150,6 +138,8 @@ public class DynamicMetrics extends TruffleInstrument {
     literalReadCounter      = new HashMap<>();
     localsReadProfiles      = new HashMap<>();
     localsWriteProfiles     = new HashMap<>();
+
+    activationProfiles      = new HashMap<>();
 
     rootNodes = new HashSet<>();
 
@@ -378,6 +368,10 @@ public class DynamicMetrics extends TruffleInstrument {
 
     addLoopBodyInstrumentation(instrumenter, loopProfileFactory);
 
+    addInstrumentation(instrumenter, activationProfiles,
+        new Class<?>[] {AnyNode.class}, NO_TAGS,
+        Counter::new, CountingNode<Counter>::new);
+
     instrumenter.attachLoadSourceSectionListener(
         SourceSectionFilter.newBuilder().tagIs(RootTag.class).build(),
         e -> rootNodes.add(e.getNode().getRootNode()),
@@ -410,7 +404,16 @@ public class DynamicMetrics extends TruffleInstrument {
     MetricsCsvWriter.fileOut(data, metricsFolder, structuralProbe,
         maxStackDepth, getAllStatementsAlsoNotExecuted());
 
+    identifySuperinstructionCandidates();
     outputAllTruffleMethodsToIGV();
+  }
+
+  private void identifySuperinstructionCandidates() {
+    SuperinstructionCandidateDetector detector = new SuperinstructionCandidateDetector(activationProfiles);
+    for (RootNode root : rootNodes) {
+      root.accept(detector);
+    }
+    detector.finish();
   }
 
   private List<SourceSection> getAllStatementsAlsoNotExecuted() {
