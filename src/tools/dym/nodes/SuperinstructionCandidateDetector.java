@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  */
 public class SuperinstructionCandidateDetector implements NodeVisitor {
     private Map<Node, Counter> activations;
-    Map<Pattern, Integer> patterns = new HashMap<>();
+    Map<Pattern, Long> patterns = new HashMap<>();
 
     public SuperinstructionCandidateDetector(Map<Node, Counter> activations) {
         this.activations = activations;
@@ -69,11 +69,11 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
         }
     }
 
-    private void countPattern(Node parent, List<String> childClasses, int childIndex, int increment) {
+    private void countPattern(Node parent, List<String> childClasses, int childIndex, long increment) {
         Pattern pattern = new Pattern(parent.getClass().getName(),
                 childIndex,
                 childClasses);
-        patterns.computeIfAbsent(pattern, k -> 0);
+        patterns.computeIfAbsent(pattern, k -> 0L);
         patterns.put(pattern, patterns.get(pattern) + increment);
     }
 
@@ -108,13 +108,20 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
                 Set<Pattern> patternsWithIndex = matching.stream()
                                                  .filter(p -> p.getChildIndex() == index)
                                                  .collect(Collectors.toSet());
+                Set<String> childClassNames = patternsWithIndex.stream()
+                                              .map(p -> p.getChildClasses().get(index))
+                                              .collect(Collectors.toSet());
                 // if there is enough variability in the class of this child:
-                if(patternsWithIndex.size() > 2) {
-                    for(Pattern patternWithIndex : patternsWithIndex) {
+                if(childClassNames.size() > 2) {
+                    for(String childClassName : childClassNames) {
+                        long activations = patternsWithIndex.stream()
+                                          .filter(p -> p.getChildClasses().get(index).equals(childClassName))
+                                          .mapToLong(p -> patterns.get(p))
+                                          .sum();
                         Candidate candidate = new Candidate(parentClass,
-                                                            patternWithIndex.getChildClasses().get(index),
+                                                            childClassName,
                                                             index,
-                                                            patterns.get(patternWithIndex));
+                                                            activations);
                         candidates.add(candidate);
                     }
                 }
@@ -123,8 +130,7 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
         List<Candidate> topCandidates = candidates.stream()
                                         .filter(c -> !c.getParentClass().endsWith("SequenceNode")
                                                   && !c.getParentClass().endsWith("Method"))
-                                        .sorted(Comparator.comparingInt(Candidate::getActivations).reversed())
-                                        .limit(50)
+                                        .sorted(Comparator.comparingLong(Candidate::getActivations).reversed())
                                         .collect(Collectors.toList());
         for(Candidate candidate : topCandidates) {
             System.out.println(String.format("%s -(%d)> %s: %d",
@@ -137,7 +143,8 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
 
     static private class Candidate {
         private final String parentClass, childClass;
-        private final int childIndex, activations;
+        private final int childIndex;
+        private final long activations;
 
         public String getParentClass() {
             return parentClass;
@@ -151,11 +158,11 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
             return childIndex;
         }
 
-        public int getActivations() {
+        public long getActivations() {
             return activations;
         }
 
-        public Candidate(String parentClass, String childClass, int childIndex, int activations) {
+        public Candidate(String parentClass, String childClass, int childIndex, long activations) {
             this.parentClass = parentClass;
             this.childClass = childClass;
             this.childIndex = childIndex;
