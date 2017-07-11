@@ -1,4 +1,4 @@
-package tools.dym.nodes;
+package tools.dym;
 
 import com.oracle.truffle.api.instrumentation.InstrumentableFactory;
 import com.oracle.truffle.api.nodes.Node;
