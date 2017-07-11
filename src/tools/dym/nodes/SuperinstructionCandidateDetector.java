@@ -62,17 +62,17 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
             parent = getPrimitive((EagerPrimitive)parent);
             childClassNames.remove(childClassNames.size() - 1); // TODO: because that's the primitive argument??
         }*/
-            countPattern(parent, childClassNames, childIndex, activationCounter.getValue());
+            countPattern(parent, childIndex, childClassNames.get(childIndex), activationCounter.getValue());
             return true;
         } else {
             return true;
         }
     }
 
-    private void countPattern(Node parent, List<String> childClasses, int childIndex, long increment) {
+    private void countPattern(Node parent, int childIndex, String childClass, long increment) {
         Pattern pattern = new Pattern(parent.getClass().getName(),
                 childIndex,
-                childClasses);
+                childClass);
         patterns.computeIfAbsent(pattern, k -> 0L);
         patterns.put(pattern, patterns.get(pattern) + increment);
     }
@@ -95,7 +95,7 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
     }
 
     public void finish() {
-        Set<Candidate> candidates = new HashSet<>();
+        WitnessCounter witnesses = new WitnessCounter();
         for(String parentClass : getParentClasses()) {
             // for each parent class, find all patterns with this parent class
             Set<Pattern> matching = getPatternsMatching(pattern -> pattern.getParentClass().equals(parentClass));
@@ -108,90 +108,86 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
                 Set<Pattern> patternsWithIndex = matching.stream()
                                                  .filter(p -> p.getChildIndex() == index)
                                                  .collect(Collectors.toSet());
-                Set<String> childClassNames = patternsWithIndex.stream()
-                                              .map(p -> p.getChildClasses().get(index))
-                                              .collect(Collectors.toSet());
-                // if there is enough variability in the class of this child:
-                if(childClassNames.size() > 2) {
-                    for(String childClassName : childClassNames) {
-                        long activations = patternsWithIndex.stream()
-                                          .filter(p -> p.getChildClasses().get(index).equals(childClassName))
-                                          .mapToLong(p -> patterns.get(p))
-                                          .sum();
-                        Candidate candidate = new Candidate(parentClass,
-                                                            childClassName,
-                                                            index,
-                                                            activations);
-                        candidates.add(candidate);
-                    }
+                ParentChildRelation relation = new ParentChildRelation(parentClass, index);
+                HashMap<String, Long> childClasses = new HashMap<>();
+                for(Pattern pattern : patternsWithIndex) {
+                    childClasses.put(pattern.getChildClass(), patterns.get(pattern));
                 }
+                witnesses.put(relation, childClasses);
             }
         }
-        List<Candidate> topCandidates = candidates.stream()
-                                        .filter(c -> !c.getParentClass().endsWith("SequenceNode")
-                                                  && !c.getParentClass().endsWith("Method"))
-                                        .sorted(Comparator.comparingLong(Candidate::getActivations).reversed())
-                                        .collect(Collectors.toList());
-        for(Candidate candidate : topCandidates) {
-            System.out.println(String.format("%s -(%d)> %s: %d",
-                    abbreviate(candidate.getParentClass()),
-                    candidate.getChildIndex(),
-                    abbreviate(candidate.getChildClass()),
-                    candidate.getActivations()));
+        List<ParentChildRelation> niceRelations = witnesses.keySet().stream()
+                            .filter(rel -> witnesses.get(rel).size() > 2)
+                            .sorted(Comparator.comparingLong(rel -> witnesses.totalActivations((ParentChildRelation)rel)).reversed())
+                            .collect(Collectors.toList());
+        for(ParentChildRelation rel : niceRelations) {
+            System.out.println(String.format(
+                    "%s child #%d witnesses %d different types (%d total activations)",
+                    abbreviate(rel.getParentClass()),
+                    rel.getChildIndex(),
+                    witnesses.get(rel).size(),
+                    witnesses.totalActivations(rel)));
+            for(Map.Entry<String, Long> entry : witnesses.get(rel).entrySet().stream()
+                                                .sorted(Comparator.comparingLong(e -> ((Map.Entry<String, Long>)e).getValue()).reversed())
+                                                .collect(Collectors.toList())) {
+                System.out.println(String.format("\t->%s (%d activations)", abbreviate(entry.getKey()), entry.getValue()));
+            }
+            System.out.println("");
         }
     }
 
-    static private class Candidate {
-        private final String parentClass, childClass;
+    static private class ParentChildRelation {
+        private final String parentClass;
         private final int childIndex;
-        private final long activations;
 
         public String getParentClass() {
             return parentClass;
+        }
+
+        public int getChildIndex() {
+            return childIndex;
+        }
+
+        public ParentChildRelation(String parentClass, int childIndex) {
+            this.parentClass = parentClass;
+            this.childIndex = childIndex;
+        }
+
+        public String toString() {
+            return String.format("%s(%d)", abbreviate(parentClass), childIndex);
+        }
+    }
+
+    static private class WitnessCounter extends HashMap<ParentChildRelation, HashMap<String, Long>> {
+        public WitnessCounter() {
+            super();
+        }
+
+        public long totalActivations(ParentChildRelation rel) {
+            return this.get(rel).values().stream().mapToLong(Long::longValue).sum();
+        }
+    }
+
+    static public class Pattern {
+        private final String parentClass, childClass;
+        private final int childIndex;
+
+        public int getChildIndex() {
+            return childIndex;
         }
 
         public String getChildClass() {
             return childClass;
         }
 
-        public int getChildIndex() {
-            return childIndex;
-        }
-
-        public long getActivations() {
-            return activations;
-        }
-
-        public Candidate(String parentClass, String childClass, int childIndex, long activations) {
-            this.parentClass = parentClass;
-            this.childClass = childClass;
-            this.childIndex = childIndex;
-            this.activations = activations;
-        }
-    }
-
-    static public class Pattern {
-        private final String parentClass;
-        private final int childIndex;
-
-        public int getChildIndex() {
-            return childIndex;
-        }
-
-        public List<String> getChildClasses() {
-            return childClasses;
-        }
-
         public String getParentClass() {
             return parentClass;
         }
 
-        private List<String> childClasses;
-
-        public Pattern(String parentClass, int childIndex, List<String> childClasses) {
+        public Pattern(String parentClass, int childIndex, String childClass) {
             this.parentClass = parentClass;
             this.childIndex = childIndex;
-            this.childClasses = childClasses;
+            this.childClass = childClass;
         }
 
         @Override
@@ -199,7 +195,7 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
             int result = 17;
             result = 37 * result + parentClass.hashCode();
             result = 37 * result + ((Integer)childIndex).hashCode();
-            result = 37 * result + childClasses.hashCode();
+            result = 37 * result + childClass.hashCode();
             return result;
         }
 
@@ -210,7 +206,7 @@ public class SuperinstructionCandidateDetector implements NodeVisitor {
             Pattern otherPattern = (Pattern)other;
             return parentClass.equals(otherPattern.getParentClass())
                     && childIndex == otherPattern.getChildIndex()
-                    && childClasses.equals(otherPattern.getChildClasses());
+                    && childClass.equals(otherPattern.getChildClass());
         }
     }
 }
