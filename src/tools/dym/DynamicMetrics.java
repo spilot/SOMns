@@ -54,6 +54,7 @@ import tools.dym.profiles.InvocationProfile;
 import tools.dym.profiles.LoopProfile;
 import tools.dym.profiles.OperationProfile;
 import tools.dym.profiles.ReadValueProfile;
+import tools.dym.superinstructions.CandidateDetector;
 import tools.language.StructuralProbe;
 
 
@@ -404,7 +405,7 @@ public class DynamicMetrics extends TruffleInstrument {
   }
 
   private void identifySuperinstructionCandidates() {
-    SuperinstructionCandidateDetector detector = new SuperinstructionCandidateDetector(activations);
+    CandidateDetector detector = new CandidateDetector(activations);
     for (RootNode root : rootNodes) {
       root.accept(detector);
     }

@@ -1,4 +1,4 @@
-package tools.dym;
+package tools.dym.superinstructions;
 
 import com.oracle.truffle.api.instrumentation.InstrumentableFactory;
 import com.oracle.truffle.api.nodes.Node;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 /**
  * Created by fred on 09/07/17.
  */
-public class SuperinstructionCandidateDetector implements NodeVisitor {
+public class CandidateDetector implements NodeVisitor {
     private Map<Node, Counter> activations;
     Map<Pattern, Long> patterns = new HashMap<>();
 
-    public SuperinstructionCandidateDetector(Map<Node, Counter> activations) {
+    public CandidateDetector(Map<Node, Counter> activations) {
         this.activations = activations;
     }
 
