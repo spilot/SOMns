@@ -1,6 +1,8 @@
 package tools.dym.profiles;
 
 import com.oracle.truffle.api.source.SourceSection;
+import som.interpreter.Types;
+import tools.dym.nodes.ActivationType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +12,7 @@ import java.util.Map;
  */
 public class TypeCounter {
   protected final SourceSection source;
-  private Map<Class<?>, Long> activations;
+  private Map<ActivationType, Long> activations;
 
   public TypeCounter(final SourceSection source) {
     this.source = source;
@@ -21,7 +23,8 @@ public class TypeCounter {
     return source;
   }
 
-  public void recordType(Class<?> type) {
+  public void recordType(Object result) {
+    ActivationType type = new ActivationType(result.getClass(), Types.getClassOf(result).getInstanceFactory());
     activations.merge(type, 1L, Long::sum);
   }
 
@@ -32,5 +35,9 @@ public class TypeCounter {
 
   public long getTotalActivations() {
     return activations.values().stream().mapToLong(Long::intValue).sum();
+  }
+
+  public Map<ActivationType, Long> getActivations() {
+    return this.activations;
   }
 }

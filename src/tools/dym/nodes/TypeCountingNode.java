@@ -19,16 +19,16 @@ public class TypeCountingNode<T extends TypeCounter> extends ExecutionEventNode 
 
   @Override
   protected void onReturnValue(final VirtualFrame frame, final Object result) {
-    counter.recordType(result.getClass());
+    counter.recordType(result);
   }
 
   @Override
   protected void onReturnExceptional(final VirtualFrame frame, final Throwable e) {
     // TODO: make language independent
     if (e instanceof ReturnException) {
-      counter.recordType(((ReturnException) e).result().getClass());
+      counter.recordType(((ReturnException) e).result());
     } else if(e instanceof UnexpectedResultException) {
-      counter.recordType(((UnexpectedResultException) e).getResult().getClass());
+      counter.recordType(((UnexpectedResultException) e).getResult());
     } else {
       throw new NotYetImplementedException();
     }
