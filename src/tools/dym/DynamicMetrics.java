@@ -44,16 +44,7 @@ import tools.dym.Tags.LoopBody;
 import tools.dym.Tags.PrimitiveArgument;
 import tools.dym.Tags.VirtualInvokeReceiver;
 import tools.dym.nodes.*;
-import tools.dym.profiles.AllocationProfile;
-import tools.dym.profiles.ArrayCreationProfile;
-import tools.dym.profiles.BranchProfile;
-import tools.dym.profiles.CallsiteProfile;
-import tools.dym.profiles.ClosureApplicationProfile;
-import tools.dym.profiles.Counter;
-import tools.dym.profiles.InvocationProfile;
-import tools.dym.profiles.LoopProfile;
-import tools.dym.profiles.OperationProfile;
-import tools.dym.profiles.ReadValueProfile;
+import tools.dym.profiles.*;
 import tools.dym.superinstructions.CandidateDetector;
 import tools.language.StructuralProbe;
 
@@ -93,7 +84,7 @@ public class DynamicMetrics extends TruffleInstrument {
   private final Map<SourceSection, ReadValueProfile>     localsReadProfiles;
   private final Map<SourceSection, Counter>              localsWriteProfiles;
 
-  private final Map<Node, Counter>                       activations;
+  private final Map<Node, TypeCounter>                   activations;
 
   private final StructuralProbe structuralProbe;
 
@@ -369,9 +360,9 @@ public class DynamicMetrics extends TruffleInstrument {
   private void addActivationInstrumentation(final Instrumenter instrumenter) {
     SourceSectionFilter filter = SourceSectionFilter.newBuilder().tagIs(AnyNode.class).build();
     ExecutionEventNodeFactory factory = (final EventContext ctx) -> {
-      Counter p = activations.computeIfAbsent(ctx.getInstrumentedNode(),
-              k -> new Counter(ctx.getInstrumentedSourceSection()));
-      return new CountingNode<>(p);
+      TypeCounter p = activations.computeIfAbsent(ctx.getInstrumentedNode(),
+              k -> new TypeCounter(ctx.getInstrumentedSourceSection()));
+      return new TypeCountingNode<>(p);
     };
     instrumenter.attachFactory(filter, factory);
   }

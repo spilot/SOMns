@@ -9,6 +9,7 @@ import com.oracle.truffle.api.source.SourceSection;
 import som.interpreter.Method;
 import som.interpreter.nodes.nary.EagerPrimitive;
 import tools.dym.profiles.Counter;
+import tools.dym.profiles.TypeCounter;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -19,10 +20,10 @@ import java.util.stream.Collectors;
  * Created by fred on 09/07/17.
  */
 public class CandidateDetector implements NodeVisitor {
-    private Map<Node, Counter> activations;
+    private Map<Node, TypeCounter> activations;
     Map<Pattern, Long> patterns = new HashMap<>();
 
-    public CandidateDetector(Map<Node, Counter> activations) {
+    public CandidateDetector(Map<Node, TypeCounter> activations) {
         this.activations = activations;
     }
 
@@ -30,7 +31,7 @@ public class CandidateDetector implements NodeVisitor {
         if(node instanceof InstrumentableFactory.WrapperNode
                 || node instanceof RootNode)
             return true;
-        Counter activationCounter = activations.get(node);
+        TypeCounter activationCounter = activations.get(node);
         if(activationCounter != null) {
             Node childNode = node;
             assert !(node instanceof InstrumentableFactory.WrapperNode);
@@ -62,7 +63,7 @@ public class CandidateDetector implements NodeVisitor {
             parent = getPrimitive((EagerPrimitive)parent);
             childClassNames.remove(childClassNames.size() - 1); // TODO: because that's the primitive argument??
         }*/
-            countPattern(parent, childIndex, childClassNames.get(childIndex), activationCounter.getValue());
+            countPattern(parent, childIndex, childClassNames.get(childIndex), activationCounter.getTotalActivations());
             return true;
         } else {
             return true;
