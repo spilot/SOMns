@@ -5,16 +5,10 @@ import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
 import com.oracle.truffle.api.nodes.NodeVisitor;
 import com.oracle.truffle.api.nodes.RootNode;
-import com.oracle.truffle.api.source.SourceSection;
-import som.interpreter.Method;
-import som.interpreter.nodes.nary.EagerPrimitive;
-import tools.dym.nodes.ActivationType;
-import tools.dym.profiles.Counter;
 import tools.dym.profiles.TypeCounter;
 
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +28,7 @@ public class CandidateDetector implements NodeVisitor {
             return true;
         TypeCounter activationCounter = activations.get(node);
         if(activationCounter != null) {
-            Map<ActivationType, Long> activat = activationCounter.getActivations();
+            Map<Class<?>, Long> activat = activationCounter.getActivations();
             Node childNode = node;
             assert !(node instanceof InstrumentableFactory.WrapperNode);
             Node parent = node.getParent();
