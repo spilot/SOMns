@@ -67,12 +67,12 @@ public class CandidateDetector implements NodeVisitor {
             String parentClass = parent.getClass().getName();
             if(parent instanceof EagerPrimitive) {
                 String operation = ((OperationNode)parent).getOperation();
-                parentClass = "Operation_" + operation;
+                parentClass = "PrimitiveOperation:" + operation;
             }
             String childClass = childClassNames.get(childIndex);
             if(SOMNode.unwrapIfNecessary(childNode) instanceof EagerPrimitive) {
                 String operation = ((OperationNode)SOMNode.unwrapIfNecessary(childNode)).getOperation();
-                childClass = "Operation_" + operation;
+                childClass = "PrimitiveOperation:" + operation;
             }
             //countPattern(parent, childIndex, childClassNames.get(childI ndex), activationCounter.getTotalActivations());
             ActivationNode nParent = graph.getOrCreateNode(parentClass);

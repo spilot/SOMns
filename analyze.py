@@ -67,23 +67,12 @@ def get_total_activations(parent, index):
 def abbreviate(name):
     return name.rsplit('.', 1)[-1]
 
-def find_superinstruction_candidates(G, parent):
-    child_indices = get_child_indices(G, parent)
-    child_types = defaultdict(set)
-    for child_index in child_indices:
-        child_types[child_index] = get_edges_with_child_index(G, parent, child_index)
-    # only take the 10 most activated ones
-    for child_index, types in child_types.items():
-        child_types[child_index] = list(sorted(types, key=lambda x: x[2]['activations'], reverse=True))[:10]
-    keys = list(child_types.keys())
-    combinations = itertools.product(*map(child_types.get, keys))
-    combination_activations = []
-    for combination in combinations:
-        activations = [data['activations'] for _, _, data in combination]
-        combination_activations.append((combination, sum(activations)))
-    nice_ones = sorted(combination_activations, key=lambda x: x[1], reverse=True)[:20]
-    for combination, activations in nice_ones:
-        formatted = ' '.join('{}/{}'.format(abbreviate(e[1]), abbreviate(e[2]['javatype'])) for e in combination)
-        print(formatted, activations)
-
-find_superinstruction_candidates(G, "som.interpreter.nodes.MessageSendNode$GenericMessageSendNode")
+edges = G.edges(data=True)
+sorted_edges = sorted(edges, key=lambda e: e[2]['activations'], reverse=True)
+for parent, child, data in sorted_edges[:20]:
+    print('{} --(child #{})-> {} ({})'.format(
+        abbreviate(parent),
+        data['childindex'],
+        abbreviate(child),
+        abbreviate(data['javatype'])))
+    print('\t({} activations)'.format(data['activations']))
