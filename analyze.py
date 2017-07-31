@@ -50,16 +50,6 @@ G = load_graph('graph.dot')
 remove_bimorphic(G)
 #erase_javatypes(G)
 
-relations = {}
-# (parent, index): variations
-
-for parent in G.nodes():
-    for child_index in get_child_indices(G, parent):
-        matching_edges = get_edges_with_child_index(G, parent, child_index)
-        child_relations = set((child, data['javatype'])
-                for _, child, data in matching_edges)
-        relations[parent, child_index] = child_relations
-
 def get_activations(parent, index, child_class, javatype):
     out_edges = G.out_edges(parent, data=True)
     activations = tuple(data['activations'] for _, child, data in out_edges
@@ -76,21 +66,28 @@ def get_total_activations(parent, index):
 def abbreviate(name):
     return name.rsplit('.', 1)[-1]
 
-sorted_relations = sorted(relations.keys(),
-        key=lambda t: get_total_activations(*t),
-        reverse=True)
-for parent, index in sorted_relations:
-    print('{} child #{} witnesses {} different child relations ({} total activations)'.format(
-        abbreviate(parent),
-        index,
-        len(relations[parent, index]),
-        get_total_activations(parent, index)))
-    sorted_child_relations = sorted(relations[parent, index],
-            key=lambda t, parent=parent, index=index: get_activations(parent, index, *t),
-            reverse=True)
-    for child_class, javatype in sorted_child_relations:
-        print('\t->{} of {} ({} activations)'.format(
-            abbreviate(child_class),
-            abbreviate(javatype),
-            get_activations(parent, index, child_class, javatype)))
-    print()
+def _generate_node_name(node, index):
+    return '{}-{}'.format(node, index)
+
+def transform_graph(G):
+    H = nx.MultiDiGraph()
+    for node in G.nodes():
+        H.add_node(node)
+    # find out maximum weight
+    maximum_activations = max(data['activations'] for _, _, data in G.edges(data=True))
+    for node in G.nodes():
+        child_indices = get_child_indices(G, node)
+        for child_index in child_indices:
+            proxy_node = _generate_node_name(node, child_index)
+            H.add_node(proxy_node)
+            H.add_edge(node, proxy_node, weight=1)
+            for _, child_node, data in get_edges_with_child_index(G, node, child_index):
+                H.add_edge(proxy_node, child_node,
+                        javatype=data['javatype'],
+                        weight=maximum_activations-data['activations'])
+    return H
+
+H = transform_graph(G)
+J = nx.minimum_spanning_tree(H.to_undirected())
+
+nx.drawing.nx_agraph.write_dot(J, 'mst.dot')
