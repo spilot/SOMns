@@ -1,48 +1,96 @@
+from collections import defaultdict
+
 import networkx as nx
 
 NUMERIC_ATTRIBUTES = ('activations', 'childindex')
 
-G = nx.drawing.nx_agraph.read_dot('graph.dot')
+def _preprocess_graph_attributes(G):
+    for edge in G.edges():
+        for attributes in G.get_edge_data(*edge).values():
+            for key, value in attributes.items():
+                if key in NUMERIC_ATTRIBUTES:
+                    attributes[key] = int(value)
+    return G
 
-for edge in G.edges():
-    for attributes in G.get_edge_data(*edge).values():
-        for key, value in attributes.items():
-            if key in NUMERIC_ATTRIBUTES:
-                attributes[key] = int(value)
+def load_graph(filename):
+    G = nx.drawing.nx_agraph.read_dot(filename)
+    _preprocess_graph_attributes(G)
+    return G
+
+def erase_javatypes(G):
+    for _, _, data in G.edges(data=True):
+        if 'javatype' in data:
+            data['javatype'] = '%'
+
+def remove_bimorphic(G):
+    edges_to_remove = []
+    for node in G.nodes():
+        edges_by_child_index = defaultdict(set)
+        for _, child, key, data in G.out_edges(node, keys=True, data=True):
+            edges_by_child_index[data['childindex']].add((node, child, key))
+        for child_index, edges in edges_by_child_index.items():
+            if len(edges) <= 2:
+                edges_to_remove.extend(edges)
+    G.remove_edges_from(edges_to_remove)
+    # remove all nodes without edges
+    nodes_to_remove = []
+    for node in G.nodes():
+        if G.degree(node) == 0:
+            nodes_to_remove.append(node)
+    G.remove_nodes_from(nodes_to_remove)
+
+def get_child_indices(G, node):
+    return {data['childindex'] for _, _, data in G.out_edges(node, data=True)}
+
+def get_edges_with_child_index(G, node, child_index):
+    return [edge for edge in G.out_edges(node, data=True)
+            if edge[2]['childindex'] == child_index]
+
+G = load_graph('graph.dot')
+remove_bimorphic(G)
+#erase_javatypes(G)
 
 relations = {}
 # (parent, index): variations
 
 for parent in G.nodes():
-    out_edges = G.out_edges(parent, data=True)
-    child_indices = {data['childindex'] for _, _, data in out_edges}
-    for child_index in child_indices:
-        matching_edges = (edge for edge in out_edges
-                if edge[2]['childindex'] == child_index)
-        child_classes = set(child for _, child, _ in matching_edges)
-        relations[parent, child_index] = child_classes
+    for child_index in get_child_indices(G, parent):
+        matching_edges = get_edges_with_child_index(G, parent, child_index)
+        child_relations = set((child, data['javatype'])
+                for _, child, data in matching_edges)
+        relations[parent, child_index] = child_relations
 
-def get_activations(parent, index, child_class):
+def get_activations(parent, index, child_class, javatype):
     out_edges = G.out_edges(parent, data=True)
     activations = tuple(data['activations'] for _, child, data in out_edges
-            if data['childindex'] == index and child == child_class)
-    return sum(activations) # TODO
+            if data['childindex'] == index
+                and child == child_class
+                and data['javatype'] == javatype)
+    assert len(activations) == 1 # TODO: breaks if java types are erased
+    return activations[0]
 
 def get_total_activations(parent, index):
-    return sum(get_activations(parent, index, child_class) for child_class in relations[parent, index])
+    return sum(get_activations(parent, index, child_class, javatype)
+            for child_class, javatype in relations[parent, index])
 
 def abbreviate(name):
     return name.rsplit('.', 1)[-1]
 
-sorted_relations = sorted(relations.keys(), key=lambda t: get_total_activations(*t), reverse=True)
+sorted_relations = sorted(relations.keys(),
+        key=lambda t: get_total_activations(*t),
+        reverse=True)
 for parent, index in sorted_relations:
-    print('{} child #{} witnesses {} different classes ({} total activations)'.format(
+    print('{} child #{} witnesses {} different child relations ({} total activations)'.format(
         abbreviate(parent),
         index,
         len(relations[parent, index]),
         get_total_activations(parent, index)))
-    for child_class in relations[parent, index]:
-        print('\t->{} ({} activations)'.format(
+    sorted_child_relations = sorted(relations[parent, index],
+            key=lambda t, parent=parent, index=index: get_activations(parent, index, *t),
+            reverse=True)
+    for child_class, javatype in sorted_child_relations:
+        print('\t->{} of {} ({} activations)'.format(
             abbreviate(child_class),
-            get_activations(parent, index, child_class)))
+            abbreviate(javatype),
+            get_activations(parent, index, child_class, javatype)))
     print()
