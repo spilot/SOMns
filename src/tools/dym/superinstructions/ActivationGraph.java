@@ -1,5 +1,10 @@
 package tools.dym.superinstructions;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,23 +88,25 @@ public class ActivationGraph {
     return edges.stream().filter(e -> e.getParent().equals(node));
   }
 
-  private String nodeName(ActivationNode node) {
-    return node.getClassName().replace('.', '_').replace('$', '_');
-  }
-
   public void writeToGraph() {
-    System.out.println("digraph activations {");
-    for(ActivationNode node : nodes) {
-      System.out.println(String.format("%s [label=\"%s\"];", nodeName(node), node.getClassName()));
+    Path path = Paths.get("graph.dot");
+    try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+      writer.write("digraph activations {\n");
+      for(ActivationNode node : nodes) {
+        writer.write(String.format("\"%s\";\n", node.getClassName()));
+      }
+      for(ActivationEdge edge : edges) {
+        writer.write(String.format("\"%s\" -> \"%s\" [childindex=%d,javatype=\"%s\",activations=%d];\n",
+                edge.getParent().getClassName(),
+                edge.getChild().getClassName(),
+                edge.getChildIndex(),
+                edge.getJavaType(),
+                edge.getActivations()));
+      }
+      writer.write("}");
+    } catch (IOException e) {
+      System.out.println("Could not write graph.dot:");
+      e.printStackTrace();
     }
-    for(ActivationEdge edge : edges) {
-      System.out.println(String.format("%s -> %s [childindex=%d,javatype=\"%s\",activations=%d];",
-              nodeName(edge.getParent()),
-              nodeName(edge.getChild()),
-              edge.getChildIndex(),
-              edge.getJavaType(),
-              edge.getActivations()));
-    }
-    System.out.println("}");
   }
 }
