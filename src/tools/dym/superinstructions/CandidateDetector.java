@@ -5,6 +5,10 @@ import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
 import com.oracle.truffle.api.nodes.NodeVisitor;
 import com.oracle.truffle.api.nodes.RootNode;
+import som.interpreter.nodes.OperationNode;
+import som.interpreter.nodes.SOMNode;
+import som.interpreter.nodes.nary.EagerPrimitive;
+import som.interpreter.nodes.nary.EagerUnaryPrimitiveNode;
 import tools.dym.profiles.TypeCounter;
 
 import java.util.*;
@@ -60,9 +64,19 @@ public class CandidateDetector implements NodeVisitor {
             parent = getPrimitive((EagerPrimitive)parent);
             childClassNames.remove(childClassNames.size() - 1); // TODO: because that's the primitive argument??
         }*/
+            String parentClass = parent.getClass().getName();
+            if(parent instanceof EagerPrimitive) {
+                String operation = ((OperationNode)parent).getOperation();
+                parentClass = "Operation_" + operation;
+            }
+            String childClass = childClassNames.get(childIndex);
+            if(SOMNode.unwrapIfNecessary(childNode) instanceof EagerPrimitive) {
+                String operation = ((OperationNode)SOMNode.unwrapIfNecessary(childNode)).getOperation();
+                childClass = "Operation_" + operation;
+            }
             //countPattern(parent, childIndex, childClassNames.get(childI ndex), activationCounter.getTotalActivations());
-            ActivationNode nParent = graph.getOrCreateNode(parent.getClass().getName());
-            ActivationNode nChild = graph.getOrCreateNode(childClassNames.get(childIndex));
+            ActivationNode nParent = graph.getOrCreateNode(parentClass);
+            ActivationNode nChild = graph.getOrCreateNode(childClass);
             for(Class<?> javaType : activat.keySet()) {
                 ActivationEdge edge = graph.getOrCreateEdge(nParent, nChild, childIndex, javaType.getName());
                 edge.addActivations(activat.get(javaType));

@@ -10,12 +10,6 @@ for edge in G.edges():
             if key in NUMERIC_ATTRIBUTES:
                 attributes[key] = int(value)
 
-def unfold_edge_data(edges):
-    for edge in edges:
-        data = G.get_edge_data(*edge)
-        for attributes in data.values():
-            yield attributes
-
 relations = {}
 # (parent, index): variations
 
@@ -38,7 +32,7 @@ def get_total_activations(parent, index):
     return sum(get_activations(parent, index, child_class) for child_class in relations[parent, index])
 
 def abbreviate(name):
-    return name.rsplit('_', 1)[1]
+    return name.rsplit('.', 1)[-1]
 
 sorted_relations = sorted(relations.keys(), key=lambda t: get_total_activations(*t), reverse=True)
 for parent, index in sorted_relations:
