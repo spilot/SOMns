@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by fred on 31/07/17.
@@ -78,17 +79,12 @@ public class ActivationGraph {
     }
   }
 
-  private String nodeName(ActivationNode node) {
-    return String.format("n%d", node.hashCode()).replace('-', '_');
+  public Stream<ActivationEdge> outgoingEdges(ActivationNode node) {
+    return edges.stream().filter(e -> e.getParent().equals(node));
   }
 
-  private String childColor(int childIndex) {
-    String[] colors = { "blue", "green", "cyan", "yellow",
-            "brown", "red", "hotpink", "springgreen", "peru",
-            "peachpuff", "rosybrown"};
-    if(childIndex >= colors.length)
-      return "black";
-    return colors[childIndex];
+  private String nodeName(ActivationNode node) {
+    return node.getClassName().replace('.', '_').replace('$', '_');
   }
 
   public void writeToGraph() {
@@ -97,10 +93,12 @@ public class ActivationGraph {
       System.out.println(String.format("%s [label=\"%s\"];", nodeName(node), node.getClassName()));
     }
     for(ActivationEdge edge : edges) {
-      System.out.println(String.format("%s -> %s [color=%s];",
+      System.out.println(String.format("%s -> %s [childindex=%d,javatype=\"%s\",activations=%d];",
               nodeName(edge.getParent()),
               nodeName(edge.getChild()),
-              childColor(edge.getChildIndex())));
+              edge.getChildIndex(),
+              edge.getJavaType(),
+              edge.getActivations()));
     }
     System.out.println("}");
   }

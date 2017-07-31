@@ -81,5 +81,32 @@ public class CandidateDetector implements NodeVisitor {
 
     public void finish() {
         graph.writeToGraph();
+        /*ActivationEdge edge = findMaximumEdge();
+        Map<ActivationNode, Integer> variations = new HashMap<>();
+        for(ActivationNode node : graph.getNodes()) {
+            Set<Integer> childIndices = graph.outgoingEdges(node)
+                    .map(ActivationEdge::getChildIndex)
+                    .distinct()
+                    .collect(Collectors.toSet());
+            System.out.println(node.getClassName());
+            for(Integer childIndex : childIndices) {
+                List<ActivationEdge> matchingOutgoing = graph.outgoingEdges(node)
+                        .filter(e -> e.getChildIndex() == childIndex)
+                        .collect(Collectors.toList());
+                List<String> childClassNames = matchingOutgoing.stream()
+                        .map(e -> e.getChild().getClassName())
+                        .collect(Collectors.toList());
+                System.out.println(childClassNames);
+            }
+        }
+        System.out.println(edge.getParent().getClassName() + "->" + edge.getChild().getClassName() + ": " + edge.getActivations());
+        */
+    }
+
+    public ActivationEdge findMaximumEdge() {
+        Optional<ActivationEdge> edge = graph.getEdges().stream()
+                .sorted(Comparator.comparingLong(ActivationEdge::getActivations).reversed())
+                .findFirst();
+        return edge.orElseThrow(() -> new RuntimeException("No edges at all"));
     }
 }
