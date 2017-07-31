@@ -1,3 +1,4 @@
+import itertools
 from collections import defaultdict
 
 import networkx as nx
@@ -66,28 +67,23 @@ def get_total_activations(parent, index):
 def abbreviate(name):
     return name.rsplit('.', 1)[-1]
 
-def _generate_node_name(node, index):
-    return '{}-{}'.format(node, index)
+def find_superinstruction_candidates(G, parent):
+    child_indices = get_child_indices(G, parent)
+    child_types = defaultdict(set)
+    for child_index in child_indices:
+        child_types[child_index] = get_edges_with_child_index(G, parent, child_index)
+    # only take the 10 most activated ones
+    for child_index, types in child_types.items():
+        child_types[child_index] = list(sorted(types, key=lambda x: x[2]['activations'], reverse=True))[:10]
+    keys = list(child_types.keys())
+    combinations = itertools.product(*map(child_types.get, keys))
+    combination_activations = []
+    for combination in combinations:
+        activations = [data['activations'] for _, _, data in combination]
+        combination_activations.append((combination, sum(activations)))
+    nice_ones = sorted(combination_activations, key=lambda x: x[1], reverse=True)[:20]
+    for combination, activations in nice_ones:
+        formatted = ' '.join('{}/{}'.format(abbreviate(e[1]), abbreviate(e[2]['javatype'])) for e in combination)
+        print(formatted, activations)
 
-def transform_graph(G):
-    H = nx.MultiDiGraph()
-    for node in G.nodes():
-        H.add_node(node)
-    # find out maximum weight
-    maximum_activations = max(data['activations'] for _, _, data in G.edges(data=True))
-    for node in G.nodes():
-        child_indices = get_child_indices(G, node)
-        for child_index in child_indices:
-            proxy_node = _generate_node_name(node, child_index)
-            H.add_node(proxy_node)
-            H.add_edge(node, proxy_node, weight=1)
-            for _, child_node, data in get_edges_with_child_index(G, node, child_index):
-                H.add_edge(proxy_node, child_node,
-                        javatype=data['javatype'],
-                        weight=maximum_activations-data['activations'])
-    return H
-
-H = transform_graph(G)
-J = nx.minimum_spanning_tree(H.to_undirected())
-
-nx.drawing.nx_agraph.write_dot(J, 'mst.dot')
+find_superinstruction_candidates(G, "som.interpreter.nodes.MessageSendNode$GenericMessageSendNode")
