@@ -140,14 +140,21 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       return expValue;
     }
 
+    /*
+    write a Long value, but check if the AST subtree fulfills the necessary conditions
+    to be replaced with an IncrementOperationNode. In case it does, replace myself
+    with an IncrementOperationNode. In case it doesn't, the @Cached annotation ensures
+    that ``isIncrementOperation`` is not called at every node evaluation.
+     */
     @Specialization(guards = "isLongKind(expValue)")
     public final long writeLong(final VirtualFrame frame, final long expValue,
                                 @Cached("isIncrementOperation()") final boolean isIncrement) {
       frame.setLong(slot, expValue);
       if(isIncrement) {
-        long value = ((IntegerLiteralNode)NodeUtil.findNodeChildren(getExp()).get(1)).getValue();
+        // TODO: This could be optimized
+        long increment = ((IntegerLiteralNode)NodeUtil.findNodeChildren(getExp()).get(1)).getValue();
         IncrementOperationNode newNode = LocalVariableNodeFactory.IncrementOperationNodeGen.create(var,
-                value,
+                increment,
                 getSourceSection());
         replace(newNode);
       }
@@ -167,6 +174,13 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       return expValue;
     }
 
+    /** Check if the AST subtree has the shape of an increment operation, i.e. looks like this:
+     * LocalVariableWriteNode
+     * |- EagerBinaryPrimitiveNode
+     *    |- LocalVariableReadNode (with var == this.var)
+     *    |- IntegerLiteralNode
+     *    |- AdditionPrim
+     */
     protected final boolean isIncrementOperation() {
       ExpressionNode exp = getExp();
       if(exp instanceof EagerBinaryPrimitiveNode) {
@@ -237,32 +251,32 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
   }
 
   public abstract static class IncrementOperationNode extends LocalVariableNode {
-    private long value;
+    private final long increment;
 
-    public IncrementOperationNode(final Local variable, final long value, final SourceSection source) {
+    public IncrementOperationNode(final Local variable, final long increment, final SourceSection source) {
       super(variable, source);
-      this.value = value;
+      this.increment = increment;
     }
 
     public IncrementOperationNode(final IncrementOperationNode node) {
       super(node.var, node.sourceSection);
-      this.value = node.getValue();
+      this.increment = node.getIncrement();
     }
 
-    public long getValue() {
-      return value;
+    public long getIncrement() {
+      return increment;
     }
 
     @Specialization(guards = "isLongKind(slot)", rewriteOn = {FrameSlotTypeException.class})
     public final long writeLong(final VirtualFrame frame) throws FrameSlotTypeException {
-      long incremented = frame.getLong(slot) + value;
-      frame.setLong(slot, incremented);
-      return incremented;
+      long newValue = frame.getLong(slot) + increment;
+      frame.setLong(slot, newValue);
+      return newValue;
     }
 
-    //@Specialization(replaces = {"writeLong"})
+    @Specialization(replaces = {"writeLong"})
     public final Object writeGeneric(final VirtualFrame frame) {
-      throw new RuntimeException("re-re-write");
+      throw new RuntimeException("Rewrite: TODO!");
     }
 
     protected final boolean isLongKind(FrameSlot slot) { // uses slot to make sure guard is not converted to assertion
@@ -293,7 +307,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
     @Override
     public void replaceAfterScopeChange(final InliningVisitor inliner) {
       //inliner.updateWrite(var, this, getExp(), 0);
-      throw new RuntimeException();
+      throw new RuntimeException("replaceAfterScopeChange: TODO!");
     }
   }
 }
