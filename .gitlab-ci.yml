@@ -23,3 +23,4 @@ benchmark_job:
   script:
     - ant compile
     - rebench -d --without-nice -c --commit-id="$CI_BUILD_REF" --environment="Infinity Ubuntu" --project=SOMns --branch=master super.conf
+    - curl 'http://upload.iedri.ch/upload?token=juhuupload123' -F 'upload=@codespeed.data'
