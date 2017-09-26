@@ -101,10 +101,9 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
               && children.get(1) instanceof IntegerLiteralNode
               && children.get(2) instanceof AdditionPrim) {
         LocalVariableReadNode read = (LocalVariableReadNode)children.get(0);
-        /*if(read.var.equals(this.var)) {
+        if(read.getVar().equals(var)) {
           return true;
-        }*/
-        return false;
+        }
       }
     }
     return false;
