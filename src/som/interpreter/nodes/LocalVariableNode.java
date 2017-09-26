@@ -155,6 +155,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
         long increment = ((IntegerLiteralNode)NodeUtil.findNodeChildren(getExp()).get(1)).getValue();
         IncrementOperationNode newNode = LocalVariableNodeFactory.IncrementOperationNodeGen.create(var,
                 increment,
+                this,
                 getSourceSection());
         replace(newNode);
       }
@@ -252,22 +253,28 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
 
   public abstract static class IncrementOperationNode extends LocalVariableNode {
     private final long increment;
+    private final LocalVariableNode originalSubtree;
 
-    public IncrementOperationNode(final Local variable, final long increment, final SourceSection source) {
+    public IncrementOperationNode(final Local variable,
+                                  final long increment,
+                                  final LocalVariableNode originalSubtree,
+                                  final SourceSection source) {
       super(variable, source);
       this.increment = increment;
+      this.originalSubtree = originalSubtree;
     }
 
     public IncrementOperationNode(final IncrementOperationNode node) {
       super(node.var, node.sourceSection);
       this.increment = node.getIncrement();
+      this.originalSubtree = node.getOriginalSubtree();
     }
 
     public long getIncrement() {
       return increment;
     }
 
-    @Specialization(guards = "isLongKind(slot)", rewriteOn = {FrameSlotTypeException.class})
+    @Specialization(guards = "isLongKind(frame)", rewriteOn = {FrameSlotTypeException.class})
     public final long writeLong(final VirtualFrame frame) throws FrameSlotTypeException {
       long newValue = frame.getLong(slot) + increment;
       frame.setLong(slot, newValue);
@@ -276,10 +283,12 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
 
     @Specialization(replaces = {"writeLong"})
     public final Object writeGeneric(final VirtualFrame frame) {
-      throw new RuntimeException("Rewrite: TODO!");
+      Object result = originalSubtree.executeGeneric(frame);
+      replace(originalSubtree);
+      return result;
     }
 
-    protected final boolean isLongKind(FrameSlot slot) { // uses slot to make sure guard is not converted to assertion
+    protected final boolean isLongKind(final VirtualFrame frame) { // uses frame to make sure guard is not converted to assertion
       if (slot.getKind() == FrameSlotKind.Long) {
         return true;
       }
@@ -308,6 +317,10 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
     public void replaceAfterScopeChange(final InliningVisitor inliner) {
       //inliner.updateWrite(var, this, getExp(), 0);
       throw new RuntimeException("replaceAfterScopeChange: TODO!");
+    }
+
+    public LocalVariableNode getOriginalSubtree() {
+      return originalSubtree;
     }
   }
 }
