@@ -48,6 +48,7 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
 
   @Specialization(replaces = {"writeLong"})
   public final Object writeGeneric(final VirtualFrame frame) {
+    /* Replace myself with the stored original subtree */
     Object result = originalSubtree.executeGeneric(frame);
     replace(originalSubtree);
     return result;
@@ -80,6 +81,9 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
 
   @Override
   public void replaceAfterScopeChange(final InliningVisitor inliner) {
+    /* This should never happen because ``replaceAfterScopeChange`` is only called in the
+    parsing stage, whereas the ``IncrementOperationNode`` superinstruction is only inserted
+    into the AST *after* parsing. */
     throw new RuntimeException("replaceAfterScopeChange: This should never happen!");
   }
 
@@ -107,5 +111,14 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
       }
     }
     return false;
+  }
+
+  public static void replaceNode(LocalVariableWriteNode node) {
+    // TODO: This could be optimized
+    long increment = ((IntegerLiteralNode)NodeUtil.findNodeChildren(node.getExp()).get(1)).getValue();
+    IncrementOperationNode newNode = IncrementOperationNodeGen.create(node.getVar(),
+            increment,
+            node).initialize(node.getSourceSection());
+    node.replace(newNode);
   }
 }

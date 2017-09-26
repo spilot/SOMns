@@ -150,12 +150,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
                                 @Cached("isIncrementOperation(getExp(), var)") final boolean isIncrement) {
       frame.setLong(slot, expValue);
       if(isIncrement) {
-        // TODO: This could be optimized
-        long increment = ((IntegerLiteralNode)NodeUtil.findNodeChildren(getExp()).get(1)).getValue();
-        IncrementOperationNode newNode = IncrementOperationNodeGen.create(var,
-                increment,
-                this).initialize(getSourceSection());
-        replace(newNode);
+        IncrementOperationNode.replaceNode(this);
       }
       return expValue;
     }

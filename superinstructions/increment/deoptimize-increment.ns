@@ -1,3 +1,5 @@
+(* This illustrates the case in which an increment operation needs to be deoptimized
+   because the slot type changes from Long to something else. *)
 class Write usingPlatform: platform = Value ()
 (
   public main: args = (
