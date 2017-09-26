@@ -10,6 +10,7 @@ import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.nodes.NodeCost;
 import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.VM;
 import som.compiler.MixinDefinition;
 import som.interpreter.Types;
@@ -34,8 +35,6 @@ public abstract class MirrorPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "objNestedClasses:")
   public abstract static class NestedClassesPrim extends UnaryExpressionNode {
-    public NestedClassesPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     @TruffleBoundary
     public final SMutableArray getNestedClasses(final SObjectWithClass rcvr) {
@@ -47,12 +46,11 @@ public abstract class MirrorPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "obj:respondsTo:")
   public abstract static class RespondsToPrim extends BinaryComplexOperation {
-    protected RespondsToPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     @TruffleBoundary
     public final boolean objectResondsTo(final Object rcvr, final SSymbol selector) {
-      VM.thisMethodNeedsToBeOptimized("Uses Types.getClassOf, so, should be specialized in performance cirtical code");
+      VM.thisMethodNeedsToBeOptimized(
+          "Uses Types.getClassOf, so, should be specialized in performance cirtical code");
       return Types.getClassOf(rcvr).canUnderstand(selector);
     }
   }
@@ -60,12 +58,11 @@ public abstract class MirrorPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "objMethods:")
   public abstract static class MethodsPrim extends UnaryExpressionNode {
-    public MethodsPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     @TruffleBoundary
     public final SImmutableArray getMethod(final Object rcvr) {
-      VM.thisMethodNeedsToBeOptimized("Uses Types.getClassOf, so, should be specialized in performance cirtical code");
+      VM.thisMethodNeedsToBeOptimized(
+          "Uses Types.getClassOf, so, should be specialized in performance cirtical code");
       SInvokable[] is = Types.getClassOf(rcvr).getMethods();
       Object[] invokables = Arrays.copyOf(is, is.length, Object[].class);
       return new SImmutableArray(invokables, Classes.valueArrayClass);
@@ -76,9 +73,14 @@ public abstract class MirrorPrims {
   @Primitive(primitive = "obj:perform:")
   public abstract static class PerformPrim extends BinaryComplexOperation {
     @Child protected AbstractSymbolDispatch dispatch;
-    public PerformPrim(final boolean eagWrap, final SourceSection source) {
-      super(eagWrap, source);
-      dispatch = AbstractSymbolDispatchNodeGen.create(source);
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public PerformPrim initialize(final SourceSection sourceSection) {
+      assert sourceSection != null;
+      super.initialize(sourceSection);
+      dispatch = AbstractSymbolDispatchNodeGen.create(sourceSection);
+      return this;
     }
 
     @Specialization
@@ -92,14 +94,19 @@ public abstract class MirrorPrims {
   @Primitive(primitive = "obj:perform:withArguments:")
   public abstract static class PerformWithArgumentsPrim extends TernaryExpressionNode {
     @Child protected AbstractSymbolDispatch dispatch;
-    public PerformWithArgumentsPrim(final boolean eagWrap, final SourceSection source) {
-      super(eagWrap, source);
-      dispatch = AbstractSymbolDispatchNodeGen.create(source);
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public PerformWithArgumentsPrim initialize(final SourceSection sourceSection) {
+      assert sourceSection != null;
+      super.initialize(sourceSection);
+      dispatch = AbstractSymbolDispatchNodeGen.create(sourceSection);
+      return this;
     }
 
     @Specialization
     public final Object doPerform(final VirtualFrame frame, final Object rcvr,
-        final SSymbol selector, final SArray  argsArr) {
+        final SSymbol selector, final SArray argsArr) {
       return dispatch.executeDispatch(frame, rcvr, selector, argsArr);
     }
 
@@ -112,8 +119,6 @@ public abstract class MirrorPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "classDefinition:")
   public abstract static class ClassDefinitionPrim extends UnaryExpressionNode {
-    public ClassDefinitionPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final Object getClassDefinition(final SClass rcvr) {
       return rcvr.getMixinDefinition();
@@ -123,8 +128,6 @@ public abstract class MirrorPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "classDefNestedClassDefinitions:")
   public abstract static class NestedClassDefinitionsPrim extends UnaryExpressionNode {
-    public NestedClassDefinitionsPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     @TruffleBoundary
     public final Object getClassDefinition(final Object mixinHandle) {
@@ -138,8 +141,6 @@ public abstract class MirrorPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "classDefName:")
   public abstract static class ClassDefNamePrim extends UnaryExpressionNode {
-    public ClassDefNamePrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final SSymbol getName(final Object mixinHandle) {
       assert mixinHandle instanceof MixinDefinition;
@@ -151,8 +152,6 @@ public abstract class MirrorPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "classDefMethods:")
   public abstract static class ClassDefMethodsPrim extends UnaryExpressionNode {
-    public ClassDefMethodsPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     @TruffleBoundary
     public final SImmutableArray getName(final Object mixinHandle) {
@@ -173,8 +172,6 @@ public abstract class MirrorPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "classDef:hasFactoryMethod:")
   public abstract static class ClassDefHasFactoryMethodPrim extends BinaryComplexOperation {
-    protected ClassDefHasFactoryMethodPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     @TruffleBoundary
     public final boolean hasFactoryMethod(final Object mixinHandle,

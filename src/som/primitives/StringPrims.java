@@ -4,8 +4,8 @@ import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.profiles.BranchProfile;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.interpreter.nodes.nary.BinaryComplexOperation;
 import som.interpreter.nodes.nary.BinaryExpressionNode;
 import som.interpreter.nodes.nary.TernaryExpressionNode;
@@ -22,8 +22,6 @@ public class StringPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "string:concat:")
   public abstract static class ConcatPrim extends BinaryComplexOperation {
-    protected ConcatPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Override
     protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
       if (tag == StringAccess.class) {
@@ -61,8 +59,6 @@ public class StringPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "stringAsSymbol:")
   public abstract static class AsSymbolPrim extends UnaryBasicOperation {
-    public AsSymbolPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Override
     protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
       if (tag == StringAccess.class) {
@@ -85,10 +81,8 @@ public class StringPrims {
 
   @GenerateNodeFactory
   @Primitive(primitive = "string:substringFrom:to:",
-             selector = "substringFrom:to:", receiverType = String.class)
+      selector = "substringFrom:to:", receiverType = String.class)
   public abstract static class SubstringPrim extends TernaryExpressionNode {
-    public SubstringPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     private final BranchProfile invalidArgs = BranchProfile.create();
 
     @Override
@@ -136,8 +130,6 @@ public class StringPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "string:charAt:", selector = "charAt:", receiverType = String.class)
   public abstract static class CharAtPrim extends BinaryExpressionNode {
-    public CharAtPrim(final boolean eagerWrap, final SourceSection source) { super(eagerWrap, source); }
-
     private final BranchProfile invalidArgs = BranchProfile.create();
 
     @Override

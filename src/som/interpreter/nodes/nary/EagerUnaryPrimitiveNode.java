@@ -4,7 +4,6 @@ import com.oracle.truffle.api.dsl.UnsupportedSpecializationException;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.InstrumentableFactory.WrapperNode;
 import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.source.SourceSection;
 
 import som.VM;
 import som.interpreter.TruffleCompiler;
@@ -15,18 +14,16 @@ import som.vm.NotYetImplementedException;
 import som.vmobjects.SSymbol;
 
 
-public final class EagerUnaryPrimitiveNode extends EagerPrimitive {
+public final class EagerUnaryPrimitiveNode extends EagerPrimitiveNode {
 
-  @Child private ExpressionNode receiver;
+  @Child private ExpressionNode      receiver;
   @Child private UnaryExpressionNode primitive;
 
   private final SSymbol selector;
 
-  public EagerUnaryPrimitiveNode(final SourceSection source, final SSymbol selector,
-      final ExpressionNode receiver, final UnaryExpressionNode primitive) {
-    super(source);
-    assert source == primitive.getSourceSection();
-    this.receiver  = insert(receiver);
+  public EagerUnaryPrimitiveNode(final SSymbol selector, final ExpressionNode receiver,
+      final UnaryExpressionNode primitive) {
+    this.receiver = insert(receiver);
     this.primitive = insert(primitive);
     this.selector = selector;
   }
@@ -93,7 +90,8 @@ public final class EagerUnaryPrimitiveNode extends EagerPrimitive {
     try {
       return primitive.executeEvaluated(frame, receiver);
     } catch (UnsupportedSpecializationException e) {
-      TruffleCompiler.transferToInterpreterAndInvalidate("Eager Primitive with unsupported specialization.");
+      TruffleCompiler.transferToInterpreterAndInvalidate(
+          "Eager Primitive with unsupported specialization.");
       return makeGenericSend().doPreEvaluated(frame, new Object[] {receiver});
     }
   }
@@ -116,7 +114,7 @@ public final class EagerUnaryPrimitiveNode extends EagerPrimitive {
   }
 
   @Override
-  protected void setTags(final byte tagMark) {
+  public void setTags(final byte tagMark) {
     primitive.tagMark = tagMark;
   }
 

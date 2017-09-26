@@ -5,25 +5,25 @@ import com.oracle.truffle.api.instrumentation.InstrumentableFactory.WrapperNode;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.source.SourceSection;
 
+import bd.nodes.EagerlySpecializable;
+import bd.nodes.PreevaluatedExpression;
+import som.VM;
 import som.interpreter.nodes.ExpressionNode;
-import som.interpreter.nodes.PreevaluatedExpression;
 import som.vmobjects.SSymbol;
 
+
 public abstract class EagerlySpecializableNode extends ExprWithTagsNode
-  implements PreevaluatedExpression {
+    implements PreevaluatedExpression, EagerlySpecializable<ExpressionNode, SSymbol, VM> {
 
   @CompilationFinal private boolean eagerlyWrapped;
 
-  protected EagerlySpecializableNode(final EagerlySpecializableNode wrappedNode) {
-    super(wrappedNode);
-    assert !wrappedNode.eagerlyWrapped : "I think this should be true.";
-    this.eagerlyWrapped = false;
-  }
-
-  public EagerlySpecializableNode(final boolean eagerlyWrapped,
-      final SourceSection source) {
-    super(source);
+  @Override
+  public ExpressionNode initialize(final SourceSection sourceSection,
+      final boolean eagerlyWrapped) {
+    this.initialize(sourceSection);
+    assert !this.eagerlyWrapped;
     this.eagerlyWrapped = eagerlyWrapped;
+    return this;
   }
 
   /**
@@ -46,16 +46,12 @@ public abstract class EagerlySpecializableNode extends ExprWithTagsNode
   @Override
   protected void onReplace(final Node newNode, final CharSequence reason) {
     if (newNode instanceof WrapperNode ||
-        !(newNode instanceof EagerlySpecializableNode)) { return; }
+        !(newNode instanceof EagerlySpecializableNode)) {
+      return;
+    }
 
     EagerlySpecializableNode n = (EagerlySpecializableNode) newNode;
     n.eagerlyWrapped = eagerlyWrapped;
     super.onReplace(newNode, reason);
   }
-
-  /**
-   * Create an eager primitive wrapper, which wraps this node.
-   */
-  public abstract EagerPrimitive wrapInEagerWrapper(SSymbol selector,
-      ExpressionNode[] arguments);
 }

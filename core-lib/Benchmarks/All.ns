@@ -1,4 +1,4 @@
-(* Copyright (c) 2001-2015 see AUTHORS file
+(* Copyright (c) 2001-2017 see AUTHORS file
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the 'Software'), to deal
@@ -20,7 +20,7 @@ THE SOFTWARE.
 *)
 class AllBenchmarks usingPlatform: platform = (
 | private platform = platform.
-  private harness  = (platform system loadModule: 'Harness.som' nextTo: self) usingPlatform: platform.
+  private harness  = (platform system loadModule: 'Harness.ns' nextTo: self) usingPlatform: platform.
   private system   = platform system.
   private ObjectMirror = platform mirrors ObjectMirror.
   private Run      = harness Run.
@@ -71,6 +71,9 @@ class AllBenchmarks usingPlatform: platform = (
       (run: 'Dispatch'             in: 'LanguageFeatures' numIter: 10),
       (run: 'DispatchNoArg'        in: 'LanguageFeatures' numIter: 10),
       (run: 'DispatchPerformNoArg' in: 'LanguageFeatures' numIter: 10),
+      (run: 'ObjectLiterals'       in: 'LanguageFeatures' numIter: 1),
+      (run: 'ObjectLiterals2'      in: 'LanguageFeatures' numIter: 1),
+      (run: 'ObjectLiterals3'      in: 'LanguageFeatures' numIter: 1),
 
       (run: 'PageRank'    numIter:  1),
       (run: 'GraphSearch' numIter:  1)
@@ -78,7 +81,7 @@ class AllBenchmarks usingPlatform: platform = (
 
   loadModule: name = (
     | file cls |
-    file:: name + '.som'.
+    file:: name + '.ns'.
     cls:: system loadModule: file nextTo: self.
     ^ cls usingPlatform: platform andHarness: harness.
   )

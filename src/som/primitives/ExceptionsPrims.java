@@ -6,8 +6,8 @@ import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.nodes.DirectCallNode;
 import com.oracle.truffle.api.nodes.IndirectCallNode;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.interpreter.SomException;
 import som.interpreter.nodes.dispatch.BlockDispatchNode;
 import som.interpreter.nodes.dispatch.BlockDispatchNodeGen;
@@ -28,14 +28,14 @@ public abstract class ExceptionsPrims {
   public abstract static class ExceptionDoOnPrim extends TernaryExpressionNode {
 
     protected static final int INLINE_CACHE_SIZE = VmSettings.DYNAMIC_METRICS ? 100 : 6;
-    protected static final IndirectCallNode indirect = Truffle.getRuntime().createIndirectCallNode();
+
+    protected static final IndirectCallNode indirect =
+        Truffle.getRuntime().createIndirectCallNode();
 
     public static final DirectCallNode createCallNode(final SBlock block) {
       return Truffle.getRuntime().createDirectCallNode(
           block.getMethod().getCallTarget());
     }
-
-    public ExceptionDoOnPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
 
     public static final boolean sameBlock(final SBlock block, final SInvokable method) {
       return block.getMethod() == method;
@@ -43,7 +43,7 @@ public abstract class ExceptionsPrims {
 
     @Specialization(limit = "INLINE_CACHE_SIZE",
         guards = {"sameBlock(body, cachedBody)",
-                  "sameBlock(exceptionHandler, cachedExceptionMethod)"})
+            "sameBlock(exceptionHandler, cachedExceptionMethod)"})
     public final Object doException(final SBlock body,
         final SClass exceptionClass, final SBlock exceptionHandler,
         @Cached("body.getMethod()") final SInvokable cachedBody,
@@ -80,8 +80,6 @@ public abstract class ExceptionsPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "signalException:")
   public abstract static class SignalPrim extends UnaryExpressionNode {
-    public SignalPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final Object doSignal(final SAbstractObject exceptionObject) {
       throw new SomException(exceptionObject);
@@ -89,14 +87,12 @@ public abstract class ExceptionsPrims {
   }
 
   @GenerateNodeFactory
-  @Primitive(primitive = "exceptionDo:ensure:",
-             selector = "ensure:", receiverType = SBlock.class)
+  @Primitive(primitive = "exceptionDo:ensure:", selector = "ensure:",
+      receiverType = SBlock.class)
   public abstract static class EnsurePrim extends BinaryComplexOperation {
 
     @Child protected BlockDispatchNode dispatchBody    = BlockDispatchNodeGen.create();
     @Child protected BlockDispatchNode dispatchHandler = BlockDispatchNodeGen.create();
-
-    protected EnsurePrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
 
     @Specialization
     public final Object doException(final SBlock body, final SBlock ensureHandler) {

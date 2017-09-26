@@ -3,9 +3,11 @@ package som.vm;
 import java.util.Arrays;
 import java.util.List;
 
-public class VmSettings {
-  public static final int NUM_THREADS;
+import bd.settings.Settings;
 
+
+public class VmSettings implements Settings {
+  public static final int NUM_THREADS;
 
   // TODO: revise naming of flags
   public static final boolean FAIL_ON_MISSING_OPTIMIZATIONS;
@@ -38,25 +40,27 @@ public class VmSettings {
     }
 
     FAIL_ON_MISSING_OPTIMIZATIONS = getBool("som.failOnMissingOptimization", false);
-    DEBUG_MODE      = getBool("som.debugMode",      false);
+    DEBUG_MODE = getBool("som.debugMode", false);
     TRUFFLE_DEBUGGER_ENABLED = getBool("som.truffleDebugger", false);
 
-    TRACE_FILE      = System.getProperty("som.traceFile", System.getProperty("user.dir") + "/traces/trace");
-    MEMORY_TRACING = getBool("som.memoryTracing",   false);
+    TRACE_FILE =
+        System.getProperty("som.traceFile", System.getProperty("user.dir") + "/traces/trace");
+    MEMORY_TRACING = getBool("som.memoryTracing", false);
     REPLAY = getBool("som.replay", false);
     DISABLE_TRACE_FILE = getBool("som.disableTraceFile", false) || REPLAY;
 
     String atConfig = System.getProperty("som.actorTracingCfg", "");
     List<String> al = Arrays.asList(atConfig.split(":"));
-    boolean filter = (al.size() > 0 && !atConfig.isEmpty()) || getBool("som.actorTracing",   false);
+    boolean filter =
+        (al.size() > 0 && !atConfig.isEmpty()) || getBool("som.actorTracing", false);
 
-    MESSAGE_PARAMETERS    = !al.contains("mp") && filter;
-    PROMISE_CREATION      = !al.contains("pc") && filter;
-    PROMISE_RESOLUTION    = PROMISE_CREATION && (!al.contains("pr")) && filter;
+    MESSAGE_PARAMETERS = !al.contains("mp") && filter;
+    PROMISE_CREATION = !al.contains("pc") && filter;
+    PROMISE_RESOLUTION = PROMISE_CREATION && (!al.contains("pr")) && filter;
     PROMISE_RESOLVED_WITH = !al.contains("prw") && filter;
 
     ACTOR_TRACING = TRUFFLE_DEBUGGER_ENABLED || getBool("som.actorTracing", false) ||
-                    REPLAY || MESSAGE_PARAMETERS || PROMISE_CREATION;
+        REPLAY || MESSAGE_PARAMETERS || PROMISE_CREATION;
 
     boolean dm = getBool("som.dynamicMetrics", false);
     DYNAMIC_METRICS = dm;
@@ -69,5 +73,10 @@ public class VmSettings {
 
   private static boolean getBool(final String prop, final boolean defaultVal) {
     return Boolean.parseBoolean(System.getProperty(prop, defaultVal ? "true" : "false"));
+  }
+
+  @Override
+  public boolean dynamicMetricsEnabled() {
+    return DYNAMIC_METRICS;
   }
 }

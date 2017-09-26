@@ -14,6 +14,8 @@ import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeCost;
 import com.oracle.truffle.api.source.SourceSection;
 
+import bd.nodes.PreevaluatedExpression;
+import bd.primitives.Specializer;
 import som.VM;
 import som.compiler.AccessModifier;
 import som.instrumentation.MessageSendNodeWrapper;
@@ -24,7 +26,6 @@ import som.interpreter.nodes.dispatch.UninitializedDispatchNode;
 import som.interpreter.nodes.nary.EagerlySpecializableNode;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
 import som.vm.Primitives;
-import som.vm.Primitives.Specializer;
 import som.vmobjects.SSymbol;
 import tools.SourceCoordinate;
 import tools.dym.Tags.VirtualInvoke;
@@ -35,33 +36,40 @@ public final class MessageSendNode {
   public static ExpressionNode createMessageSend(final SSymbol selector,
       final ExpressionNode[] arguments, final SourceSection source, final VM vm) {
     Primitives prims = vm.getPrimitives();
-    Specializer<EagerlySpecializableNode> specializer =
+    Specializer<VM, ExpressionNode, SSymbol> specializer =
         prims.getParserSpecializer(selector, arguments);
     if (specializer != null) {
-      EagerlySpecializableNode newNode = specializer.create(null, arguments, source, !specializer.noWrapper());
+      EagerlySpecializableNode newNode = (EagerlySpecializableNode) specializer.create(null,
+          arguments, source, !specializer.noWrapper());
       for (ExpressionNode exp : arguments) {
         unwrapIfNecessary(exp).markAsPrimitiveArgument();
       }
       if (specializer.noWrapper()) {
         return newNode;
       } else {
-        return newNode.wrapInEagerWrapper(selector, arguments);
+        return newNode.wrapInEagerWrapper(selector, arguments, vm);
       }
     } else {
-      return new UninitializedMessageSendNode(selector, arguments, source, vm);
+      return new UninitializedMessageSendNode(selector, arguments, vm).initialize(source);
     }
   }
 
   public static AbstractMessageSendNode adaptSymbol(final SSymbol newSelector,
       final AbstractMessageSendNode node, final VM vm) {
     assert node instanceof UninitializedMessageSendNode;
-    return new UninitializedMessageSendNode(newSelector, node.argumentNodes,
-        node.getSourceSection(), vm);
+    return new UninitializedMessageSendNode(newSelector, node.argumentNodes, vm).initialize(
+        node.sourceSection);
   }
 
-  public static AbstractMessageSendNode createForPerformNodes(
-      final SSymbol selector, final SourceSection source, final VM vm) {
-    return new UninitializedSymbolSendNode(selector, source, vm);
+  public static AbstractMessageSendNode createForPerformNodes(final SourceSection source,
+      final SSymbol selector, final VM vm) {
+    AbstractMessageSendNode result = new UninitializedSymbolSendNode(selector, vm);
+
+    // This is currently needed for interop, don't have source section there
+    if (source != null) {
+      result.initialize(source);
+    }
+    return result;
   }
 
   public static GenericMessageSendNode createGeneric(final SSymbol selector,
@@ -84,10 +92,16 @@ public final class MessageSendNode {
     }
 
     if (dispatch == null) {
-      dispatch = UninitializedDispatchNode.createRcvrSend(source, selector, AccessModifier.PUBLIC);
+      dispatch =
+          UninitializedDispatchNode.createRcvrSend(source, selector, AccessModifier.PUBLIC);
     }
 
-    return new GenericMessageSendNode(selector, argumentNodes, dispatch, source);
+    GenericMessageSendNode result =
+        new GenericMessageSendNode(selector, argumentNodes, dispatch);
+    if (source != null) {
+      result.initialize(source);
+    }
+    return result;
   }
 
   public abstract static class AbstractMessageSendNode extends ExprWithTagsNode
@@ -95,16 +109,8 @@ public final class MessageSendNode {
 
     @Children protected final ExpressionNode[] argumentNodes;
 
-    protected AbstractMessageSendNode(final ExpressionNode[] arguments,
-        final SourceSection source) {
-      super(source);
+    protected AbstractMessageSendNode(final ExpressionNode[] arguments) {
       this.argumentNodes = arguments;
-    }
-
-    protected AbstractMessageSendNode(final SourceSection source) {
-      super(source);
-      // default constructor for instrumentation wrapper nodes
-      this.argumentNodes = null;
     }
 
     @Override
@@ -136,14 +142,13 @@ public final class MessageSendNode {
       extends AbstractMessageSendNode {
 
     protected final SSymbol selector;
-    protected final VM vm;
+    protected final VM      vm;
 
     protected AbstractUninitializedMessageSendNode(final SSymbol selector,
-        final ExpressionNode[] arguments,
-        final SourceSection source, final VM vm) {
-      super(arguments, source);
+        final ExpressionNode[] arguments, final VM vm) {
+      super(arguments);
       this.selector = selector;
-      this.vm       = vm;
+      this.vm = vm;
     }
 
     @Override
@@ -167,8 +172,7 @@ public final class MessageSendNode {
         final Object[] arguments) {
       // This is a branch never taken, none of the code here should be compiled.
       CompilerDirectives.transferToInterpreterAndInvalidate();
-      return specialize(arguments).
-          doPreEvaluated(frame, arguments);
+      return specialize(arguments).doPreEvaluated(frame, arguments);
     }
 
     private PreevaluatedExpression specialize(final Object[] arguments) {
@@ -176,15 +180,17 @@ public final class MessageSendNode {
 
       Primitives prims = vm.getPrimitives();
 
-      Specializer<EagerlySpecializableNode> specializer = prims.getEagerSpecializer(selector,
-          arguments, argumentNodes);
+      Specializer<VM, ExpressionNode, SSymbol> specializer =
+          prims.getEagerSpecializer(selector, arguments, argumentNodes);
 
       Lock lock = getLock();
       try {
         lock.lock();
         if (specializer != null) {
           boolean noWrapper = specializer.noWrapper();
-          EagerlySpecializableNode newNode = specializer.create(arguments, argumentNodes, sourceSection, !noWrapper);
+          EagerlySpecializableNode newNode =
+              (EagerlySpecializableNode) specializer.create(arguments, argumentNodes,
+                  sourceSection, !noWrapper);
           if (noWrapper) {
             return replace(newNode);
           } else {
@@ -213,7 +219,9 @@ public final class MessageSendNode {
       VM.insertInstrumentationWrapper(this);
       assert prim.getSourceSection() != null;
 
-      PreevaluatedExpression result = replace(prim.wrapInEagerWrapper(selector, argumentNodes));
+      PreevaluatedExpression result =
+          (PreevaluatedExpression) replace(
+              prim.wrapInEagerWrapper(selector, argumentNodes, vm));
 
       VM.insertInstrumentationWrapper((Node) result);
 
@@ -231,16 +239,15 @@ public final class MessageSendNode {
       extends AbstractUninitializedMessageSendNode {
 
     protected UninitializedMessageSendNode(final SSymbol selector,
-        final ExpressionNode[] arguments,
-        final SourceSection source, final VM vm) {
-      super(selector, arguments, source, vm);
+        final ExpressionNode[] arguments, final VM vm) {
+      super(selector, arguments, vm);
     }
 
     /**
      * For wrapper use only.
      */
     protected UninitializedMessageSendNode(final UninitializedMessageSendNode wrappedNode) {
-      super(wrappedNode.selector, null, null, null);
+      super(wrappedNode.selector, null, null);
     }
 
     @Override
@@ -255,11 +262,10 @@ public final class MessageSendNode {
   }
 
   private static final class UninitializedSymbolSendNode
-    extends AbstractUninitializedMessageSendNode {
+      extends AbstractUninitializedMessageSendNode {
 
-    protected UninitializedSymbolSendNode(final SSymbol selector,
-        final SourceSection source, final VM vm) {
-      super(selector, new ExpressionNode[0], source, vm);
+    protected UninitializedSymbolSendNode(final SSymbol selector, final VM vm) {
+      super(selector, new ExpressionNode[0], vm);
     }
 
     @Override
@@ -278,10 +284,9 @@ public final class MessageSendNode {
 
     @Child private AbstractDispatchNode dispatchNode;
 
-    private GenericMessageSendNode(final SSymbol selector,
-        final ExpressionNode[] arguments,
-        final AbstractDispatchNode dispatchNode, final SourceSection source) {
-      super(arguments, source);
+    private GenericMessageSendNode(final SSymbol selector, final ExpressionNode[] arguments,
+        final AbstractDispatchNode dispatchNode) {
+      super(arguments);
       this.selector = selector;
       this.dispatchNode = dispatchNode;
     }

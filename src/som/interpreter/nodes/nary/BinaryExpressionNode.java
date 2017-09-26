@@ -4,29 +4,21 @@ import com.oracle.truffle.api.dsl.NodeChild;
 import com.oracle.truffle.api.dsl.NodeChildren;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.Instrumentable;
-import com.oracle.truffle.api.source.SourceSection;
 
+import som.VM;
 import som.interpreter.nodes.ExpressionNode;
 import som.vmobjects.SSymbol;
 
 
 @NodeChildren({
-  @NodeChild(value = "receiver", type = ExpressionNode.class),
-  @NodeChild(value = "argument", type = ExpressionNode.class)})
+    @NodeChild(value = "receiver", type = ExpressionNode.class),
+    @NodeChild(value = "argument", type = ExpressionNode.class)})
 @Instrumentable(factory = BinaryExpressionNodeWrapper.class)
 public abstract class BinaryExpressionNode extends EagerlySpecializableNode {
 
-  public BinaryExpressionNode(final boolean eagerlyWrapped,
-      final SourceSection source) {
-    super(eagerlyWrapped, source);
-  }
+  protected BinaryExpressionNode() {}
 
-  /**
-   * For wrapped nodes only.
-   */
-  protected BinaryExpressionNode(final BinaryExpressionNode wrappedNode) {
-    super(wrappedNode);
-  }
+  protected BinaryExpressionNode(final BinaryExpressionNode wrappedNode) {}
 
   public abstract Object executeEvaluated(VirtualFrame frame, Object receiver,
       Object argument);
@@ -38,9 +30,11 @@ public abstract class BinaryExpressionNode extends EagerlySpecializableNode {
   }
 
   @Override
-  public EagerPrimitive wrapInEagerWrapper(final SSymbol selector,
-      final ExpressionNode[] arguments) {
-    return new EagerBinaryPrimitiveNode(sourceSection, selector,
-        arguments[0], arguments[1], this);
+  public EagerPrimitiveNode wrapInEagerWrapper(final SSymbol selector,
+      final ExpressionNode[] arguments, final VM vm) {
+    EagerBinaryPrimitiveNode result =
+        new EagerBinaryPrimitiveNode(selector, arguments[0], arguments[1], this);
+    result.initialize(sourceSection);
+    return result;
   }
 }

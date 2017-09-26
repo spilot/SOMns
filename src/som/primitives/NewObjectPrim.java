@@ -4,7 +4,6 @@ import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.dsl.Cached;
 import com.oracle.truffle.api.dsl.Fallback;
 import com.oracle.truffle.api.dsl.Specialization;
-import com.oracle.truffle.api.source.SourceSection;
 
 import som.compiler.MixinBuilder.MixinDefinitionId;
 import som.interpreter.nodes.ISpecialSend;
@@ -31,8 +30,7 @@ public abstract class NewObjectPrim extends UnaryExpressionNode implements ISpec
 
   private final MixinDefinitionId mixinId;
 
-  public NewObjectPrim(final SourceSection source, final MixinDefinitionId mixinId) {
-    super(false, source);
+  public NewObjectPrim(final MixinDefinitionId mixinId) {
     this.mixinId = mixinId;
   }
 
@@ -51,7 +49,9 @@ public abstract class NewObjectPrim extends UnaryExpressionNode implements ISpec
   }
 
   @Override
-  public boolean isSuperSend() { return false; }
+  public boolean isSuperSend() {
+    return false;
+  }
 
   @Specialization(guards = {
       "receiver.getInstanceFactory() == factory",
@@ -94,9 +94,11 @@ public abstract class NewObjectPrim extends UnaryExpressionNode implements ISpec
     ClassFactory factory = receiver.getInstanceFactory();
     if (factory.hasSlots()) {
       if (factory.hasOnlyImmutableFields()) {
-        return doClassWithOnlyImmutableFields(receiver, receiver.getInstanceFactory(), receiver.getInstanceFactory().getInstanceLayout());
+        return doClassWithOnlyImmutableFields(receiver, receiver.getInstanceFactory(),
+            receiver.getInstanceFactory().getInstanceLayout());
       } else {
-        return doClassWithFields(receiver, receiver.getInstanceFactory(), receiver.getInstanceFactory().getInstanceLayout());
+        return doClassWithFields(receiver, receiver.getInstanceFactory(),
+            receiver.getInstanceFactory().getInstanceLayout());
       }
     } else {
       return doClassWithoutFields(receiver, receiver.getInstanceFactory());

@@ -10,16 +10,16 @@ import som.vmobjects.SArray;
 import som.vmobjects.SArray.SMutableArray;
 import tools.dym.Tags.NewArray;
 
+
 public abstract class ArrayLiteralNode extends LiteralNode {
-  public static ArrayLiteralNode create(final ExpressionNode[] exprs, final SourceSection source) {
-    return new Uninit(exprs, source);
+  public static ArrayLiteralNode create(final ExpressionNode[] exprs,
+      final SourceSection source) {
+    return new Uninit(exprs).initialize(source);
   }
 
   @Children protected final ExpressionNode[] expressions;
 
-  protected ArrayLiteralNode(final ExpressionNode[] expressions, final SourceSection source) {
-    super(source);
-    assert source != null;
+  protected ArrayLiteralNode(final ExpressionNode[] expressions) {
     this.expressions = expressions;
   }
 
@@ -33,40 +33,44 @@ public abstract class ArrayLiteralNode extends LiteralNode {
   }
 
   private static final class Uninit extends ArrayLiteralNode {
-    private Uninit(final ExpressionNode[] expressions, final SourceSection source) {
-      super(expressions, source);
+    private Uninit(final ExpressionNode[] expressions) {
+      super(expressions);
     }
 
     @Override
     public Object executeGeneric(final VirtualFrame frame) {
-      Object storage = ArraySetAllStrategy.evaluateFirstDetermineStorageAndEvaluateRest(frame, expressions);
+      Object storage =
+          ArraySetAllStrategy.evaluateFirstDetermineStorageAndEvaluateRest(frame, expressions);
       SMutableArray arr = new SMutableArray(storage, Classes.arrayClass);
       specialize(arr);
       return arr;
     }
 
     private void specialize(final SMutableArray storage) {
+      LiteralNode node;
       if (storage.isBooleanType()) {
-        replace(new Booleans(expressions, sourceSection));
+        node = new Booleans(expressions);
       } else if (storage.isDoubleType()) {
-        replace(new Doubles(expressions, sourceSection));
+        node = new Doubles(expressions);
       } else if (storage.isEmptyType()) {
-        replace(new Empty(expressions, sourceSection));
+        node = new Empty(expressions);
       } else if (storage.isLongType()) {
-        replace(new Longs(expressions, sourceSection));
+        node = new Longs(expressions);
       } else {
         assert storage.isObjectType() : "Partially empty is not supported yet. Should be simple to add.";
-        replace(new Objects(expressions, sourceSection));
+        node = new Objects(expressions);
       }
+      replace(node.initialize(sourceSection));
     }
   }
 
   private abstract static class Specialized extends ArrayLiteralNode {
-    private Specialized(final ExpressionNode[] expressions, final SourceSection source) {
-      super(expressions, source);
+    private Specialized(final ExpressionNode[] expressions) {
+      super(expressions);
     }
 
     protected abstract Object executeSpecialized(VirtualFrame frame);
+
     protected abstract boolean expectedType(SMutableArray arr);
 
     @Override
@@ -74,15 +78,15 @@ public abstract class ArrayLiteralNode extends LiteralNode {
       Object storage = executeSpecialized(frame);
       SMutableArray result = new SMutableArray(storage, Classes.arrayClass);
       if (!expectedType(result)) {
-        replace(new Objects(expressions, sourceSection));
+        replace(new Objects(expressions).initialize(sourceSection));
       }
       return result;
     }
   }
 
   private static final class Booleans extends Specialized {
-    private Booleans(final ExpressionNode[] expressions, final SourceSection source) {
-      super(expressions, source);
+    private Booleans(final ExpressionNode[] expressions) {
+      super(expressions);
     }
 
     @Override
@@ -98,8 +102,8 @@ public abstract class ArrayLiteralNode extends LiteralNode {
   }
 
   private static final class Doubles extends Specialized {
-    private Doubles(final ExpressionNode[] expressions, final SourceSection source) {
-      super(expressions, source);
+    private Doubles(final ExpressionNode[] expressions) {
+      super(expressions);
     }
 
     @Override
@@ -115,8 +119,8 @@ public abstract class ArrayLiteralNode extends LiteralNode {
   }
 
   private static final class Longs extends Specialized {
-    private Longs(final ExpressionNode[] expressions, final SourceSection source) {
-      super(expressions, source);
+    private Longs(final ExpressionNode[] expressions) {
+      super(expressions);
     }
 
     @Override
@@ -132,8 +136,8 @@ public abstract class ArrayLiteralNode extends LiteralNode {
   }
 
   private static final class Empty extends Specialized {
-    private Empty(final ExpressionNode[] expressions, final SourceSection source) {
-      super(expressions, source);
+    private Empty(final ExpressionNode[] expressions) {
+      super(expressions);
     }
 
     @Override
@@ -149,8 +153,8 @@ public abstract class ArrayLiteralNode extends LiteralNode {
   }
 
   private static final class Objects extends Specialized {
-    private Objects(final ExpressionNode[] expressions, final SourceSection source) {
-      super(expressions, source);
+    private Objects(final ExpressionNode[] expressions) {
+      super(expressions);
     }
 
     @Override

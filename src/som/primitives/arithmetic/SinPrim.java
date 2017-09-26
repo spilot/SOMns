@@ -2,18 +2,15 @@ package som.primitives.arithmetic;
 
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.interpreter.nodes.nary.UnaryBasicOperation;
-import som.primitives.Primitive;
 import tools.dym.Tags.OpArithmetic;
 
 
 @GenerateNodeFactory
 @Primitive(primitive = "doubleSin:", selector = "sin", receiverType = Double.class)
 public abstract class SinPrim extends UnaryBasicOperation {
-  public SinPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
   @Override
   protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
     if (tag == OpArithmetic.class) { // TODO: is this good enough?

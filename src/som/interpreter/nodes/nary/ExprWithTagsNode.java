@@ -5,7 +5,6 @@ import com.oracle.truffle.api.instrumentation.InstrumentableFactory.WrapperNode;
 import com.oracle.truffle.api.instrumentation.StandardTags.RootTag;
 import com.oracle.truffle.api.instrumentation.StandardTags.StatementTag;
 import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.source.SourceSection;
 
 import som.interpreter.nodes.ExpressionNode;
 import som.vm.NotYetImplementedException;
@@ -13,6 +12,7 @@ import tools.dym.Tags.ControlFlowCondition;
 import tools.dym.Tags.LoopBody;
 import tools.dym.Tags.PrimitiveArgument;
 import tools.dym.Tags.VirtualInvokeReceiver;
+
 
 public abstract class ExprWithTagsNode extends ExpressionNode {
 
@@ -49,14 +49,6 @@ public abstract class ExprWithTagsNode extends ExpressionNode {
    * Indicate that this node is the first/root node of a statement.
    */
   private static final byte STATEMENT = 1 << 5;
-
-  public ExprWithTagsNode(final SourceSection sourceSection) {
-    super(sourceSection);
-  }
-
-  public ExprWithTagsNode(final ExpressionNode wrappedNode) {
-    super(wrappedNode);
-  }
 
   private boolean isTagged(final byte mask) {
     return (tagMark & mask) != 0;
@@ -122,13 +114,15 @@ public abstract class ExprWithTagsNode extends ExpressionNode {
 
   @Override
   protected void onReplace(final Node newNode, final CharSequence reason) {
-    if (newNode instanceof WrapperNode) { return; }
+    if (newNode instanceof WrapperNode) {
+      return;
+    }
 
     if (newNode instanceof ExprWithTagsNode) {
       ExprWithTagsNode n = (ExprWithTagsNode) newNode;
       n.tagMark = tagMark;
-    } else if (newNode instanceof EagerPrimitive) {
-      ((EagerPrimitive) newNode).setTags(tagMark);
+    } else if (newNode instanceof EagerPrimitiveNode) {
+      ((EagerPrimitiveNode) newNode).setTags(tagMark);
     } else {
       throw new NotYetImplementedException();
     }

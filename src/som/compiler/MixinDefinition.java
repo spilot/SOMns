@@ -20,12 +20,13 @@ import com.sun.istack.internal.Nullable;
 
 import som.VM;
 import som.compiler.MixinBuilder.MixinDefinitionId;
+import som.interpreter.LexicalScope.MethodScope;
 import som.interpreter.LexicalScope.MixinScope;
 import som.interpreter.Method;
 import som.interpreter.SNodeFactory;
 import som.interpreter.SomLanguage;
-import som.interpreter.nodes.ClassInstantiationNode;
 import som.interpreter.nodes.ExpressionNode;
+import som.interpreter.nodes.InstantiationNode.ClassInstantiationNode;
 import som.interpreter.nodes.dispatch.AbstractDispatchNode;
 import som.interpreter.nodes.dispatch.CachedSlotRead;
 import som.interpreter.nodes.dispatch.CachedSlotRead.SlotAccess;
@@ -61,32 +62,30 @@ import tools.SourceCoordinate;
  */
 public final class MixinDefinition {
   private final SSymbol       name;
-  @SuppressWarnings("unused")
   private final SourceSection nameSection;
 
-  private final SSymbol       primaryFactoryName;
+  private final SSymbol              primaryFactoryName;
   private final List<ExpressionNode> initializerBody;
-  private final MethodBuilder initializerBuilder;
-  private final SourceSection initializerSource;
+  private final MethodBuilder        initializerBuilder;
+  private final SourceSection        initializerSource;
 
-  private final Method        superclassMixinResolution;
+  private final Method superclassMixinResolution;
 
   private final HashMap<SSymbol, SlotDefinition> slots;
-  private final HashMap<SSymbol, Dispatchable> instanceDispatchables;
-  private final HashMap<SSymbol, SInvokable> factoryMethods;
+  private final HashMap<SSymbol, Dispatchable>   instanceDispatchables;
+  private final HashMap<SSymbol, SInvokable>     factoryMethods;
 
-  private final SourceSection sourceSection;
+  private final SourceSection     sourceSection;
   private final MixinDefinitionId mixinId;
-  private final MixinScope     instanceScope;
-  private final MixinScope     classScope;
-  private final AccessModifier accessModifier;
+  private final MixinScope        instanceScope;
+  private final MixinScope        classScope;
+  private final AccessModifier    accessModifier;
 
   private final boolean allSlotsAreImmutable;
   private final boolean outerScopeIsImmutable;
   private final boolean isModule;
 
-  @Nullable
-  private final LinkedHashMap<SSymbol, MixinDefinition> nestedMixinDefinitions;
+  @Nullable private final LinkedHashMap<SSymbol, MixinDefinition> nestedMixinDefinitions;
 
   public MixinDefinition(final SSymbol name, final SourceSection nameSection,
       final SSymbol primaryFactoryName,
@@ -96,7 +95,7 @@ public final class MixinDefinition {
       final Method superclassMixinResolution,
       final HashMap<SSymbol, SlotDefinition> slots,
       final HashMap<SSymbol, Dispatchable> instanceDispatchables,
-      final HashMap<SSymbol, SInvokable>   factoryMethods,
+      final HashMap<SSymbol, SInvokable> factoryMethods,
       final LinkedHashMap<SSymbol, MixinDefinition> nestedMixinDefinitions,
       final MixinDefinitionId mixinId, final AccessModifier accessModifier,
       final MixinScope instanceScope, final MixinScope classScope,
@@ -107,30 +106,37 @@ public final class MixinDefinition {
     this.nameSection = nameSection;
 
     this.primaryFactoryName = primaryFactoryName;
-    this.initializerBody    = initializerBody;
+    this.initializerBody = initializerBody;
     this.initializerBuilder = initializerBuilder;
-    this.initializerSource  = initializerSource;
+    this.initializerSource = initializerSource;
 
     this.superclassMixinResolution = superclassMixinResolution;
 
     this.instanceDispatchables = instanceDispatchables;
-    this.factoryMethods  = factoryMethods;
+    this.factoryMethods = factoryMethods;
     this.nestedMixinDefinitions = nestedMixinDefinitions;
 
-    this.sourceSection   = sourceSection;
-    this.mixinId         = mixinId;
-    this.accessModifier  = accessModifier;
-    this.instanceScope   = instanceScope;
-    this.classScope      = classScope;
-    this.slots           = slots;
+    this.sourceSection = sourceSection;
+    this.mixinId = mixinId;
+    this.accessModifier = accessModifier;
+    this.instanceScope = instanceScope;
+    this.classScope = classScope;
+    this.slots = slots;
 
-    this.allSlotsAreImmutable  = allSlotsAreImmutable;
+    this.allSlotsAreImmutable = allSlotsAreImmutable;
     this.outerScopeIsImmutable = outerScopeIsImmutable;
     this.isModule = isModule;
   }
 
   public SSymbol getName() {
     return name;
+  }
+
+  /**
+   * Used by the SOMns Language Server.
+   */
+  public MixinDefinition getOuterMixinDefinition() {
+    return instanceScope.getOuterMixin().getMixinDefinition();
   }
 
   public SSymbol getPrimaryFactorySelector() {
@@ -141,19 +147,16 @@ public final class MixinDefinition {
     return isModule;
   }
 
-  public MixinDefinition getOuter() {
-    assert instanceScope.getOuter() == classScope.getOuter() : "Inconsistent outer scope?";
-    return instanceScope.getOuter();
-  }
-
   // TODO: does this really have to be an invokable?
-  //       could it just be the AST, that is than directly used in
-  //       the ClassSlotAccessNode?
+  // could it just be the AST, that is than directly used in
+  // the ClassSlotAccessNode?
   public Method getSuperclassAndMixinResolutionInvokable() {
     return superclassMixinResolution;
   }
 
-  public MixinDefinitionId getMixinId() { return mixinId; }
+  public MixinDefinitionId getMixinId() {
+    return mixinId;
+  }
 
   public void initializeClass(final SClass result,
       final Object superclassAndMixins) {
@@ -163,7 +166,8 @@ public final class MixinDefinition {
   public void initializeClass(final SClass result,
       final Object superclassAndMixins, final boolean isTheValueClass,
       final boolean isTheTransferObjectClass, final boolean isTheArrayClass) {
-    VM.callerNeedsToBeOptimized("This is supposed to result in a cacheable object, and thus is only the fallback case.");
+    VM.callerNeedsToBeOptimized(
+        "This is supposed to result in a cacheable object, and thus is only the fallback case.");
     ClassFactory factory = createClassFactory(superclassAndMixins,
         isTheValueClass, isTheTransferObjectClass, isTheArrayClass);
     if (result.getSOMClass() != null) {
@@ -175,7 +179,8 @@ public final class MixinDefinition {
 
   // TODO: do we need to specialize this guard?
   @ExplodeLoop
-  public static boolean sameSuperAndMixins(final Object superclassAndMixins, final Object cached) {
+  public static boolean sameSuperAndMixins(final Object superclassAndMixins,
+      final Object cached) {
     if (cached.getClass() != Object[].class) {
       assert cached instanceof SClass;
       assert superclassAndMixins instanceof SClass;
@@ -209,7 +214,8 @@ public final class MixinDefinition {
   }
 
   protected static boolean sameClassConstruction(final Object a, final Object b) {
-    VM.callerNeedsToBeOptimized("This is recursive, and probably should be specialized to be compilable");
+    VM.callerNeedsToBeOptimized(
+        "This is recursive, and probably should be specialized to be compilable");
     if (a == b) {
       return true;
     }
@@ -253,7 +259,8 @@ public final class MixinDefinition {
       final boolean isTheValueClass, final boolean isTheTransferObjectClass,
       final boolean isTheArrayClass) {
     CompilerAsserts.neverPartOfCompilation();
-    VM.callerNeedsToBeOptimized("This is supposed to result in a cacheable object, and thus is only the fallback case.");
+    VM.callerNeedsToBeOptimized(
+        "This is supposed to result in a cacheable object, and thus is only the fallback case.");
 
     ClassFactory cached = getCached(superclassAndMixins);
     if (cached != null) {
@@ -265,11 +272,11 @@ public final class MixinDefinition {
     SClass[] mixins;
     if (superclassAndMixins == null || superclassAndMixins instanceof SClass) {
       superClass = (SClass) superclassAndMixins;
-      mixins     = new SClass[] {superClass};
+      mixins = new SClass[] {superClass};
     } else {
-      mixins     = Arrays.copyOf((Object[]) superclassAndMixins,
-                                 ((Object[]) superclassAndMixins).length,
-                                 SClass[].class);
+      mixins = Arrays.copyOf((Object[]) superclassAndMixins,
+          ((Object[]) superclassAndMixins).length,
+          SClass[].class);
       superClass = mixins[0];
 
       assert mixins.length > 1;
@@ -376,18 +383,22 @@ public final class MixinDefinition {
   }
 
   private boolean checkAndConfirmIsValue(final SClass superClass,
-      final boolean mixinsIncludeValue, final boolean isValueClass, final boolean hasOnlyImmutableFields) {
-    boolean superIsValue    = superClass == null ? false : superClass.declaredAsValue();
+      final boolean mixinsIncludeValue, final boolean isValueClass,
+      final boolean hasOnlyImmutableFields) {
+    boolean superIsValue = superClass == null ? false : superClass.declaredAsValue();
     boolean declaredAsValue = superIsValue || mixinsIncludeValue || isValueClass;
 
     if (declaredAsValue && !allSlotsAreImmutable) {
-      reportErrorAndExit(": The class ", " is declared as value, but also declared mutable slots");
+      reportErrorAndExit(": The class ",
+          " is declared as value, but also declared mutable slots");
     }
     if (declaredAsValue && !hasOnlyImmutableFields) {
-      reportErrorAndExit(": The class ", " is declared as Value, but superclass or mixins have mutable slots.");
+      reportErrorAndExit(": The class ",
+          " is declared as Value, but superclass or mixins have mutable slots.");
     }
     if (declaredAsValue && !outerScopeIsImmutable) {
-      reportErrorAndExit(": The class ", " cannot be a Value, because its enclosing object has mutable fields.");
+      reportErrorAndExit(": The class ",
+          " cannot be a Value, because its enclosing object has mutable fields.");
     }
 
     return declaredAsValue && allSlotsAreImmutable && outerScopeIsImmutable &&
@@ -396,8 +407,9 @@ public final class MixinDefinition {
 
   private boolean checkIsTransferObject(final SClass superClass,
       final boolean mixinsIncludeTransferObject, final boolean isTransferObjectClass) {
-    boolean superIsValue    = superClass == null ? false : superClass.isTransferObject();
-    boolean declaredAsValue = superIsValue || mixinsIncludeTransferObject || isTransferObjectClass;
+    boolean superIsValue = superClass == null ? false : superClass.isTransferObject();
+    boolean declaredAsValue =
+        superIsValue || mixinsIncludeTransferObject || isTransferObjectClass;
 
     return declaredAsValue;
   }
@@ -409,14 +421,16 @@ public final class MixinDefinition {
 
   @TruffleBoundary
   private void reportErrorAndExit(final String msgPart1, final String msgPart2) {
-    String line = sourceSection.getSource().getName() + SourceCoordinate.getLocationQualifier(sourceSection);
-    initializerBuilder.getLanguage().getVM().errorExit(line + msgPart1 + name.getString() + msgPart2);
+    String line = sourceSection.getSource().getName()
+        + SourceCoordinate.getLocationQualifier(sourceSection);
+    initializerBuilder.getLanguage().getVM()
+                      .errorExit(line + msgPart1 + name.getString() + msgPart2);
   }
 
   private SInitializer assembleMixinInitializer(final int mixinId) {
     ExpressionNode body;
     if (initializerBody == null) {
-      body = new NilLiteralNode(initializerSource);
+      body = new NilLiteralNode().initialize(initializerSource);
     } else {
       body = SNodeFactory.createSequence(initializerBody, initializerSource);
     }
@@ -428,10 +442,14 @@ public final class MixinDefinition {
 
   private void addSlots(final HashSet<SlotDefinition> instanceSlots,
       final SClass clazz) {
-    if (clazz == null) { return; }
+    if (clazz == null) {
+      return;
+    }
 
     HashSet<SlotDefinition> slots = clazz.getInstanceSlots();
-    if (slots == null) { return; }
+    if (slots == null) {
+      return;
+    }
 
     instanceSlots.addAll(slots);
   }
@@ -445,7 +463,8 @@ public final class MixinDefinition {
   }
 
   public SClass instantiateModuleClass() {
-    VM.callerNeedsToBeOptimized("only meant for code loading, which is supposed to be on the slowpath");
+    VM.callerNeedsToBeOptimized(
+        "only meant for code loading, which is supposed to be on the slowpath");
     CallTarget callTarget = superclassMixinResolution.createCallTarget();
     SClass superClass = (SClass) callTarget.call(Nil.nilObject);
     SClass classObject = instantiateClass(Nil.nilObject, superClass);
@@ -460,24 +479,23 @@ public final class MixinDefinition {
   }
 
   // TODO: need to rename this, it doesn't really fulfill this role anymore
-  //       should split out the definition, and the accessor related stuff
-  //       perhaps move some of the responsibilities to SlotAccessNode???
+  // should split out the definition, and the accessor related stuff
+  // perhaps move some of the responsibilities to SlotAccessNode???
   public static class SlotDefinition implements Dispatchable {
-    private final SSymbol name;
+    private final SSymbol          name;
     protected final AccessModifier modifier;
-    private final boolean immutable;
-    protected final SourceSection source;
+    private final boolean          immutable;
+    protected final SourceSection  source;
 
-    @CompilationFinal
-    protected CallTarget genericAccessTarget;
+    @CompilationFinal protected CallTarget genericAccessTarget;
 
     public SlotDefinition(final SSymbol name,
         final AccessModifier acccessModifier, final boolean immutable,
         final SourceSection source) {
-      this.name      = name;
-      this.modifier  = acccessModifier;
+      this.name = name;
+      this.modifier = acccessModifier;
       this.immutable = immutable;
-      this.source    = source;
+      this.source = source;
     }
 
     public final SSymbol getName() {
@@ -513,7 +531,8 @@ public final class MixinDefinition {
       StorageLocation loc = rcvr.getObjectLayout().getStorageLocation(this);
       boolean isSet = loc.isSet(rcvr);
 
-      CachedSlotRead read = createNode(loc, DispatchGuard.createSObjectCheck(rcvr), next, isSet);
+      CachedSlotRead read =
+          createNode(loc, DispatchGuard.createSObjectCheck(rcvr), next, isSet);
 
       if (forAtomic && rcvr instanceof SMutableObject &&
           getAccessType() == SlotAccess.FIELD_READ) {
@@ -536,7 +555,8 @@ public final class MixinDefinition {
 
     @Override
     public Object invoke(final IndirectCallNode call, final Object[] arguments) {
-      VM.callerNeedsToBeOptimized("call without proper call cache. Find better way if this is performance critical.");
+      VM.callerNeedsToBeOptimized(
+          "call without proper call cache. Find better way if this is performance critical.");
       assert arguments.length == 1;
       SObject rcvr = (SObject) arguments[0];
       return rcvr.readSlot(this);
@@ -580,7 +600,8 @@ public final class MixinDefinition {
       SObject rcvr = (SObject) receiver;
       StorageLocation loc = rcvr.getObjectLayout().getStorageLocation(mainSlot);
       boolean isSet = loc.isSet(rcvr);
-      CachedSlotWrite write = loc.getWriteNode(mainSlot, DispatchGuard.createSObjectCheck(rcvr), next, isSet);
+      CachedSlotWrite write =
+          loc.getWriteNode(mainSlot, DispatchGuard.createSObjectCheck(rcvr), next, isSet);
 
       if (forAtomic) {
         return new CachedTxSlotWrite(write,
@@ -592,7 +613,8 @@ public final class MixinDefinition {
 
     @Override
     public Object invoke(final IndirectCallNode call, final Object[] arguments) {
-      VM.callerNeedsToBeOptimized("call without proper call cache. Find better way if this is performance critical.");
+      VM.callerNeedsToBeOptimized(
+          "call without proper call cache. Find better way if this is performance critical.");
       SObject rcvr = (SObject) arguments[0];
       rcvr.writeSlot(this, arguments[1]);
       return rcvr;
@@ -648,8 +670,8 @@ public final class MixinDefinition {
           return result;
         }
         // ok, now it is for sure not initialized yet, instantiate class
-        Object superclassAndMixins = mixinDefinition.
-            getSuperclassAndMixinResolutionInvokable().createCallTarget().call(rcvr);
+        Object superclassAndMixins = mixinDefinition.getSuperclassAndMixinResolutionInvokable()
+                                                    .createCallTarget().call(rcvr);
         SClass clazz = mixinDefinition.instantiateClass(rcvr, superclassAndMixins);
         rcvr.writeSlot(this, clazz);
         return clazz;
@@ -690,8 +712,8 @@ public final class MixinDefinition {
     MethodBuilder builder = new MethodBuilder(true, initializerBuilder.getLanguage());
     builder.setSignature(init);
     builder.addArgument("self",
-        SomLanguage.getSyntheticSource("self read", "super-class-resolution").
-        createSection(1));
+        SomLanguage.getSyntheticSource("self read", "super-class-resolution")
+                   .createSection(1));
 
     Source source = SomLanguage.getSyntheticSource("self", "Thing>>" + init.getString());
     SourceSection ss = source.createSection(0, 4);
@@ -714,5 +736,66 @@ public final class MixinDefinition {
   @Override
   public String toString() {
     return name.getString() + "[" + sourceSection + "]";
+  }
+
+  private MixinDefinition cloneForSplitting(final MixinScope adaptedInstanceScope,
+      final MixinScope adaptedClassScope) {
+    return new MixinDefinition(name, nameSection, primaryFactoryName,
+        new ArrayList<ExpressionNode>(initializerBody), initializerBuilder, initializerSource,
+        superclassMixinResolution,
+        slots,
+        new HashMap<SSymbol, Dispatchable>(instanceDispatchables),
+        new HashMap<SSymbol, SInvokable>(factoryMethods),
+        nestedMixinDefinitions, mixinId, accessModifier,
+        adaptedInstanceScope, adaptedClassScope,
+        allSlotsAreImmutable, outerScopeIsImmutable,
+        isModule, sourceSection);
+  }
+
+  private SInvokable adaptInvokable(final SInvokable invokable, final MethodScope scope,
+      final int appliesTo) {
+    Method originalInvokable = (Method) invokable.getInvokable();
+    MethodScope adaptedScope = originalInvokable.getLexicalScope().split(scope);
+    Method adaptedInvokable = originalInvokable.cloneAndAdaptAfterScopeChange(
+        adaptedScope, appliesTo + 1, false, true);
+    return new SInvokable(invokable.getSignature(), invokable.getAccessModifier(),
+        adaptedInvokable, invokable.getEmbeddedBlocks());
+  }
+
+  private void adaptFactoryMethods(final MethodScope scope, final int appliesTo) {
+    for (SSymbol key : factoryMethods.keySet()) {
+      SInvokable invokable = factoryMethods.get(key);
+      SInvokable adaptedIvk = adaptInvokable(invokable, scope, appliesTo);
+      factoryMethods.put(key, adaptedIvk);
+    }
+  }
+
+  private void adaptInvokableDispatchables(final MethodScope scope, final int appliesTo) {
+    for (SSymbol key : instanceDispatchables.keySet()) {
+      Dispatchable dispatchable = instanceDispatchables.get(key);
+
+      // Only need to adapt SInvokable, don't need to adapt slot definitions
+      if (dispatchable instanceof SInvokable) {
+        SInvokable invokable = (SInvokable) instanceDispatchables.get(key);
+        SInvokable adaptedInvokable = adaptInvokable(invokable, scope, appliesTo);
+        instanceDispatchables.put(key, adaptedInvokable);
+      }
+    }
+  }
+
+  public MixinDefinition cloneAndAdaptAfterScopeChange(final MethodScope adaptedScope,
+      final int appliesTo) {
+    MixinScope adaptedInstanceScope =
+        new MixinScope(instanceScope.getOuterMixin(), adaptedScope);
+    MixinScope adaptedClassScope = new MixinScope(classScope.getOuterMixin(), adaptedScope);
+
+    MixinDefinition clone = cloneForSplitting(adaptedInstanceScope, adaptedClassScope);
+
+    adaptedInstanceScope.setMixinDefinition(clone, false);
+    adaptedClassScope.setMixinDefinition(clone, true);
+
+    clone.adaptFactoryMethods(adaptedScope, appliesTo);
+    clone.adaptInvokableDispatchables(adaptedScope, appliesTo);
+    return clone;
   }
 }

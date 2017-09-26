@@ -9,22 +9,22 @@ import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.VM;
 import som.compiler.AccessModifier;
 import som.compiler.MixinBuilder.MixinDefinitionId;
 import som.interpreter.SomLanguage;
 import som.interpreter.actors.SuspendExecutionNodeGen;
-import som.interpreter.nodes.nary.BinaryComplexOperation;
+import som.interpreter.nodes.nary.BinaryComplexOperation.BinarySystemOperation;
 import som.interpreter.nodes.nary.TernaryExpressionNode;
 import som.interpreter.nodes.nary.UnaryExpressionNode;
+import som.interpreter.nodes.nary.UnaryExpressionNode.UnarySystemOperation;
 import som.interpreter.objectstorage.ObjectTransitionSafepoint;
 import som.interpreter.processes.SChannel;
 import som.interpreter.processes.SChannel.SChannelInput;
 import som.interpreter.processes.SChannel.SChannelOutput;
 import som.primitives.ObjectPrims.IsValue;
-import som.primitives.Primitive;
 import som.vm.Activity;
 import som.vm.Symbols;
 import som.vm.VmSettings;
@@ -57,9 +57,12 @@ public abstract class ChannelPrimitives {
   @CompilationFinal public static MixinDefinitionId OutId;
 
   public static void resetClassReferences() {
-    Channel = null; ChannelId = null;
-    In      = null; InId      = null;
-    Out     = null; OutId     = null;
+    Channel = null;
+    ChannelId = null;
+    In = null;
+    InId = null;
+    Out = null;
+    OutId = null;
   }
 
   public static final class ProcessThreadFactory implements ForkJoinWorkerThreadFactory {
@@ -72,7 +75,9 @@ public abstract class ChannelPrimitives {
   public static final class ProcessThread extends TracingActivityThread {
     private Process current;
 
-    ProcessThread(final ForkJoinPool pool) { super(pool); }
+    ProcessThread(final ForkJoinPool pool) {
+      super(pool);
+    }
 
     @Override
     public Activity getActivity() {
@@ -88,9 +93,11 @@ public abstract class ChannelPrimitives {
     }
 
     @Override
-    public ActivityType getType() { return ActivityType.PROCESS; }
+    public ActivityType getType() {
+      return ActivityType.PROCESS;
+    }
 
-    protected void beforeExec(final SInvokable disp) { }
+    protected void beforeExec(final SInvokable disp) {}
 
     @Override
     public void run() {
@@ -123,16 +130,16 @@ public abstract class ChannelPrimitives {
     public void setStepToNextTurn(final boolean val) {
       throw new UnsupportedOperationException(
           "Step to next turn is not supported " +
-          "for processes. This code should never be reached.");
+              "for processes. This code should never be reached.");
     }
   }
 
   public static class TracingProcess extends Process {
     protected final long processId;
-    private int nextTraceBufferId;
+    private int          nextTraceBufferId;
 
     private final boolean stopOnRootNode;
-    private boolean stopOnJoin;
+    private boolean       stopOnJoin;
 
     public TracingProcess(final SObjectWithClass obj, final boolean stopOnRootNode) {
       super(obj);
@@ -168,36 +175,41 @@ public abstract class ChannelPrimitives {
     }
 
     @Override
-    public long getId() { return processId; }
+    public long getId() {
+      return processId;
+    }
 
     @Override
-    public void setStepToJoin(final boolean val) { stopOnJoin = val; }
+    public void setStepToJoin(final boolean val) {
+      stopOnJoin = val;
+    }
   }
 
   @Primitive(primitive = "procOut:")
   @GenerateNodeFactory
   public abstract static class OutPrim extends UnaryExpressionNode {
-    public OutPrim(final boolean eagerlyWrapped, final SourceSection source) { super(eagerlyWrapped, source); }
-
     @Specialization
     public static final SChannelOutput getOut(final SChannel channel) {
       return channel.out;
     }
   }
 
-  @Primitive(primitive = "procRead:", selector = "read", requiresContext = true)
+  @Primitive(primitive = "procRead:", selector = "read")
   @GenerateNodeFactory
-  public abstract static class ReadPrim extends UnaryExpressionNode {
+  public abstract static class ReadPrim extends UnarySystemOperation {
     /** Halt execution when triggered by breakpoint on write end. */
     @Child protected UnaryExpressionNode haltNode;
 
     /** Breakpoint info for triggering suspension after write. */
     @Child protected AbstractBreakpointNode afterWrite;
 
-    public ReadPrim(final boolean eagerlyWrapped, final SourceSection source, final VM vm) {
-      super(eagerlyWrapped, source);
-      haltNode = SuspendExecutionNodeGen.create(false, sourceSection, null);
-      afterWrite = insert(Breakpoints.create(source, BreakpointType.CHANNEL_AFTER_SEND, vm));
+    @Override
+    public final ReadPrim initialize(final VM vm) {
+      super.initialize(vm);
+      haltNode = SuspendExecutionNodeGen.create(0, null).initialize(sourceSection);
+      afterWrite = insert(
+          Breakpoints.create(sourceSection, BreakpointType.CHANNEL_AFTER_SEND, vm));
+      return this;
     }
 
     @Specialization
@@ -224,10 +236,10 @@ public abstract class ChannelPrimitives {
     }
   }
 
-  @Primitive(primitive = "procWrite:val:", selector = "write:", requiresContext = true)
+  @Primitive(primitive = "procWrite:val:", selector = "write:")
   @GenerateNodeFactory
-  public abstract static class WritePrim extends BinaryComplexOperation {
-    @Child protected IsValue isVal;
+  public abstract static class WritePrim extends BinarySystemOperation {
+    @Child protected IsValue isVal = IsValue.createSubNode();
 
     /** Halt execution when triggered by breakpoint on write end. */
     @Child protected UnaryExpressionNode haltNode;
@@ -235,11 +247,13 @@ public abstract class ChannelPrimitives {
     /** Breakpoint info for triggering suspension after read. */
     @Child protected AbstractBreakpointNode afterRead;
 
-    public WritePrim(final boolean eagerlyWrapped, final SourceSection source, final VM vm) {
-      super(eagerlyWrapped, source);
-      isVal     = IsValue.createSubNode();
-      haltNode  = SuspendExecutionNodeGen.create(false, sourceSection, null);
-      afterRead = insert(Breakpoints.create(source, BreakpointType.CHANNEL_AFTER_RCV, vm));
+    @Override
+    public final WritePrim initialize(final VM vm) {
+      super.initialize(vm);
+      haltNode = SuspendExecutionNodeGen.create(0, null).initialize(sourceSection);
+      afterRead = insert(
+          Breakpoints.create(sourceSection, BreakpointType.CHANNEL_AFTER_RCV, vm));
+      return this;
     }
 
     @Specialization
@@ -273,8 +287,6 @@ public abstract class ChannelPrimitives {
   @Primitive(primitive = "procIn:")
   @GenerateNodeFactory
   public abstract static class InPrim extends UnaryExpressionNode {
-    public InPrim(final boolean eagerlyWrapped, final SourceSection source) { super(eagerlyWrapped, source); }
-
     @Specialization
     public static final SChannelInput getInt(final SChannel channel) {
       return channel.in;
@@ -284,8 +296,6 @@ public abstract class ChannelPrimitives {
   @Primitive(primitive = "procChannelNew:")
   @GenerateNodeFactory
   public abstract static class ChannelNewPrim extends UnaryExpressionNode {
-    public ChannelNewPrim(final boolean eagerlyWrapped, final SourceSection source) { super(eagerlyWrapped, source); }
-
     @Specialization
     public final SChannel newChannel(final Object module) {
       SChannel result = SChannel.create();
@@ -301,16 +311,14 @@ public abstract class ChannelPrimitives {
   @Primitive(primitive = "procClassChannel:in:out:")
   @GenerateNodeFactory
   public abstract static class SetChannelClasses extends TernaryExpressionNode {
-    public SetChannelClasses(final boolean eagerlyWrapped, final SourceSection source) { super(eagerlyWrapped, source); }
-
     @Specialization
     public static final Object set(final SClass channel, final SClass in, final SClass out) {
-      Channel   = channel;
+      Channel = channel;
       ChannelId = channel.getMixinDefinition().getMixinId();
-      In        = in;
-      InId      = in.getMixinDefinition().getMixinId();
-      Out       = out;
-      OutId     = out.getMixinDefinition().getMixinId();
+      In = in;
+      InId = in.getMixinDefinition().getMixinId();
+      Out = out;
+      OutId = out.getMixinDefinition().getMixinId();
       return channel;
     }
   }
@@ -318,8 +326,6 @@ public abstract class ChannelPrimitives {
   @Primitive(primitive = "procModule:")
   @GenerateNodeFactory
   public abstract static class SetChannelModule extends UnaryExpressionNode {
-    public SetChannelModule(final boolean eagerlyWrapped, final SourceSection source) { super(eagerlyWrapped, source); }
-
     @Specialization
     public static final SImmutableObject setModule(final SImmutableObject module) {
       ProcessesModule = module;

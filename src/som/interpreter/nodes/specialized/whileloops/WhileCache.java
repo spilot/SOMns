@@ -4,7 +4,6 @@ import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.CompilerDirectives;
 import com.oracle.truffle.api.dsl.Cached;
 import com.oracle.truffle.api.dsl.Specialization;
-import com.oracle.truffle.api.source.SourceSection;
 
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.nary.BinaryComplexOperation;
@@ -21,8 +20,7 @@ public abstract class WhileCache extends BinaryComplexOperation {
 
   protected final boolean predicateBool;
 
-  public WhileCache(final SourceSection source, final boolean predicateBool) {
-    super(false, source);
+  public WhileCache(final boolean predicateBool) {
     this.predicateBool = predicateBool;
   }
 
@@ -37,12 +35,11 @@ public abstract class WhileCache extends BinaryComplexOperation {
 
   @Specialization(limit = "INLINE_CACHE_SIZE",
       guards = {"loopCondition.getMethod() == cachedLoopCondition",
-                "loopBody.getMethod() == cachedLoopBody"})
+          "loopBody.getMethod() == cachedLoopBody"})
   public final Object doCached(final SBlock loopCondition, final SBlock loopBody,
       @Cached("loopCondition.getMethod()") final SInvokable cachedLoopCondition,
-      @Cached("loopBody.getMethod()") final      SInvokable cachedLoopBody,
-      @Cached("create(loopCondition, loopBody, predicateBool)") final
-         WhileWithDynamicBlocksNode whileNode) {
+      @Cached("loopBody.getMethod()") final SInvokable cachedLoopBody,
+      @Cached("create(loopCondition, loopBody, predicateBool)") final WhileWithDynamicBlocksNode whileNode) {
     return whileNode.doWhileUnconditionally(loopCondition, loopBody);
   }
 
@@ -56,7 +53,9 @@ public abstract class WhileCache extends BinaryComplexOperation {
 
   @Specialization(replaces = "doCached")
   public final Object doUncached(final SBlock loopCondition, final SBlock loopBody) {
-    CompilerAsserts.neverPartOfCompilation("WhileCache.GenericDispatch"); // no caching, direct invokes, no loop count reporting...
+    CompilerAsserts.neverPartOfCompilation("WhileCache.GenericDispatch"); // no caching, direct
+                                                                          // invokes, no loop
+                                                                          // count reporting...
 
     Object conditionResult = loopCondition.getMethod().invoke(new Object[] {loopCondition});
 
