@@ -15,6 +15,8 @@ import som.interpreter.InliningVisitor;
 import som.interpreter.nodes.literals.IntegerLiteralNode;
 import som.interpreter.nodes.nary.EagerBinaryPrimitiveNode;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
+import som.interpreter.nodes.superinstructions.IncrementOperationNode;
+import som.interpreter.nodes.superinstructions.IncrementOperationNodeGen;
 import som.primitives.arithmetic.AdditionPrim;
 import som.vm.constants.Nil;
 import tools.debugger.Tags.LocalVariableTag;
@@ -28,7 +30,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
   protected final FrameSlot slot;
   protected final Local     var;
 
-  private LocalVariableNode(final Local var) {
+  protected LocalVariableNode(final Local var) {
     this.slot = var.getSlot();
     this.var = var;
   }
@@ -151,7 +153,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       if(isIncrement) {
         // TODO: This could be optimized
         long increment = ((IntegerLiteralNode)NodeUtil.findNodeChildren(getExp()).get(1)).getValue();
-        IncrementOperationNode newNode = LocalVariableNodeFactory.IncrementOperationNodeGen.create(var,
+        IncrementOperationNode newNode = IncrementOperationNodeGen.create(var,
                 increment,
                 this).initialize(getSourceSection());
         replace(newNode);
@@ -248,78 +250,6 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
     @Override
     public void replaceAfterScopeChange(final InliningVisitor inliner) {
       inliner.updateWrite(var, this, getExp(), 0);
-    }
-  }
-
-  public abstract static class IncrementOperationNode extends LocalVariableNode {
-    private final long increment;
-    private final LocalVariableNode originalSubtree;
-
-    public IncrementOperationNode(final Local variable,
-                                  final long increment,
-                                  final LocalVariableNode originalSubtree) {
-      super(variable);
-      this.increment = increment;
-      this.originalSubtree = originalSubtree;
-    }
-
-    public IncrementOperationNode(final IncrementOperationNode node) {
-      super(node.var);
-      this.increment = node.getIncrement();
-      this.originalSubtree = node.getOriginalSubtree();
-    }
-
-    public long getIncrement() {
-      return increment;
-    }
-
-    @Specialization(guards = "isLongKind(frame)", rewriteOn = {FrameSlotTypeException.class})
-    public final long writeLong(final VirtualFrame frame) throws FrameSlotTypeException {
-      long newValue = frame.getLong(slot) + increment;
-      frame.setLong(slot, newValue);
-      return newValue;
-    }
-
-    @Specialization(replaces = {"writeLong"})
-    public final Object writeGeneric(final VirtualFrame frame) {
-      Object result = originalSubtree.executeGeneric(frame);
-      replace(originalSubtree);
-      return result;
-    }
-
-    protected final boolean isLongKind(final VirtualFrame frame) { // uses frame to make sure guard is not converted to assertion
-      if (slot.getKind() == FrameSlotKind.Long) {
-        return true;
-      }
-      if (slot.getKind() == FrameSlotKind.Illegal) {
-        slot.setKind(FrameSlotKind.Long);
-        return true;
-      }
-      return false;
-    }
-
-    @Override
-    protected final boolean isTaggedWith(final Class<?> tag) {
-      if (tag == LocalVarWrite.class) {
-        return true;
-      } else {
-        return super.isTaggedWith(tag);
-      }
-    }
-
-    @Override
-    public String toString() {
-      return this.getClass().getSimpleName() + "[" + var.name + "]";
-    }
-
-    @Override
-    public void replaceAfterScopeChange(final InliningVisitor inliner) {
-      //inliner.updateWrite(var, this, getExp(), 0);
-      throw new RuntimeException("replaceAfterScopeChange: TODO!");
-    }
-
-    public LocalVariableNode getOriginalSubtree() {
-      return originalSubtree;
     }
   }
 }
