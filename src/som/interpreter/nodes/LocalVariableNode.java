@@ -136,8 +136,10 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       return expValue;
     }
 
-    @Specialization(guards = "isIncrementOperation(getExp(), var)")
-    public final long writeLongAndInsertSuperinstruction(final VirtualFrame frame, final long expValue) {
+    @Specialization(guards = "isIncrement")
+    public final long writeLongAndInsertSuperinstruction(final VirtualFrame frame,
+                         final long expValue,
+                         final @Cached("isIncrementOperation(getExp(), var)") boolean isIncrement) {
       frame.setLong(slot, expValue);
       IncrementOperationNode.replaceNode(this);
       return expValue;
