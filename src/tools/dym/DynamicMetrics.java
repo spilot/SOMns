@@ -35,52 +35,17 @@ import som.interpreter.Invokable;
 import som.interpreter.nodes.dispatch.Dispatchable;
 import som.vm.NotYetImplementedException;
 import som.vmobjects.SInvokable;
-import tools.debugger.Tags.LiteralTag;
+import tools.dym.Tags.AnyNode;
 import tools.dym.Tags.BasicPrimitiveOperation;
 import tools.dym.Tags.CachedClosureInvoke;
 import tools.dym.Tags.CachedVirtualInvoke;
-import tools.dym.Tags.ClassRead;
 import tools.dym.Tags.ComplexPrimitiveOperation;
-import tools.dym.Tags.ControlFlowCondition;
-import tools.dym.Tags.FieldRead;
-import tools.dym.Tags.FieldWrite;
-import tools.dym.Tags.LocalArgRead;
-import tools.dym.Tags.LocalVarRead;
-import tools.dym.Tags.LocalVarWrite;
 import tools.dym.Tags.LoopBody;
-import tools.dym.Tags.LoopNode;
-import tools.dym.Tags.NewArray;
-import tools.dym.Tags.NewObject;
-import tools.dym.Tags.OpClosureApplication;
 import tools.dym.Tags.PrimitiveArgument;
-import tools.dym.Tags.VirtualInvoke;
 import tools.dym.Tags.VirtualInvokeReceiver;
-import tools.dym.nodes.AllocationProfilingNode;
-import tools.dym.nodes.ArrayAllocationProfilingNode;
-import tools.dym.nodes.CallTargetNode;
-import tools.dym.nodes.ClosureTargetNode;
-import tools.dym.nodes.ControlFlowProfileNode;
-import tools.dym.nodes.CountingNode;
-import tools.dym.nodes.InvocationProfilingNode;
-import tools.dym.nodes.LateCallTargetNode;
-import tools.dym.nodes.LateClosureTargetNode;
-import tools.dym.nodes.LateReportResultNode;
-import tools.dym.nodes.LoopIterationReportNode;
-import tools.dym.nodes.LoopProfilingNode;
-import tools.dym.nodes.OperationProfilingNode;
-import tools.dym.nodes.ReadProfilingNode;
-import tools.dym.nodes.ReportReceiverNode;
-import tools.dym.nodes.ReportResultNode;
-import tools.dym.profiles.AllocationProfile;
-import tools.dym.profiles.ArrayCreationProfile;
-import tools.dym.profiles.BranchProfile;
-import tools.dym.profiles.CallsiteProfile;
-import tools.dym.profiles.ClosureApplicationProfile;
-import tools.dym.profiles.Counter;
-import tools.dym.profiles.InvocationProfile;
-import tools.dym.profiles.LoopProfile;
-import tools.dym.profiles.OperationProfile;
-import tools.dym.profiles.ReadValueProfile;
+import tools.dym.nodes.*;
+import tools.dym.profiles.*;
+import tools.dym.superinstructions.CandidateDetector;
 import tools.language.StructuralProbe;
 
 
@@ -119,6 +84,8 @@ public class DynamicMetrics extends TruffleInstrument {
   private final Map<SourceSection, ReadValueProfile> localsReadProfiles;
   private final Map<SourceSection, Counter>          localsWriteProfiles;
 
+  private final Map<Node, TypeCounter>                   activations;
+
   private final StructuralProbe structuralProbe;
 
   private final Set<RootNode> rootNodes;
@@ -151,6 +118,8 @@ public class DynamicMetrics extends TruffleInstrument {
     literalReadCounter = new HashMap<>();
     localsReadProfiles = new HashMap<>();
     localsWriteProfiles = new HashMap<>();
+
+    activations      = new HashMap<>();
 
     rootNodes = new HashSet<>();
 
@@ -326,7 +295,7 @@ public class DynamicMetrics extends TruffleInstrument {
   protected void onCreate(final Env env) {
     instrumenter = env.getInstrumenter();
 
-    addRootTagInstrumentation(instrumenter);
+ /*   addRootTagInstrumentation(instrumenter);
 
     ExecutionEventNodeFactory virtInvokeFactory = addInstrumentation(
         instrumenter, methodCallsiteProfiles,
@@ -382,7 +351,9 @@ public class DynamicMetrics extends TruffleInstrument {
             new Class<?>[] {LoopNode.class}, NO_TAGS,
             LoopProfile::new, LoopProfilingNode::new);
 
-    addLoopBodyInstrumentation(instrumenter, loopProfileFactory);
+    addLoopBodyInstrumentation(instrumenter, loopProfileFactory);*/
+
+    addActivationInstrumentation(instrumenter);
 
     instrumenter.attachLoadSourceSectionListener(
         SourceSectionFilter.newBuilder().tagIs(RootTag.class).build(),
@@ -390,6 +361,16 @@ public class DynamicMetrics extends TruffleInstrument {
         true);
 
     env.registerService(structuralProbe);
+  }
+
+  private void addActivationInstrumentation(final Instrumenter instrumenter) {
+    SourceSectionFilter filter = SourceSectionFilter.newBuilder().tagIs(AnyNode.class).build();
+    ExecutionEventNodeFactory factory = (final EventContext ctx) -> {
+      TypeCounter p = activations.computeIfAbsent(ctx.getInstrumentedNode(),
+              k -> new TypeCounter(ctx.getInstrumentedSourceSection()));
+      return new TypeCountingNode<>(p);
+    };
+    instrumenter.attachFactory(filter, factory);
   }
 
   private void addLoopBodyInstrumentation(
@@ -416,7 +397,16 @@ public class DynamicMetrics extends TruffleInstrument {
     MetricsCsvWriter.fileOut(data, metricsFolder, structuralProbe,
         maxStackDepth, getAllStatementsAlsoNotExecuted());
 
+    identifySuperinstructionCandidates();
     outputAllTruffleMethodsToIGV();
+  }
+
+  private void identifySuperinstructionCandidates() {
+    CandidateDetector detector = new CandidateDetector(activations);
+    for (RootNode root : rootNodes) {
+      root.accept(detector);
+    }
+    detector.finish();
   }
 
   private List<SourceSection> getAllStatementsAlsoNotExecuted() {
