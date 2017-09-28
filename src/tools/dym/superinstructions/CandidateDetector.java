@@ -89,9 +89,9 @@ public class CandidateDetector implements NodeVisitor {
 
 
   public void finish() {
-    System.out.println("WITH BIMORPHIC\n");
+    System.out.println("======= WITH BIMORPHIC ========\n");
     printTopEdges();
-    System.out.println("WITHOUT BIMORPHIC\n");
+    System.out.println("\n\n======= WITHOUT BIMORPHIC =======\n");
     removeBimorphic();
     printTopEdges();
   }

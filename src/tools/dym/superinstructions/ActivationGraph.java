@@ -132,4 +132,25 @@ public class ActivationGraph {
   public Stream<ActivationEdge> sortByActivations(Stream<ActivationEdge> stream) {
     return stream.sorted(Comparator.comparingLong(e -> getActivations((ActivationEdge)e)).reversed());
   }
+
+  /*
+  public ActivationGraph mergeSuperinstruction(ActivationEdge edge, String className) {
+    ActivationGraph newGraph = new ActivationGraph();
+    // first, add all old nodes
+    for(ActivationNode oldNode : getNodes()) {
+      newGraph.addNode(oldNode);
+    }
+    // then, add the edges
+    for(ActivationEdge oldEdge : getEdges()) {
+      newGraph.addEdge(oldEdge);
+    }
+    ActivationNode superNode = newGraph.getOrCreateNode(className);
+    Set<ActivationEdge> incoming = incomingEdges(edge.getParent()).collect(Collectors.toSet());
+    Set<ActivationEdge> outgoing = outgoingEdges(edge.getChild()).collect(Collectors.toSet());
+    for(ActivationEdge inc : incoming) {
+      //newGraph.getOrCreateEdge(inc.gtParent(), )
+      // TODO: What to do?
+    }
+    return newGraph;
+  }*/
 }
