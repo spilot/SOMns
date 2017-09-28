@@ -88,19 +88,40 @@ public class CandidateDetector implements NodeVisitor {
     }
 
 
-    static public String abbreviate(String className) {
-        String[] parts = className.split(java.util.regex.Pattern.quote("."));
-        return parts[parts.length - 1];
+  public void finish() {
+    System.out.println("WITH BIMORPHIC\n");
+    printTopEdges();
+    System.out.println("WITHOUT BIMORPHIC\n");
+    removeBimorphic();
+    printTopEdges();
+  }
+
+  public void printTopEdges() {
+    List<ActivationEdge> topEdges = graph.sortByActivations(graph.getEdges().stream())
+        .limit(10).collect(Collectors.toList());
+    for(ActivationEdge edge : topEdges) {
+      System.out.println(String.format("%s (%d activations)\n",
+              edge,
+              graph.getActivations(edge)));
+      ActivationNode parent = edge.getParent();
+      Map<Integer, Set<ActivationEdge>> outgoingByIndex = graph.outgoingEdgesByChildIndex(parent);
+      for(Integer childIndex : outgoingByIndex.keySet()) {
+        if(childIndex != edge.getChildIndex()) {
+          System.out.println("  Slot #" + childIndex);
+          List<ActivationEdge> sorted = graph.sortByActivations(
+                  outgoingByIndex.get(childIndex).stream()).collect(Collectors.toList());
+          for(ActivationEdge out : sorted) {
+            System.out.println(String.format("    --> %s of %s (%d activations)",
+                    out.getChild(),
+                    out.getJavaType(),
+                    graph.getActivations(out)));
+          }
+          System.out.println();
+        }
+      }
+      System.out.println("\n");
     }
 
-  public void finish() {
-    ActivationEdge edge = findMaximumEdge();
-    removeBimorphic();
-    System.out.println(edge);
-    graph.getEdges().stream()
-        .sorted(Comparator.comparingLong(e -> graph.getActivations((ActivationEdge)e)).reversed())
-            .limit(10)
-            .forEach(e -> System.out.println(e));
   }
 
   public ActivationEdge findMaximumEdge() {
@@ -114,10 +135,7 @@ public class CandidateDetector implements NodeVisitor {
       Set<ActivationEdge> edgesToRemove = new HashSet<>();
       for(ActivationNode node : graph.getNodes()) {
         // for each child index, get the outgoing edges
-        HashMap<Integer, Set<ActivationEdge>> outgoingByIndex = new HashMap<>();
-        graph.outgoingEdges(node).forEach(edge ->
-          outgoingByIndex.computeIfAbsent(edge.getChildIndex(), (idx) -> new HashSet<>()).add(edge)
-        );
+        Map<Integer, Set<ActivationEdge>> outgoingByIndex = graph.outgoingEdgesByChildIndex(node);
         for(Integer childIndex : outgoingByIndex.keySet()) {
           if(outgoingByIndex.get(childIndex).size() <= 2) {
             edgesToRemove.addAll(outgoingByIndex.get(childIndex));

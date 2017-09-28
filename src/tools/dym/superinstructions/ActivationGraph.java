@@ -101,6 +101,14 @@ public class ActivationGraph {
     return edges.stream().filter(e -> e.getParent().equals(node));
   }
 
+  public Map<Integer, Set<ActivationEdge>> outgoingEdgesByChildIndex(ActivationNode node) {
+    HashMap<Integer, Set<ActivationEdge>> outgoingByIndex = new HashMap<>();
+    outgoingEdges(node).forEach(edge ->
+      outgoingByIndex.computeIfAbsent(edge.getChildIndex(), (idx) -> new HashSet<>()).add(edge)
+    );
+    return outgoingByIndex;
+  }
+
   public Stream<ActivationEdge> incomingEdges(ActivationNode node) {
     return edges.stream().filter(e -> e.getChild().equals(node));
   }
@@ -119,5 +127,9 @@ public class ActivationGraph {
 
   public long getActivations(ActivationEdge edge) {
     return activations.getOrDefault(edge, 0L);
+  }
+
+  public Stream<ActivationEdge> sortByActivations(Stream<ActivationEdge> stream) {
+    return stream.sorted(Comparator.comparingLong(e -> getActivations((ActivationEdge)e)).reversed());
   }
 }
