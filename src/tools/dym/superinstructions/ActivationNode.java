@@ -9,7 +9,7 @@ import java.util.Objects;
  * Created by fred on 31/07/17.
  */
 public class ActivationNode {
-  private String className;
+  private final String className;
 
   public ActivationNode(String className) {
     this.className = className;
@@ -30,5 +30,15 @@ public class ActivationNode {
   @Override
   public int hashCode() {
     return Objects.hash(className);
+  }
+
+  public String getAbbreviated() {
+    String[] splitted = className.split("\\.");
+    return splitted[splitted.length - 1];
+  }
+
+  @Override
+  public String toString() {
+    return String.format("[%s]", getAbbreviated());
   }
 }

@@ -38,6 +38,7 @@ def remove_bimorphic(G):
     for node in G.nodes():
         if G.degree(node) == 0:
             nodes_to_remove.append(node)
+    print(nodes_to_remove)
     G.remove_nodes_from(nodes_to_remove)
 
 def get_child_indices(G, node):

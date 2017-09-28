@@ -13,6 +13,7 @@ import tools.dym.profiles.TypeCounter;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by fred on 09/07/17.
@@ -78,7 +79,7 @@ public class CandidateDetector implements NodeVisitor {
             ActivationNode nChild = graph.getOrCreateNode(childClass);
             for(Class<?> javaType : activat.keySet()) {
                 ActivationEdge edge = graph.getOrCreateEdge(nParent, nChild, childIndex, javaType.getName());
-                edge.addActivations(activat.get(javaType));
+                graph.addActivations(edge, activat.get(javaType));
             }
             return true;
         } else {
@@ -92,34 +93,42 @@ public class CandidateDetector implements NodeVisitor {
         return parts[parts.length - 1];
     }
 
-    public void finish() {
-        graph.writeToGraph();
-        /*ActivationEdge edge = findMaximumEdge();
-        Map<ActivationNode, Integer> variations = new HashMap<>();
-        for(ActivationNode node : graph.getNodes()) {
-            Set<Integer> childIndices = graph.outgoingEdges(node)
-                    .map(ActivationEdge::getChildIndex)
-                    .distinct()
-                    .collect(Collectors.toSet());
-            System.out.println(node.getClassName());
-            for(Integer childIndex : childIndices) {
-                List<ActivationEdge> matchingOutgoing = graph.outgoingEdges(node)
-                        .filter(e -> e.getChildIndex() == childIndex)
-                        .collect(Collectors.toList());
-                List<String> childClassNames = matchingOutgoing.stream()
-                        .map(e -> e.getChild().getClassName())
-                        .collect(Collectors.toList());
-                System.out.println(childClassNames);
-            }
-        }
-        System.out.println(edge.getParent().getClassName() + "->" + edge.getChild().getClassName() + ": " + edge.getActivations());
-        */
-    }
+  public void finish() {
+    ActivationEdge edge = findMaximumEdge();
+    removeBimorphic();
+    System.out.println(edge);
+    graph.getEdges().stream()
+        .sorted(Comparator.comparingLong(e -> graph.getActivations((ActivationEdge)e)).reversed())
+            .limit(10)
+            .forEach(e -> System.out.println(e));
+  }
 
-    public ActivationEdge findMaximumEdge() {
-        Optional<ActivationEdge> edge = graph.getEdges().stream()
-                .sorted(Comparator.comparingLong(ActivationEdge::getActivations).reversed())
-                .findFirst();
-        return edge.orElseThrow(() -> new RuntimeException("No edges at all"));
+  public ActivationEdge findMaximumEdge() {
+    Optional<ActivationEdge> edge = graph.getEdges().stream()
+            .sorted(Comparator.comparingLong(e -> graph.getActivations((ActivationEdge)e)).reversed())
+            .findFirst();
+    return edge.orElseThrow(() -> new RuntimeException("No edges at all"));
+  }
+
+    public void removeBimorphic() {
+      Set<ActivationEdge> edgesToRemove = new HashSet<>();
+      for(ActivationNode node : graph.getNodes()) {
+        // for each child index, get the outgoing edges
+        HashMap<Integer, Set<ActivationEdge>> outgoingByIndex = new HashMap<>();
+        graph.outgoingEdges(node).forEach(edge ->
+          outgoingByIndex.computeIfAbsent(edge.getChildIndex(), (idx) -> new HashSet<>()).add(edge)
+        );
+        for(Integer childIndex : outgoingByIndex.keySet()) {
+          if(outgoingByIndex.get(childIndex).size() <= 2) {
+            edgesToRemove.addAll(outgoingByIndex.get(childIndex));
+          }
+        }
+      }
+      graph.removeEdges(edgesToRemove);
+      Set<ActivationNode> nodesToRemove = graph.getNodes().stream()
+              .filter(node -> graph.allEdges(node).count() == 0)
+              .collect(Collectors.toSet());
+      graph.removeNodes(nodesToRemove);
+      System.out.println(String.format("Removed %d nodes and %d edges.", nodesToRemove.size(), edgesToRemove.size()));
     }
 }
