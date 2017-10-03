@@ -64,6 +64,6 @@ for t in sorted_traces[:20]:
     pool.update(find_superinstruction(traces, t))
 
 top10 = sorted(pool.keys(), key=pool.get, reverse=True)
-for t in top10[:10]:
+for t in top10[:20]:
     pprint(t)
     print(pool[t])
