@@ -80,9 +80,9 @@ public class ActivationContext {
     return javaType;
   }
 
-  static public boolean subtraceEquals(Object[] a, Object[] b, int start, int length) {
+  static public boolean subtraceEquals(Object[] a, Object[] b, int length) {
     if(a.length < length || b.length < length) return false;
-    for(int i = start; i < length; i++) {
+    for(int i = 0; i < length; i++) {
       if(!a[i].equals(b[i])) {
         return false;
       }

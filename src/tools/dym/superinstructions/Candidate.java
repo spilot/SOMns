@@ -46,8 +46,10 @@ public class Candidate {
       this.children = new ArrayList<>();
     }
 
-    public void addChild(String childClass) {
-      this.children.add(new Node(childClass));
+    public Node addChild(String childClass) {
+      Node node = new Node(childClass);
+      this.children.add(node);
+      return node;
     }
 
     public String getNodeClass() {
