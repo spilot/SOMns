@@ -1,103 +1,71 @@
 package tools.dym.superinstructions;
 
-import bd.nodes.EagerPrimitive;
-import com.oracle.truffle.api.instrumentation.InstrumentableFactory;
-import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.nodes.NodeUtil;
-import com.oracle.truffle.api.nodes.NodeVisitor;
-import com.oracle.truffle.api.nodes.RootNode;
-import tools.dym.profiles.TypeCounter;
-
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * Created by fred on 09/07/17.
+ * Created by fred on 04/10/17.
  */
-public class CandidateDetector implements NodeVisitor {
-    private Map<Node, TypeCounter> activations;
-    private Map<ActivationContext, Long> contexts;
+public class CandidateDetector {
+  static public int CONSIDER_CHILDREN = 20;
+  private Map<ActivationContext, Long> contexts;
 
-    public static final int CONTEXT_LEVEL = 2;
+  public CandidateDetector(Map<ActivationContext, Long> contexts) {
+    this.contexts = contexts;
+  }
 
-    public CandidateDetector(Map<Node, TypeCounter> activations) {
-        this.activations = activations;
-        this.contexts = new HashMap<>();
-    }
-
-    public List<Object> constructTrace(Node node, int contextLevel) {
-      if(contextLevel == 0 || node.getParent() == null) {
-        assert !(node instanceof InstrumentableFactory.WrapperNode);
-        return Arrays.asList(getNodeClass(node));
-      } else {
-        Node childNode = node;
-        assert !(node instanceof InstrumentableFactory.WrapperNode);
-        Node parent = node.getParent();
-        //assert !(parent instanceof EagerPrimitive);
-        if (parent instanceof InstrumentableFactory.WrapperNode) {
-          childNode = parent;
-          parent = parent.getParent();
+  public Set<Candidate> constructCandidates(ActivationContext context) {
+    assert context.getNumberOfClasses() == 3;
+    String childClass = context.getLeafClass();
+    int auntIndex = context.getChildIndex(1);
+    int childIndex = context.getLeafChildIndex();
+    System.out.println(context.toPrettyString());
+    System.out.println("=======================");
+    Map<Integer, Set<ActivationContext>> sisterAlternativesByIndex = new HashMap<>();
+    Map<Integer, Map<ActivationContext, Long>> auntAlternativesByIndex = new HashMap<>();
+    for(ActivationContext otherContext : contexts.keySet()) {
+      if(ActivationContext.subtraceEquals(context.getTrace(), otherContext.getTrace(), 0, 3)
+              && otherContext.getLeafChildIndex() != childIndex) {
+        System.out.println("SISTER " + otherContext.toPrettyString());
+        sisterAlternativesByIndex.computeIfAbsent(otherContext.getLeafChildIndex(), k -> new HashSet<>())
+                .add(otherContext);
+      }
+      if(otherContext.getNumberOfClasses() == 3
+              && otherContext.getClass(1).equals(context.getClass(0))
+              && otherContext.getChildIndex(1) != auntIndex) {
+        ActivationContext auntContext = new ActivationContext(new Object[] {
+                otherContext.getClass(1),
+                otherContext.getChildIndex(1),
+                otherContext.getClass(2)
+        }, otherContext.getJavaType());
+        Map<ActivationContext, Long> alternatives = auntAlternativesByIndex.computeIfAbsent(
+                otherContext.getChildIndex(1), k -> new HashMap<>());
+        if(!alternatives.containsKey(auntContext)) {
+          alternatives.put(auntContext, 0L);
         }
-        assert !(parent instanceof InstrumentableFactory.WrapperNode);
-        int i = 0, childIndex = -1;
-        for (Node child : NodeUtil.findNodeChildren(parent)) {
-          if (child == childNode) {
-            childIndex = i;
-          }
-          i++;
-        }
-        assert childIndex != -1;
-        String childClass = getNodeClass(node);
-        ArrayList<Object> trace = new ArrayList<>();
-        List<Object> parentTrace = constructTrace(parent, contextLevel - 1);
-        trace.addAll(parentTrace);
-        trace.add(childIndex);
-        trace.add(childClass);
-        return trace;
+        alternatives.put(auntContext, alternatives.get(auntContext) + contexts.get(otherContext));
       }
     }
 
-    public ActivationContext makeActivationContext(Node node, Class<?> javaType, int contextLevel) {
-      return new ActivationContext(
-              constructTrace(node, contextLevel).toArray(),
-              javaType.getName());
-    }
-
-    public String getNodeClass(Node node) {
-      if(node instanceof EagerPrimitive) {
-        String cls = "PrimitiveOperation:" + ((EagerPrimitive) node).getOperation();
-        return cls;
-      } else {
-        return node.getClass().getName();
+    Set<Candidate> candidates = new HashSet<>();
+    for(int otherAuntIndex : auntAlternativesByIndex.keySet()) {
+      for(Map<ActivationContext, Long> otherAuntContexts : auntAlternativesByIndex.get(otherAuntIndex)) {
+        otherAuntContext.get
       }
     }
 
-    public boolean visit(Node node) {
-        if(node instanceof InstrumentableFactory.WrapperNode
-                || node instanceof RootNode)
-            return true;
-        TypeCounter activationCounter = activations.get(node);
-        if(activationCounter != null) {
-          Map<Class<?>, Long> activat = activationCounter.getActivations();
-          assert !(node instanceof InstrumentableFactory.WrapperNode);
-          for(Class<?> javaType : activat.keySet()) {
-            long typeActivations = activat.get(javaType);
-            ActivationContext context = makeActivationContext(node, javaType, CONTEXT_LEVEL);
-            if(!contexts.containsKey(context)) {
-              contexts.put(context, typeActivations);
-            } else {
-              contexts.put(context, contexts.get(context) + typeActivations);
-            }
-          }
-          return true;
-        } else {
-          return true;
-        }
-    }
+    System.out.println("");
+    return new HashSet<>();
+  }
 
-
-  public void finish() {
-    for(ActivationContext context : contexts.keySet()) {
-      System.out.println(context + " -> " + contexts.get(context));
+  public void detect() {
+    // Sort the traces
+    List<ActivationContext> sorted = contexts.keySet().stream()
+            .filter(context -> context.getNumberOfClasses() == 3)
+            .sorted(Comparator.comparingLong(context -> contexts.get(context)).reversed())
+            .collect(Collectors.toList());
+    for(int i = 0; i < CONSIDER_CHILDREN; i++) {
+      constructCandidates(sorted.get(i));
     }
   }
 }

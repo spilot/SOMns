@@ -46,6 +46,7 @@ import tools.dym.Tags.VirtualInvokeReceiver;
 import tools.dym.nodes.*;
 import tools.dym.profiles.*;
 import tools.dym.superinstructions.CandidateDetector;
+import tools.dym.superinstructions.ContextCollector;
 import tools.language.StructuralProbe;
 
 
@@ -402,11 +403,12 @@ public class DynamicMetrics extends TruffleInstrument {
   }
 
   private void identifySuperinstructionCandidates() {
-    CandidateDetector detector = new CandidateDetector(activations);
+    ContextCollector collector = new ContextCollector(activations);
     for (RootNode root : rootNodes) {
-      root.accept(detector);
+      root.accept(collector);
     }
-    detector.finish();
+    CandidateDetector detector = new CandidateDetector(collector.getContexts());
+    detector.detect();
   }
 
   private List<SourceSection> getAllStatementsAlsoNotExecuted() {
