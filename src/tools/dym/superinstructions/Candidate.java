@@ -1,14 +1,13 @@
 package tools.dym.superinstructions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by fred on 04/10/17.
  */
 public class Candidate {
   private Node rootNode;
+  private long score;
 
   public Candidate(String rootClass) {
     this.rootNode = new Node(rootClass);
@@ -37,18 +36,26 @@ public class Candidate {
     return Objects.hash(rootNode);
   }
 
+  public long getScore() {
+    return score;
+  }
+
+  public void setScore(long score) {
+    this.score = score;
+  }
+
   public static class Node {
     private String nodeClass;
-    private List<Node> children;
+    private Map<Integer, Node> children;
 
     public Node(String nodeClass) {
       this.nodeClass = nodeClass;
-      this.children = new ArrayList<>();
+      this.children = new HashMap<>();
     }
 
-    public Node addChild(String childClass) {
+    public Node setChild(int index, String childClass) {
       Node node = new Node(childClass);
-      this.children.add(node);
+      this.children.put(index, node);
       return node;
     }
 
@@ -56,7 +63,7 @@ public class Candidate {
       return nodeClass;
     }
 
-    public List<Node> getChildren() {
+    public Map<Integer, Node> getChildren() {
       return children;
     }
 
@@ -82,8 +89,16 @@ public class Candidate {
         builder.append("| ");
       }*/
       builder.append(nodeClass).append('\n');
-      for (Node child : children) {
-        child.prettyPrint(builder, level + 1);
+      int maxKey = children.keySet().stream()
+              .max(Comparator.comparingInt(e -> e))
+              .orElse(-1);
+      for (int slot = 0; slot <= maxKey; slot++) {
+        if(children.containsKey(slot)) {
+          children.get(slot).prettyPrint(builder, level + 1);
+        } else {
+          Node dummy = new Node("?");
+          dummy.prettyPrint(builder, level + 1);
+        }
       }
     }
   }

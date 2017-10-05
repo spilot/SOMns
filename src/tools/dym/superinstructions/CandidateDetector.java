@@ -7,47 +7,38 @@ import java.util.stream.Collectors;
  * Created by fred on 04/10/17.
  */
 public class CandidateDetector {
-  static public int CONSIDER_CHILDREN = 20;
+  static public int CONSIDER_CHILDREN = 50;
   private Map<ActivationContext, Long> contexts;
 
   public CandidateDetector(Map<ActivationContext, Long> contexts) {
     this.contexts = contexts;
   }
 
-  public Map<Integer, ActivationContext> findAunts(ActivationContext context) {
+  public String findAunt(String ancestor, int auntIndex) {
     // context: C_0 i_0 C_1 i_1 C_2
     // Find aunts, i.e.
-    // D_0 j_0 D_1 j_1 D_2
-    //         =   !=
-    //         C_0 i_0 C_1 i_1 C_2
-    Map<Integer, Map<ActivationContext, Long>> auntsByIndex = new HashMap<>();
+    // (D_0 j_0) D_1 j_1 D_2
+    //           =   !=
+    //           anc idx
+    Map<String, Long> possibleAunts = new HashMap<>();
     for(ActivationContext otherContext : contexts.keySet()) {
-      if(otherContext.getNumberOfClasses() == 3
-              && otherContext.getClass(1).equals(context.getClass(0))
-              && otherContext.getChildIndex(1) != context.getChildIndex(0)) {
-        ActivationContext auntContext = new ActivationContext(
-                new Object[]{ otherContext.getClass(1), otherContext.getChildIndex(1), otherContext.getClass(2) },
-                otherContext.getJavaType()
-        );
-        Map<ActivationContext, Long> aunts = auntsByIndex.computeIfAbsent(otherContext.getChildIndex(1),
-                k -> new HashMap<>());
-        if (!aunts.containsKey(auntContext)) {
-          aunts.put(auntContext, 0L);
+      int index = otherContext.getNumberOfClasses() - 2;
+      if(otherContext.getClass(index).equals(ancestor)
+              && otherContext.getChildIndex(index) == auntIndex) {
+        String possibleAunt = otherContext.getClass(index + 1);
+        if (!possibleAunts.containsKey(possibleAunt)) {
+          possibleAunts.put(possibleAunt, 0L);
         }
-        aunts.put(auntContext, aunts.get(auntContext) + contexts.get(otherContext));
+        possibleAunts.put(possibleAunt, possibleAunts.get(possibleAunt) + contexts.get(otherContext));
       }
     }
-    Map<Integer, ActivationContext> aunts = new HashMap<>();
-    for(int childIndex : auntsByIndex.keySet()) {
-      ActivationContext topAunt = auntsByIndex.get(childIndex).keySet().stream()
-              .max(Comparator.comparingLong(ctx -> auntsByIndex.get(childIndex).get(ctx)).reversed())
-              .orElseThrow(() -> new RuntimeException("No suitable alternative"));
-      aunts.put(childIndex, topAunt);
-    }
-    return aunts;
+    return possibleAunts.keySet().stream()
+            .max(Comparator.comparingLong(aunt -> possibleAunts.get(aunt)))
+            .orElse("?");
   }
 
   public Candidate constructCandidate(ActivationContext context) {
+    long score = 0;
     assert context.getNumberOfClasses() == 3;
     int childIndex = context.getLeafChildIndex();
     System.out.println(context.toPrettyString());
@@ -60,41 +51,47 @@ public class CandidateDetector {
                 .add(otherContext);
       }
     }
-    int maxSister = childIndex;
     Map<Integer, ActivationContext> sisters = new HashMap<>();
+    sisters.put(childIndex, context);
     for(int sisterIndex : sisterAlternativesByIndex.keySet()) {
       ActivationContext topAlternative = sisterAlternativesByIndex.get(sisterIndex).stream()
-              .max(Comparator.comparingLong(ctx -> contexts.get(ctx)).reversed())
+              .max(Comparator.comparingLong(ctx -> contexts.get(ctx)))
               .orElseThrow(() -> new RuntimeException("No suitable alternative"));
       sisters.put(sisterIndex, topAlternative);
-      maxSister = Integer.max(maxSister, sisterIndex);
     }
-    Map<Integer, ActivationContext> aunts = findAunts(context);
-    int maxAunt = aunts.keySet().stream()
-            .max(Comparator.comparingInt(e -> (Integer)e).reversed())
-            .orElse(context.getChildIndex(0));
+    Set<Integer> auntIndices = new HashSet<>();
+    for(ActivationContext otherContext : contexts.keySet()) {
+      if(otherContext.getClass(0).equals(context.getClass(0))) {
+        auntIndices.add(otherContext.getChildIndex(0));
+      }
+    }
+    Map<Integer, String> aunts = new HashMap<>();
+    for(int auntIndex : auntIndices) {
+      if(auntIndex != context.getChildIndex(0)) {
+        aunts.put(auntIndex, findAunt(context.getClass(0), auntIndex));
+      }
+    }
+
     Candidate candidate = new Candidate(context.getClass(0));
-    for(int i = 0; i <= maxAunt; i++) {
-      if(i == context.getChildIndex(0)) {
-        Candidate.Node child = candidate.getRoot().addChild(context.getClass(1));
-        for(int j = 0; j <= maxSister; j++) {
-          if(sisters.containsKey(j)) {
-            child.addChild(sisters.get(j).getLeafClass());
-          } else if(j == context.getChildIndex(1)) {
-            child.addChild(context.getLeafClass());
+    for(int auntSlot : auntIndices) {
+      if(auntSlot == context.getChildIndex(0)) {
+        Candidate.Node child = candidate.getRoot().setChild(auntSlot, context.getClass(1));
+        for(int sisterSlot : sisters.keySet()) {
+          if(sisterSlot == childIndex) {
+            child.setChild(sisterSlot, context.getLeafClass());
           } else {
-            child.addChild("?");
+            child.setChild(sisterSlot, sisters.get(sisterSlot).getLeafClass());
           }
         }
-      } else if(aunts.containsKey(i)) {
-        candidate.getRoot().addChild(aunts.get(i).getLeafClass());
       } else {
-        candidate.getRoot().addChild("?");
+        candidate.getRoot().setChild(auntSlot, aunts.get(auntSlot));
       }
     }
     System.out.println(candidate.prettyPrint());
     //return new HashSet<>();
-    return null;
+    score = contexts.get(context);
+    candidate.setScore(score);
+    return candidate;
   }
 
   public void detect() {
@@ -103,8 +100,16 @@ public class CandidateDetector {
             .filter(context -> context.getNumberOfClasses() == 3)
             .sorted(Comparator.comparingLong(context -> contexts.get(context)).reversed())
             .collect(Collectors.toList());
+    Set<Candidate> candidates = new HashSet<>();
     for(int i = 0; i < CONSIDER_CHILDREN; i++) {
-      constructCandidate(sorted.get(i));
+      candidates.add(constructCandidate(sorted.get(i)));
+    }
+    List<Candidate> tops = candidates.stream()
+            .sorted(Comparator.comparingLong(Candidate::getScore).reversed())
+            .collect(Collectors.toList());
+    for(Candidate top : tops) {
+      System.out.println(top.prettyPrint());
+      System.out.println(top.getScore());
     }
   }
 }

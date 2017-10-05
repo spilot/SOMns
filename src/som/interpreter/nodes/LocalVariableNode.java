@@ -137,7 +137,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       return expValue;
     }
 
-    @Specialization(guards = "isIncrement")
+   /* @Specialization(guards = "isIncrement")
     public final long writeLongAndInsertSuperinstruction(final VirtualFrame frame,
                          final long expValue,
                          final @Cached("isIncrementOperation(getExp(), var)") boolean isIncrement) {
@@ -153,7 +153,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       frame.setDouble(slot, expValue);
       AssignVariableProductNode.replaceNode(this);
       return expValue;
-    }
+    }*/
 
     @Specialization(guards = "isLongKind(expValue)")
     public final long writeLong(final VirtualFrame frame, final long expValue) {
