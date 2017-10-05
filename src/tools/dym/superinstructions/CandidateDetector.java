@@ -93,6 +93,7 @@ public class CandidateDetector {
     // Sort the traces
     List<ActivationContext> sorted = contexts.keySet().stream()
             .filter(context -> context.getNumberOfClasses() == 3)
+            .filter(context -> !context.getClass(0).equals("som.interpreter.nodes.SequenceNode"))
             .sorted(Comparator.comparingLong(context -> contexts.get(context)).reversed())
             .collect(Collectors.toList());
     Set<Candidate> candidates = new HashSet<>();
