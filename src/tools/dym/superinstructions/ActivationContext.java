@@ -90,6 +90,15 @@ public class ActivationContext {
     return true;
   }
 
+  public boolean traceStartsWith(Object[] prefix) {
+    if(trace.length < prefix.length) return false;
+    for(int i = 0; i < prefix.length; i++)
+      if(!trace[i].equals(prefix[i])) {
+        return false;
+    }
+    return true;
+  }
+
   static public Object[] getSuffix(Object[] trace, int length) {
     Object[] suffix = new Object[length];
     System.arraycopy(trace, trace.length - length, suffix, 0, length);
