@@ -10,7 +10,8 @@ import tools.dym.profiles.TypeCounter;
 import java.util.Map;
 
 /**
- * Created by fred on 27/07/17.
+ * Simple execution event node which may be used in conjunction with `TypeCounter`
+ * to count node activations while also keeping track of the respective result types.
  */
 public class TypeCountingNode<T extends TypeCounter> extends ExecutionEventNode {
   protected final T counter;

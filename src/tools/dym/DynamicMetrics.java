@@ -363,6 +363,7 @@ public class DynamicMetrics extends TruffleInstrument {
   }
 
   private void addActivationInstrumentation(final Instrumenter instrumenter) {
+    // Attach a TypeCountingNode to *any* node
     SourceSectionFilter filter = SourceSectionFilter.newBuilder().tagIs(AnyNode.class).build();
     ExecutionEventNodeFactory factory = (final EventContext ctx) -> {
       TypeCounter p = activations.computeIfAbsent(ctx.getInstrumentedNode(),
@@ -401,11 +402,14 @@ public class DynamicMetrics extends TruffleInstrument {
   }
 
   private void identifySuperinstructionCandidates(final String metricsFolder) {
+    // First, extract activation contexts from the recorded activations
     ContextCollector collector = new ContextCollector(activations);
     for (RootNode root : rootNodes) {
       root.accept(collector);
     }
+    // Then, detect superinstruction candidates using the heuristic ...
     CandidateDetector detector = new CandidateDetector(collector.getContexts());
+    // ... and write a report to the metrics folder
     String report = detector.detect();
     Path reportPath = Paths.get(metricsFolder, "superinstruction-candidates.txt");
     try {

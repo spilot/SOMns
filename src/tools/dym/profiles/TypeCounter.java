@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by fred on 27/07/17.
+ * A counter which keeps track of the number of node activations
+ * and their respective result types (that is, Java types).
  */
 public class TypeCounter {
   protected final SourceSection source;
@@ -29,10 +30,6 @@ public class TypeCounter {
   @Override
   public String toString() {
     return "TypeCnt[" + activations.size() + " types]";
-  }
-
-  public long getTotalActivations() {
-    return activations.values().stream().mapToLong(Long::intValue).sum();
   }
 
   public Map<Class<?>, Long> getActivations() {

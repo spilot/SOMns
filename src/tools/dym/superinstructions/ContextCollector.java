@@ -10,11 +10,15 @@ import tools.dym.profiles.TypeCounter;
 
 import java.util.*;
 
+/**
+ * The context collector performs the first step of the superinstruction
+ * detection heuristic.
+ */
 public class ContextCollector implements NodeVisitor {
   private Map<Node, TypeCounter> activationCounters;
   private Map<ActivationContext, Long> contexts;
 
-  public static final int CONTEXT_LEVEL = 2;
+  private static final int CONTEXT_LEVEL = 2;
 
   public ContextCollector(Map<Node, TypeCounter> activationCounters) {
     this.activationCounters = activationCounters;
@@ -78,17 +82,11 @@ public class ContextCollector implements NodeVisitor {
         long typeActivations = activationsByType.get(javaType);
         for(int level = 0; level <= CONTEXT_LEVEL; level++) {
           ActivationContext context = makeActivationContext(node, javaType, level);
-          if (!contexts.containsKey(context)) {
-            contexts.put(context, typeActivations);
-          } else {
-            contexts.put(context, contexts.get(context) + typeActivations);
-          }
+          contexts.merge(context, typeActivations, Long::sum);
         }
       }
-      return true;
-    } else {
-      return true;
     }
+    return true;
   }
 
   public Map<ActivationContext, Long> getContexts() {
