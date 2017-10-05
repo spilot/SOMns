@@ -89,7 +89,7 @@ public class CandidateDetector {
     return candidate;
   }
 
-  public void detect() {
+  public String detect() {
     // Sort the traces
     List<ActivationContext> sorted = contexts.keySet().stream()
             .filter(context -> context.getNumberOfClasses() == 3)
@@ -103,10 +103,11 @@ public class CandidateDetector {
     List<Candidate> tops = candidates.stream()
             .sorted(Comparator.comparingLong(Candidate::getScore).reversed())
             .collect(Collectors.toList());
+    StringBuilder builder = new StringBuilder();
     for(Candidate top : tops) {
-      System.out.println(top.prettyPrint());
-      System.out.println(String.format("(%d activations)", top.getScore()));
-      System.out.println();
+      builder.append(top.prettyPrint()).append('\n');
+      builder.append(String.format("(%d activations)", top.getScore())).append("\n\n");
     }
+    return builder.toString();
   }
 }

@@ -1,5 +1,9 @@
 package tools.dym;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,14 +39,8 @@ import som.interpreter.Invokable;
 import som.interpreter.nodes.dispatch.Dispatchable;
 import som.vm.NotYetImplementedException;
 import som.vmobjects.SInvokable;
-import tools.dym.Tags.AnyNode;
-import tools.dym.Tags.BasicPrimitiveOperation;
-import tools.dym.Tags.CachedClosureInvoke;
-import tools.dym.Tags.CachedVirtualInvoke;
-import tools.dym.Tags.ComplexPrimitiveOperation;
-import tools.dym.Tags.LoopBody;
-import tools.dym.Tags.PrimitiveArgument;
-import tools.dym.Tags.VirtualInvokeReceiver;
+import tools.dym.Tags.*;
+import tools.debugger.Tags.LiteralTag;
 import tools.dym.nodes.*;
 import tools.dym.profiles.*;
 import tools.dym.superinstructions.CandidateDetector;
@@ -296,7 +294,7 @@ public class DynamicMetrics extends TruffleInstrument {
   protected void onCreate(final Env env) {
     instrumenter = env.getInstrumenter();
 
- /*   addRootTagInstrumentation(instrumenter);
+    addRootTagInstrumentation(instrumenter);
 
     ExecutionEventNodeFactory virtInvokeFactory = addInstrumentation(
         instrumenter, methodCallsiteProfiles,
@@ -352,7 +350,7 @@ public class DynamicMetrics extends TruffleInstrument {
             new Class<?>[] {LoopNode.class}, NO_TAGS,
             LoopProfile::new, LoopProfilingNode::new);
 
-    addLoopBodyInstrumentation(instrumenter, loopProfileFactory);*/
+    addLoopBodyInstrumentation(instrumenter, loopProfileFactory);
 
     addActivationInstrumentation(instrumenter);
 
@@ -398,17 +396,23 @@ public class DynamicMetrics extends TruffleInstrument {
     MetricsCsvWriter.fileOut(data, metricsFolder, structuralProbe,
         maxStackDepth, getAllStatementsAlsoNotExecuted());
 
-    identifySuperinstructionCandidates();
+    identifySuperinstructionCandidates(metricsFolder);
     outputAllTruffleMethodsToIGV();
   }
 
-  private void identifySuperinstructionCandidates() {
+  private void identifySuperinstructionCandidates(final String metricsFolder) {
     ContextCollector collector = new ContextCollector(activations);
     for (RootNode root : rootNodes) {
       root.accept(collector);
     }
     CandidateDetector detector = new CandidateDetector(collector.getContexts());
-    detector.detect();
+    String report = detector.detect();
+    Path reportPath = Paths.get(metricsFolder, "superinstruction-candidates.txt");
+    try {
+      Files.write(reportPath, report.getBytes());
+    } catch(IOException e) {
+      throw new RuntimeException("Could not write superinstruction candidate report: " + e);
+    }
   }
 
   private List<SourceSection> getAllStatementsAlsoNotExecuted() {
