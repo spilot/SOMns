@@ -81,11 +81,13 @@ public class ContextCollector implements NodeVisitor {
           assert !(node instanceof InstrumentableFactory.WrapperNode);
           for(Class<?> javaType : activat.keySet()) {
             long typeActivations = activat.get(javaType);
-            ActivationContext context = makeActivationContext(node, javaType, CONTEXT_LEVEL);
-            if(!contexts.containsKey(context)) {
-              contexts.put(context, typeActivations);
-            } else {
-              contexts.put(context, contexts.get(context) + typeActivations);
+            for(int level = 0; level <= CONTEXT_LEVEL; level++) {
+              ActivationContext context = makeActivationContext(node, javaType, level);
+              if (!contexts.containsKey(context)) {
+                contexts.put(context, typeActivations);
+              } else {
+                contexts.put(context, contexts.get(context) + typeActivations);
+              }
             }
           }
           return true;
