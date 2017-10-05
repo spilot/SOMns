@@ -20,12 +20,14 @@ public class CandidateDetector {
             .filter(ctx -> ctx.traceStartsWith(prefix));
   }
 
-  public Map<Integer, ActivationContext> findExtensions(Object[] prefix) {
-    for(int i = 0; i < prefix.length; i++) {
-      System.out.print(prefix[i] + " ");
-    }
-    System.out.println();
-    System.out.println("===================\n");
+  /** Given a prefix { C_0, i_0, ..., i_k, C_{k+1} } this returns a map
+   * that maps each i_{k+1} to an activation context with a trace
+   * { C_0, i_0, ..., i_k, C_{k+1}, i_{k+1}, C_{k+2} }
+   * for which activations(ctx) is maximal.
+   * @param prefix
+   * @return
+   */
+  private Map<Integer, ActivationContext> findExtensions(Object[] prefix) {
     Map<Integer, ActivationContext> result = new HashMap<>();
     Set<ActivationContext> extensions = contextsWithPrefix(prefix)
             .filter(ctx -> ctx.getTrace().length == prefix.length + 2)
@@ -45,7 +47,7 @@ public class CandidateDetector {
 
   public Candidate constructCandidate(ActivationContext currentContext) {
     assert currentContext.getNumberOfClasses() == 3;
-    Candidate candidate = new Candidate(currentContext.getClass(0));
+    Candidate candidate = new Candidate(currentContext.getClass(0), "?");
     Map<Integer, ActivationContext> piblings = findExtensions(
             new Object[] {
                     currentContext.getClass(0)
@@ -61,19 +63,28 @@ public class CandidateDetector {
     for(int piblingSlot : piblings.keySet()) {
       if(piblingSlot == currentContext.getChildIndex(0)) {
         Candidate.Node child = candidate.getRoot().setChild(piblingSlot,
-                currentContext.getClass(1));
+                currentContext.getClass(1),
+                "?");
         for(int siblingSlot : siblings.keySet()) {
           if(siblingSlot == currentContext.getChildIndex(1)) {
-            child.setChild(siblingSlot, currentContext.getClass(2));
+            child.setChild(siblingSlot,
+                    currentContext.getClass(2),
+                    currentContext.getJavaType());
           } else {
-            child.setChild(siblingSlot, siblings.get(siblingSlot).getClass(2));
+            ActivationContext sibling = siblings.get(siblingSlot);
+            child.setChild(siblingSlot,
+                    sibling.getClass(2),
+                    sibling.getJavaType());
           }
         }
       } else {
-        candidate.getRoot().setChild(piblingSlot, piblings.get(piblingSlot).getClass(1));
+        ActivationContext pibling = piblings.get(piblingSlot);
+        assert pibling.getNumberOfClasses() == 2;
+        candidate.getRoot().setChild(piblingSlot,
+                pibling.getClass(1),
+                pibling.getJavaType());
       }
     }
-    System.out.println(candidate);
     candidate.setScore(contexts.get(currentContext));
     return candidate;
   }
@@ -93,7 +104,8 @@ public class CandidateDetector {
             .collect(Collectors.toList());
     for(Candidate top : tops) {
       System.out.println(top.prettyPrint());
-      System.out.println(top.getScore());
+      System.out.println(String.format("(%d activations)", top.getScore()));
+      System.out.println();
     }
   }
 }
