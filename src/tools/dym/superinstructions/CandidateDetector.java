@@ -8,7 +8,7 @@ import java.util.stream.Stream;
  * Created by fred on 04/10/17.
  */
 public class CandidateDetector {
-  static public int CONSIDER_CHILDREN = 50;
+  static public int CONSIDER_CHILDREN = 100;
   private Map<ActivationContext, Long> contexts;
 
   public CandidateDetector(Map<ActivationContext, Long> contexts) {
@@ -93,7 +93,7 @@ public class CandidateDetector {
     // Sort the traces
     List<ActivationContext> sorted = contexts.keySet().stream()
             .filter(context -> context.getNumberOfClasses() == 3)
-            .filter(context -> !context.getClass(0).equals("som.interpreter.nodes.SequenceNode"))
+            .filter(context -> !Arrays.asList(context.getTrace()).contains("som.interpreter.nodes.SequenceNode"))
             .sorted(Comparator.comparingLong(context -> contexts.get(context)).reversed())
             .collect(Collectors.toList());
     Set<Candidate> candidates = new HashSet<>();
