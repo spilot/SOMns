@@ -4,6 +4,7 @@ import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.ExecutionEventNode;
 import com.oracle.truffle.api.nodes.UnexpectedResultException;
 import som.interpreter.ReturnException;
+import som.interpreter.SomException;
 import som.vm.NotYetImplementedException;
 import tools.dym.profiles.TypeCounter;
 
@@ -30,6 +31,8 @@ public class TypeCountingNode<T extends TypeCounter> extends ExecutionEventNode 
       counter.recordType(((ReturnException) e).result());
     } else if(e instanceof UnexpectedResultException) {
       counter.recordType(((UnexpectedResultException) e).getResult());
+    } else if(e instanceof SomException) {
+      return;
     } else {
       throw new NotYetImplementedException();
     }
