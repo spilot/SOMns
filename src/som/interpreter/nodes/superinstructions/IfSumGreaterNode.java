@@ -9,7 +9,7 @@ import som.VM;
 import som.compiler.Variable;
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.LocalVariableNode.LocalVariableReadNode;
-import som.interpreter.nodes.SequenceNode;
+import som.interpreter.nodes.SOMNode;
 import som.interpreter.nodes.literals.DoubleLiteralNode;
 import som.interpreter.nodes.nary.EagerBinaryPrimitiveNode;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
@@ -22,7 +22,7 @@ import som.vm.constants.Nil;
 abstract public class IfSumGreaterNode extends ExprWithTagsNode {
   private final FrameSlot left, right;
   private final double than;
-  @Child private SequenceNode bodyNode;
+  @Child private ExpressionNode bodyNode;
 
   // In case we need to revert from this optimistic optimization, keep the
   // original nodes around
@@ -30,7 +30,7 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
 
   public IfSumGreaterNode(final Variable.Local left, final Variable.Local right,
                           final double than,
-                          final SequenceNode inlinedBodyNode,
+                          final ExpressionNode inlinedBodyNode,
                           final IfInlinedLiteralNode originalSubtree) {
     this.left = left.getSlot();
     this.right = right.getSlot();
@@ -69,36 +69,42 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
   }
 
   public static IfSumGreaterNode replaceNode(final IfInlinedLiteralNode node) {
-    EagerBinaryPrimitiveNode condition = (EagerBinaryPrimitiveNode)node.getConditionNode();
-    EagerBinaryPrimitiveNode conditionLeft = (EagerBinaryPrimitiveNode)condition.getReceiver();
-    LocalVariableReadNode leftOperand = (LocalVariableReadNode)conditionLeft.getReceiver();
-    LocalVariableReadNode rightOperand = (LocalVariableReadNode)conditionLeft.getArgument();
-    DoubleLiteralNode thanNode = (DoubleLiteralNode)condition.getArgument();
+    EagerBinaryPrimitiveNode condition = (EagerBinaryPrimitiveNode)SOMNode.unwrapIfNecessary(node.getConditionNode());
+    EagerBinaryPrimitiveNode conditionLeft = (EagerBinaryPrimitiveNode)unwrapReceiver(condition);
+    LocalVariableReadNode leftOperand = (LocalVariableReadNode)unwrapReceiver(conditionLeft);
+    LocalVariableReadNode rightOperand = (LocalVariableReadNode)unwrapArgument(conditionLeft);
+    DoubleLiteralNode thanNode = (DoubleLiteralNode)unwrapArgument(condition);
     IfSumGreaterNode newNode = IfSumGreaterNodeGen.create(leftOperand.getVar(),
             rightOperand.getVar(),
             thanNode.getValue(),
-            (SequenceNode)node.getBodyNode(),
+            node.getBodyNode(),
             node).initialize(node.getSourceSection());
     node.replace(newNode);
     VM.insertInstrumentationWrapper(newNode);
     return newNode;
   }
 
+  private static ExpressionNode unwrapReceiver(EagerBinaryPrimitiveNode eagerNode) {
+    return SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
+  }
+
+  private static ExpressionNode unwrapArgument(EagerBinaryPrimitiveNode eagerNode) {
+    return SOMNode.unwrapIfNecessary(eagerNode.getArgument());
+  }
+
   public static boolean isIfSumGreaterNode(ExpressionNode conditionNode,
-                                           ExpressionNode bodyNode,
                                            VirtualFrame frame) {
-    if(conditionNode instanceof EagerBinaryPrimitiveNode
-            && bodyNode instanceof SequenceNode) {
-      EagerBinaryPrimitiveNode condition = (EagerBinaryPrimitiveNode)conditionNode;
+    if(SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode) {
+      EagerBinaryPrimitiveNode condition = (EagerBinaryPrimitiveNode)SOMNode.unwrapIfNecessary(conditionNode);
       if(condition.getOperation().equals(">")) {
-        if(condition.getReceiver() instanceof EagerBinaryPrimitiveNode
-                && condition.getArgument() instanceof DoubleLiteralNode) {
-          EagerBinaryPrimitiveNode conditionLeft = (EagerBinaryPrimitiveNode)condition.getReceiver();
+        if(unwrapReceiver(condition) instanceof EagerBinaryPrimitiveNode
+                && unwrapArgument(condition) instanceof DoubleLiteralNode) {
+          EagerBinaryPrimitiveNode conditionLeft = (EagerBinaryPrimitiveNode)unwrapReceiver(condition);
           if(conditionLeft.getOperation().equals("+")) {
-            if(conditionLeft.getReceiver() instanceof LocalVariableReadNode
-                    && conditionLeft.getArgument() instanceof LocalVariableReadNode) {
-              LocalVariableReadNode leftOperand = (LocalVariableReadNode)conditionLeft.getReceiver();
-              LocalVariableReadNode rightOperand = (LocalVariableReadNode)conditionLeft.getArgument();
+            if(unwrapReceiver(conditionLeft) instanceof LocalVariableReadNode
+                    && unwrapArgument(conditionLeft) instanceof LocalVariableReadNode) {
+              LocalVariableReadNode leftOperand = (LocalVariableReadNode)unwrapReceiver(conditionLeft);
+              LocalVariableReadNode rightOperand = (LocalVariableReadNode)unwrapArgument(conditionLeft);
               if(frame.isDouble(leftOperand.getVar().getSlot())
                       && frame.isDouble(rightOperand.getVar().getSlot())) {
                 return true;
