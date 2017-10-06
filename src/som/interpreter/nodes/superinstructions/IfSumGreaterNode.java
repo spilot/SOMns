@@ -18,6 +18,24 @@ import som.primitives.arithmetic.AdditionPrim;
 import som.primitives.arithmetic.GreaterThanPrim;
 import som.vm.constants.Nil;
 
+/**
+ * Matches the following AST:
+ *
+ * IfInlinedLiteralsNode
+ *   EagerBinaryPrimitiveNode
+ *     EagerBinaryPrimitiveNode
+ *       LocalVariableReadNode (of type double)
+ *       LocalVariableReadNode (of type double)
+ *       AdditionPrim
+ *     DoubleLiteralNode
+ *     GreaterThanPrim
+ *   ExpressionNode
+ *
+ * and replaces it with
+ *
+ * IfSumGreaterNode
+ *    ExpressionNode
+ */
 abstract public class IfSumGreaterNode extends ExprWithTagsNode {
   // equivalent to:
   // (left + right > than) ifTrue: body
