@@ -14,12 +14,13 @@ import som.interpreter.nodes.literals.DoubleLiteralNode;
 import som.interpreter.nodes.nary.EagerBinaryPrimitiveNode;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
 import som.interpreter.nodes.specialized.IfInlinedLiteralNode;
+import som.primitives.arithmetic.AdditionPrim;
+import som.primitives.arithmetic.GreaterThanPrim;
 import som.vm.constants.Nil;
 
-/**
- * Created by fred on 06/10/17.
- */
 abstract public class IfSumGreaterNode extends ExprWithTagsNode {
+  // equivalent to:
+  // (left + right > than) ifTrue: body
   private final FrameSlot left, right;
   private final double than;
   @Child private ExpressionNode bodyNode;
@@ -69,10 +70,14 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
   }
 
   public static IfSumGreaterNode replaceNode(final IfInlinedLiteralNode node) {
+    // fetch the branching condition, which is a comparison (>)
     EagerBinaryPrimitiveNode condition = (EagerBinaryPrimitiveNode)SOMNode.unwrapIfNecessary(node.getConditionNode());
+    // fetch left-hand side of comparison ...
     EagerBinaryPrimitiveNode conditionLeft = (EagerBinaryPrimitiveNode)unwrapReceiver(condition);
+    // ... which is an addition of two local variables
     LocalVariableReadNode leftOperand = (LocalVariableReadNode)unwrapReceiver(conditionLeft);
     LocalVariableReadNode rightOperand = (LocalVariableReadNode)unwrapArgument(conditionLeft);
+    // right-hand side of comparison is a double literal
     DoubleLiteralNode thanNode = (DoubleLiteralNode)unwrapArgument(condition);
     IfSumGreaterNode newNode = IfSumGreaterNodeGen.create(leftOperand.getVar(),
             rightOperand.getVar(),
@@ -94,17 +99,21 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
 
   public static boolean isIfSumGreaterNode(ExpressionNode conditionNode,
                                            VirtualFrame frame) {
+    // is the branching condition a greater-than comparison?
     if(SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode) {
       EagerBinaryPrimitiveNode condition = (EagerBinaryPrimitiveNode)SOMNode.unwrapIfNecessary(conditionNode);
-      if(condition.getOperation().equals(">")) {
+      if(condition.getPrimitive() instanceof GreaterThanPrim) {
+        // yes! is the left-hand side a binary operation and the right-hand side a double literal?
         if(unwrapReceiver(condition) instanceof EagerBinaryPrimitiveNode
                 && unwrapArgument(condition) instanceof DoubleLiteralNode) {
           EagerBinaryPrimitiveNode conditionLeft = (EagerBinaryPrimitiveNode)unwrapReceiver(condition);
-          if(conditionLeft.getOperation().equals("+")) {
+          // yes! is the left-hand side an addition of two variables?
+          if(conditionLeft.getPrimitive() instanceof AdditionPrim) {
             if(unwrapReceiver(conditionLeft) instanceof LocalVariableReadNode
                     && unwrapArgument(conditionLeft) instanceof LocalVariableReadNode) {
               LocalVariableReadNode leftOperand = (LocalVariableReadNode)unwrapReceiver(conditionLeft);
               LocalVariableReadNode rightOperand = (LocalVariableReadNode)unwrapArgument(conditionLeft);
+              // yes! are the two variables of type double?
               if(frame.isDouble(leftOperand.getVar().getSlot())
                       && frame.isDouble(rightOperand.getVar().getSlot())) {
                 return true;
