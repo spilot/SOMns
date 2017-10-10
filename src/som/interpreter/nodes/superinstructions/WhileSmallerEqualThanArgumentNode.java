@@ -22,7 +22,20 @@ import som.vm.constants.Nil;
 import tools.dym.Tags;
 
 /**
- * Created by fred on 06/10/17.
+ * Matches the following AST:
+ *
+ * WhileInlinedLiteralsNode (expectedBool == true)
+ *   EagerBinaryPrimitiveNode
+ *     LocalVariableReadNode (of type Long)
+ *     LocalArgumentReadNode (of type Long)
+ *     LessThanOrEqualPrim
+ *   ExpressionNode
+ *
+ * and replaces it with
+ *
+ * WhileSmallerEqualThanArgumentNode
+ *   ExpressionNode
+ *
  */
 abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode {
 
@@ -53,6 +66,7 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
     Object argumentValue = SArguments.arg(frame, argumentIndex);
     if(!(argumentValue instanceof Long))
       throw new FrameSlotTypeException(); // Argument is not of type Long! (should never happen)
+    // Frame.getLong might throw FrameSlotTypeException
     return frame.getLong(variableSlot) <= (Long)argumentValue;
   }
 
@@ -83,6 +97,7 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
 
   @Specialization(replaces = {"executeSpecialized"})
   public Object executeAndDeoptimize(final VirtualFrame frame) {
+    // Execute the original subtree and replace myself with it
     Object result = originalSubtree.executeGeneric(frame);
     replace(originalSubtree);
     return result;
@@ -96,16 +111,20 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
   static public boolean isWhileSmallerEqualThanArgumentNode(boolean expectedBool,
                                                             ExpressionNode conditionNode,
                                                             VirtualFrame frame) {
+    // whileFalse: does not match
     if(!expectedBool)
       return false;
     conditionNode = SOMNode.unwrapIfNecessary(conditionNode);
+    // ... is the condition a binary operation?
     if(conditionNode instanceof EagerBinaryPrimitiveNode) {
       EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode)conditionNode;
+      // is the operation ``LocalVariable <= LocalArgument``?
       if(SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode
               && SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalArgumentReadNode
               && SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof LessThanOrEqualPrim) {
         LocalArgumentReadNode arg = (LocalArgumentReadNode)SOMNode.unwrapIfNecessary(eagerNode.getArgument());
         LocalVariableReadNode variable = (LocalVariableReadNode)SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
+        // Are variable and argument both of type Long?
         if(SArguments.arg(frame, arg.getArgumentIndex()) instanceof Long
           && frame.isLong(variable.getVar().getSlot())) {
           return true;
@@ -116,9 +135,11 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
   }
 
   static public WhileSmallerEqualThanArgumentNode replaceNode(WhileInlinedLiteralsNode node) {
+    // Extract local variable slot and argument index
     EagerBinaryPrimitiveNode conditionNode = (EagerBinaryPrimitiveNode)SOMNode.unwrapIfNecessary(node.getConditionNode());
     LocalVariableReadNode variableRead = (LocalVariableReadNode)SOMNode.unwrapIfNecessary(conditionNode.getReceiver());
     LocalArgumentReadNode argumentRead = (LocalArgumentReadNode)SOMNode.unwrapIfNecessary(conditionNode.getArgument());
+    // replace node with superinstruction
     WhileSmallerEqualThanArgumentNode newNode = WhileSmallerEqualThanArgumentNodeGen.create(
       variableRead.getVar(), argumentRead.getArgumentIndex(), node.getBodyNode(), node
     );
