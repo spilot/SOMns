@@ -15,8 +15,6 @@ build_and_test_job:
   stage: build-and-test
   tags: [benchmarks, infinity]
   script:
-    - ant checkstyle
-    - ant eclipseformat-check
     - timeout 5m ant unit-tests som-tests
 
 benchmark_job:
