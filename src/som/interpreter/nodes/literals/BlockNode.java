@@ -3,7 +3,6 @@ package som.interpreter.nodes.literals;
 import java.util.ArrayList;
 
 import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.source.SourceSection;
 
 import som.compiler.AccessModifier;
 import som.compiler.MethodBuilder;
@@ -18,24 +17,33 @@ import som.vmobjects.SClass;
 import som.vmobjects.SInvokable;
 import tools.debugger.Tags.LiteralTag;
 
+
 public class BlockNode extends LiteralNode {
 
   protected final SInvokable blockMethod;
-  protected final SClass  blockClass;
-  protected final boolean needsAdjustmentOnScopeChange;
+  protected final SClass     blockClass;
+  protected final boolean    needsAdjustmentOnScopeChange;
 
-  public BlockNode(final SInvokable blockMethod, final boolean needsAdjustmentOnScopeChange,
-      final SourceSection source) {
-    super(source);
+  public BlockNode(final SInvokable blockMethod, final boolean needsAdjustmentOnScopeChange) {
     this.blockMethod = blockMethod;
     this.needsAdjustmentOnScopeChange = needsAdjustmentOnScopeChange;
     switch (blockMethod.getNumberOfArguments()) {
-      case 1: { this.blockClass = Classes.blockClass1; break; }
-      case 2: { this.blockClass = Classes.blockClass2; break; }
-      case 3: { this.blockClass = Classes.blockClass3; break; }
+      case 1: {
+        this.blockClass = Classes.blockClass1;
+        break;
+      }
+      case 2: {
+        this.blockClass = Classes.blockClass2;
+        break;
+      }
+      case 3: {
+        this.blockClass = Classes.blockClass3;
+        break;
+      }
 
       // we don't support more than 3 arguments
-      default : this.blockClass = Classes.blockClass;
+      default:
+        this.blockClass = Classes.blockClass;
     }
   }
 
@@ -76,7 +84,9 @@ public class BlockNode extends LiteralNode {
 
   @Override
   public void replaceAfterScopeChange(final InliningVisitor inliner) {
-    if (!needsAdjustmentOnScopeChange && !inliner.someOuterScopeIsMerged()) { return; }
+    if (!needsAdjustmentOnScopeChange && !inliner.someOuterScopeIsMerged()) {
+      return;
+    }
 
     Method blockIvk = (Method) blockMethod.getInvokable();
     Method adapted = blockIvk.cloneAndAdaptAfterScopeChange(
@@ -89,7 +99,7 @@ public class BlockNode extends LiteralNode {
   }
 
   protected BlockNode createNode(final SInvokable adapted) {
-    return new BlockNode(adapted, needsAdjustmentOnScopeChange, sourceSection);
+    return new BlockNode(adapted, needsAdjustmentOnScopeChange).initialize(sourceSection);
   }
 
   @Override
@@ -100,8 +110,8 @@ public class BlockNode extends LiteralNode {
   public static final class BlockNodeWithContext extends BlockNode {
 
     public BlockNodeWithContext(final SInvokable blockMethod,
-        final boolean needsAdjustmentOnScopeChange, final SourceSection source) {
-      super(blockMethod, needsAdjustmentOnScopeChange, source);
+        final boolean needsAdjustmentOnScopeChange) {
+      super(blockMethod, needsAdjustmentOnScopeChange);
     }
 
     @Override
@@ -111,7 +121,7 @@ public class BlockNode extends LiteralNode {
 
     @Override
     protected BlockNode createNode(final SInvokable adapted) {
-      return new BlockNodeWithContext(adapted, needsAdjustmentOnScopeChange,
+      return new BlockNodeWithContext(adapted, needsAdjustmentOnScopeChange).initialize(
           sourceSection);
     }
   }

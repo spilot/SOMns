@@ -1,14 +1,12 @@
 package som.interpreter.nodes.literals;
 
 import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.source.SourceSection;
 
 
 public final class DoubleLiteralNode extends LiteralNode {
   private final double value;
 
-  public DoubleLiteralNode(final double value, final SourceSection source) {
-    super(source);
+  public DoubleLiteralNode(final double value) {
     this.value = value;
   }
 
@@ -19,6 +17,10 @@ public final class DoubleLiteralNode extends LiteralNode {
 
   @Override
   public Object executeGeneric(final VirtualFrame frame) {
+    return value;
+  }
+
+  public double getValue() {
     return value;
   }
 }

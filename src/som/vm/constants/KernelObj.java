@@ -4,11 +4,10 @@ import com.oracle.truffle.api.CompilerDirectives;
 import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.VM;
 import som.interpreter.nodes.nary.UnaryExpressionNode;
-import som.primitives.Primitive;
 import som.vm.Symbols;
 import som.vmobjects.SClass;
 import som.vmobjects.SInvokable;
@@ -17,8 +16,9 @@ import som.vmobjects.SObjectWithClass;
 
 
 public final class KernelObj {
-  private KernelObj() { }
-  public static final SImmutableObject kernel = new SImmutableObject(true, true);
+  private KernelObj() {}
+
+  public static final SImmutableObject   kernel = new SImmutableObject(true, true);
   @CompilationFinal public static SClass indexOutOfBoundsClass;
 
   public static Object signalException(final String selector, final Object receiver) {
@@ -36,8 +36,6 @@ public final class KernelObj {
   @GenerateNodeFactory
   @Primitive(primitive = "kernelIndexOutOfBounds:")
   public abstract static class SetIndexOutOfBounds extends UnaryExpressionNode {
-    public SetIndexOutOfBounds(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final SClass setClass(final SClass value) {
       assert indexOutOfBoundsClass == null;

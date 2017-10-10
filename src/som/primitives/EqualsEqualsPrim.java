@@ -5,8 +5,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.interpreter.actors.SFarReference;
 import som.primitives.threading.TaskThreads.SomThreadTask;
 import som.vmobjects.SArray.SMutableArray;
@@ -18,8 +18,6 @@ import som.vmobjects.SObjectWithClass;
 @GenerateNodeFactory
 @Primitive(primitive = "object:identicalTo:", selector = "==")
 public abstract class EqualsEqualsPrim extends ComparisonPrim {
-  protected EqualsEqualsPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
   @Specialization
   public final boolean doSBlock(final SBlock left, final Object right) {
     return left == right;

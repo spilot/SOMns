@@ -7,10 +7,9 @@ import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.nodes.DirectCallNode;
 import com.oracle.truffle.api.nodes.IndirectCallNode;
 import com.oracle.truffle.api.profiles.ConditionProfile;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.interpreter.nodes.nary.BinaryComplexOperation;
-import som.primitives.Primitive;
 import som.vm.constants.Nil;
 import som.vmobjects.SBlock;
 import som.vmobjects.SInvokable;
@@ -19,22 +18,25 @@ import som.vmobjects.SInvokable;
 public abstract class IfMessageNode extends BinaryComplexOperation {
 
   @GenerateNodeFactory
-  @Primitive(selector = "ifTrue:",  noWrapper = true)
+  @Primitive(selector = "ifTrue:", noWrapper = true)
   public abstract static class IfTrueMessageNode extends IfMessageNode {
-    public IfTrueMessageNode(final boolean eagWrap, final SourceSection source) { super(true, source); assert !eagWrap; }
+    public IfTrueMessageNode() {
+      super(true);
+    }
   }
 
   @GenerateNodeFactory
-  @Primitive(selector = "ifFalse:",  noWrapper = true)
+  @Primitive(selector = "ifFalse:", noWrapper = true)
   public abstract static class IfFalseMessageNode extends IfMessageNode {
-    public IfFalseMessageNode(final boolean eagWrap, final SourceSection source) { super(false, source); assert !eagWrap; }
+    public IfFalseMessageNode() {
+      super(false);
+    }
   }
 
   protected final ConditionProfile condProf = ConditionProfile.createCountingProfile();
-  private final boolean expected;
+  private final boolean            expected;
 
-  public IfMessageNode(final boolean expected, final SourceSection source) {
-    super(false, source);
+  protected IfMessageNode(final boolean expected) {
     this.expected = expected;
   }
 

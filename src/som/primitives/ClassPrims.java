@@ -2,8 +2,8 @@ package som.primitives;
 
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.VM;
 import som.interpreter.Types;
 import som.interpreter.nodes.nary.UnaryExpressionNode;
@@ -17,8 +17,6 @@ public class ClassPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "mirrorAClassesName:")
   public abstract static class NamePrim extends UnaryExpressionNode {
-    public NamePrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final SAbstractObject doSClass(final SClass receiver) {
       return receiver.getName();
@@ -28,8 +26,6 @@ public class ClassPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "mirrorClassName:")
   public abstract static class ClassNamePrim extends UnaryExpressionNode {
-    public ClassNamePrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final SAbstractObject doSClass(final Object receiver) {
       VM.thisMethodNeedsToBeOptimized("should specialize, to avoid Types.getClassOf()");
@@ -39,8 +35,6 @@ public class ClassPrims {
 
   @GenerateNodeFactory
   public abstract static class SuperClassPrim extends UnaryExpressionNode {
-    public SuperClassPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final SAbstractObject doSClass(final SClass receiver) {
       return receiver.getSuperClass();

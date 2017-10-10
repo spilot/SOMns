@@ -3,8 +3,8 @@ package som.primitives;
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.profiles.ValueProfile;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.interpreter.nodes.nary.UnaryBasicOperation;
 import som.vmobjects.SArray;
 import som.vmobjects.SSymbol;
@@ -12,12 +12,12 @@ import tools.dym.Tags.OpLength;
 
 
 @GenerateNodeFactory
-@Primitive(primitive = "arraySize:",    selector = "size",   receiverType = SArray.class, inParser = false)
-@Primitive(primitive = "stringLength:", selector = "length", receiverType = String.class, inParser = false)
+@Primitive(primitive = "arraySize:", selector = "size", receiverType = SArray.class,
+    inParser = false)
+@Primitive(primitive = "stringLength:", selector = "length", receiverType = String.class,
+    inParser = false)
 public abstract class SizeAndLengthPrim extends UnaryBasicOperation {
   private final ValueProfile storageType = ValueProfile.createClassProfile();
-
-  public SizeAndLengthPrim(final boolean eagerlyWrapped, final SourceSection source) { super(eagerlyWrapped, source); }
 
   @Override
   protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {

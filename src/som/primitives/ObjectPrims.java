@@ -8,14 +8,14 @@ import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.ImportStatic;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.instrumentation.Instrumentable;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.nodes.Operation;
+import bd.primitives.Primitive;
 import som.VM;
 import som.interpreter.Types;
 import som.interpreter.actors.SFarReference;
 import som.interpreter.actors.SPromise;
 import som.interpreter.actors.SPromise.SResolver;
-import som.interpreter.nodes.OperationNode;
 import som.interpreter.nodes.nary.UnaryBasicOperation;
 import som.interpreter.nodes.nary.UnaryExpressionNode;
 import som.primitives.ObjectPrimsFactory.IsValueFactory;
@@ -37,11 +37,10 @@ public final class ObjectPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "objClassName:")
   public abstract static class ObjectClassNamePrim extends UnaryExpressionNode {
-    public ObjectClassNamePrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final SSymbol getName(final Object obj) {
-      VM.thisMethodNeedsToBeOptimized("Not yet optimized, need add specializations to remove Types.getClassOf");
+      VM.thisMethodNeedsToBeOptimized(
+          "Not yet optimized, need add specializations to remove Types.getClassOf");
       return Types.getClassOf(obj).getName();
     }
   }
@@ -49,8 +48,6 @@ public final class ObjectPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "halt:")
   public abstract static class HaltPrim extends UnaryExpressionNode {
-    public HaltPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final Object doSAbstractObject(final Object receiver) {
       VM.errorPrintln("BREAKPOINT");
@@ -69,8 +66,6 @@ public final class ObjectPrims {
   @GenerateNodeFactory
   @Primitive(primitive = "objClass:")
   public abstract static class ClassPrim extends UnaryExpressionNode {
-    public ClassPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Specialization
     public final SClass doSAbstractObject(final SAbstractObject receiver) {
       return receiver.getSOMClass();
@@ -85,9 +80,7 @@ public final class ObjectPrims {
 
   @GenerateNodeFactory
   @Primitive(selector = "isNil", noWrapper = true)
-  public abstract static class IsNilNode extends UnaryBasicOperation implements OperationNode {
-    public IsNilNode(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
+  public abstract static class IsNilNode extends UnaryBasicOperation implements Operation {
     @Override
     protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
       if (tag == OpComparison.class) {
@@ -115,9 +108,8 @@ public final class ObjectPrims {
 
   @GenerateNodeFactory
   @Primitive(selector = "notNil", noWrapper = true)
-  public abstract static class NotNilNode extends UnaryBasicOperation implements OperationNode {
-    public NotNilNode(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
+  public abstract static class NotNilNode extends UnaryBasicOperation
+      implements Operation {
     @Override
     protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
       if (tag == OpComparison.class) {
@@ -151,13 +143,14 @@ public final class ObjectPrims {
   @ImportStatic(Nil.class)
   @Instrumentable(factory = IsValueWrapper.class)
   public abstract static class IsValue extends UnaryExpressionNode {
-    public IsValue(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-    public IsValue(final IsValue node) { super(node); }
+    protected IsValue() {}
+
+    protected IsValue(final IsValue node) {}
 
     public abstract boolean executeEvaluated(Object rcvr);
 
     public static IsValue createSubNode() {
-      return IsValueFactory.create(false, null, null);
+      return IsValueFactory.create(null);
     }
 
     @Specialization
@@ -247,7 +240,8 @@ public final class ObjectPrims {
     }
 
     public static boolean isObjectValue(final Object obj) {
-      VM.callerNeedsToBeOptimized("This should only be used for prototyping, and then removed, because it is slow and duplicates code");
+      VM.callerNeedsToBeOptimized(
+          "This should only be used for prototyping, and then removed, because it is slow and duplicates code");
       if (obj instanceof Boolean ||
           obj instanceof Long ||
           obj instanceof BigInteger ||

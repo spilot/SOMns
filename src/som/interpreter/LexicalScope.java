@@ -19,23 +19,37 @@ import som.vmobjects.SSymbol;
 public abstract class LexicalScope {
 
   // TODO: figure out whether we can use this lexical scope also for the
-  //       super sends. seems like we currently have two similar ways to solve
-  //       similar problems, instead of a single one
+  // super sends. seems like we currently have two similar ways to solve
+  // similar problems, instead of a single one
   public static final class MixinScope extends LexicalScope {
-    private final MixinScope outerMixin;
+    private final MixinScope               outerMixin;
+    private final MethodScope              nullOrOuterMethod;
     private HashMap<SSymbol, Dispatchable> slotsClassesAndMethods;
 
     @CompilationFinal private MixinDefinition mixinDefinition;
 
-    public MixinScope(final MixinScope outerMixin) {
+    /**
+     * Both Newspeak's class and the class's created anonymously for object literal's
+     * need to be instantiated from the outer class. Regular classes do not have
+     * an enclosing activation, and so for regular classes the parameter corresponding to
+     * the outer method is null. In contrast, the class of an object literal has the outer
+     * method as its enclosing activation, and in this case the scope of the outer method
+     * is given.
+     *
+     * @param outerMixin, the scope of the outer class
+     * @param nullOrOuterMethod, either null or the scope of the current activation
+     */
+    public MixinScope(final MixinScope outerMixin, final MethodScope nullOrOuterMethod) {
       this.outerMixin = outerMixin;
+      this.nullOrOuterMethod = nullOrOuterMethod;
     }
 
-    public MixinDefinition getOuter() {
-      if (outerMixin != null) {
-        return outerMixin.mixinDefinition;
-      }
-      return null;
+    public MethodScope getOuterMethod() {
+      return nullOrOuterMethod;
+    }
+
+    public MixinScope getOuterMixin() {
+      return outerMixin;
     }
 
     public HashMap<SSymbol, Dispatchable> getDispatchables() {
@@ -57,7 +71,8 @@ public abstract class LexicalScope {
 
     public static final class MixinIdAndContextLevel {
       public final MixinDefinitionId mixinId;
-      public final int contextLevel;
+      public final int               contextLevel;
+
       MixinIdAndContextLevel(final MixinDefinitionId mixinId, final int contextLevel) {
         this.mixinId = mixinId;
         this.contextLevel = contextLevel;
@@ -69,7 +84,8 @@ public abstract class LexicalScope {
       }
     }
 
-    public MixinIdAndContextLevel lookupSlotOrClass(final SSymbol selector, final int contextLevel) {
+    public MixinIdAndContextLevel lookupSlotOrClass(final SSymbol selector,
+        final int contextLevel) {
       assert mixinDefinition != null;
       if (slotsClassesAndMethods.containsKey(selector)) {
         return new MixinIdAndContextLevel(mixinDefinition.getMixinId(), contextLevel);
@@ -100,19 +116,17 @@ public abstract class LexicalScope {
    * the variables in that scope and possibly embedded scopes.
    */
   public static final class MethodScope extends LexicalScope {
-    private final MethodScope     outerMethod;
-    private final MixinScope      outerMixin;
+    private final MethodScope outerMethod;
+    private final MixinScope  outerMixin;
 
     private final FrameDescriptor frameDescriptor;
 
-    @CompilationFinal
-    private MethodScope[] embeddedScopes;
+    @CompilationFinal private MethodScope[] embeddedScopes;
 
     /**
      * All arguments, local and internal variables used in a method.
      */
-    @CompilationFinal
-    private Variable[] variables;
+    @CompilationFinal private Variable[] variables;
 
     @CompilationFinal private boolean finalized;
 
@@ -121,8 +135,8 @@ public abstract class LexicalScope {
     public MethodScope(final FrameDescriptor frameDescriptor,
         final MethodScope outerMethod, final MixinScope outerMixin) {
       this.frameDescriptor = frameDescriptor;
-      this.outerMethod     = outerMethod;
-      this.outerMixin      = outerMixin;
+      this.outerMethod = outerMethod;
+      this.outerMixin = outerMixin;
     }
 
     public void setVariables(final Variable[] variables) {
@@ -188,7 +202,9 @@ public abstract class LexicalScope {
 
       for (MethodScope m : embeddedScopes) {
         MethodScope result = m.getScope(method);
-        if (result != null) { return result; }
+        if (result != null) {
+          return result;
+        }
       }
       return null;
     }
@@ -254,12 +270,16 @@ public abstract class LexicalScope {
     }
 
     public MethodScope getOuterMethodScopeOrNull() {
-      return outerMethod;
-    }
+      if (outerMethod != null) {
+        return outerMethod;
+      }
 
-    public MethodScope getOuterMethodScope() {
-      assert outerMethod != null;
-      return outerMethod;
+      if (outerMixin.getOuterMethod() != null) {
+        return outerMixin.getOuterMethod();
+      }
+
+      return null;
+
     }
 
     public void propagateLoopCountThroughoutMethodScope(final long count) {
@@ -290,7 +310,7 @@ public abstract class LexicalScope {
       if (variables != null) {
         result += Arrays.toString(variables);
       }
-      return  result;
+      return result;
     }
 
     public MixinIdAndContextLevel lookupSlotOrClass(final SSymbol selector) {
@@ -317,7 +337,8 @@ public abstract class LexicalScope {
         }
       }
       // should never be reached
-      throw new IllegalStateException("Did not find the scope for the provided source section");
+      throw new IllegalStateException(
+          "Did not find the scope for the provided source section");
     }
   }
 }

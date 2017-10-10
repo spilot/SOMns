@@ -6,9 +6,8 @@ import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.ExactMath;
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
-import com.oracle.truffle.api.source.SourceSection;
 
-import som.primitives.Primitive;
+import bd.primitives.Primitive;
 
 
 @GenerateNodeFactory
@@ -16,8 +15,6 @@ import som.primitives.Primitive;
 @Primitive(primitive = "double:subtract:")
 @Primitive(selector = "-")
 public abstract class SubtractionPrim extends ArithmeticPrim {
-  protected SubtractionPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
   @Specialization(rewriteOn = ArithmeticException.class)
   public final long doLong(final long left, final long right) {
     return ExactMath.subtractExact(left, right);

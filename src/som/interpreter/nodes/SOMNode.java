@@ -24,6 +24,7 @@ package som.interpreter.nodes;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 import com.oracle.truffle.api.dsl.TypeSystemReference;
 import com.oracle.truffle.api.frame.FrameSlot;
 import com.oracle.truffle.api.instrumentation.InstrumentableFactory.WrapperNode;
@@ -32,16 +33,20 @@ import com.oracle.truffle.api.source.SourceSection;
 
 import som.interpreter.InliningVisitor;
 import som.interpreter.Types;
+import tools.dym.Tags;
 
 
 @TypeSystemReference(Types.class)
 public abstract class SOMNode extends Node {
 
-  protected final SourceSection sourceSection;
+  @CompilationFinal protected SourceSection sourceSection;
 
-  public SOMNode(final SourceSection sourceSection) {
-    super();
+  @SuppressWarnings("unchecked")
+  public <T extends SOMNode> T initialize(final SourceSection sourceSection) {
+    assert sourceSection != null;
+    assert this.sourceSection == null : "sourceSection should only be set once";
     this.sourceSection = sourceSection;
+    return (T) this;
   }
 
   @Override
@@ -55,7 +60,8 @@ public abstract class SOMNode extends Node {
    * the scope tree. This can be caused by method splitting to obtain
    * independent copies, or inlining of blocks to adjust context levels.
    *
-   * <p>When such changes occurred, all blocks within that tree need to be adjusted.
+   * <p>
+   * When such changes occurred, all blocks within that tree need to be adjusted.
    */
   public void replaceAfterScopeChange(final InliningVisitor inliner) {
     // do nothing!
@@ -91,11 +97,6 @@ public abstract class SOMNode extends Node {
     return true;
   }
 
-  /**
-   * @return body of a node that just wraps the actual method body.
-   */
-  public abstract ExpressionNode getFirstMethodBodyNode();
-
   @SuppressWarnings("unchecked")
   public static <T extends Node> T unwrapIfNecessary(final T node) {
     if (node instanceof WrapperNode) {
@@ -113,6 +114,15 @@ public abstract class SOMNode extends Node {
       return parent.getParent();
     } else {
       return parent;
+    }
+  }
+
+  @Override
+  protected boolean isTaggedWith(Class<?> tag) {
+    if(tag == Tags.AnyNode.class) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

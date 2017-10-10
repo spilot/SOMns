@@ -8,12 +8,12 @@ import com.oracle.truffle.api.nodes.IndirectCallNode;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.source.SourceSection;
 
+import bd.nodes.PreevaluatedExpression;
 import som.compiler.AccessModifier;
 import som.interpreter.SomLanguage;
 import som.interpreter.Types;
 import som.interpreter.nodes.MessageSendNode;
 import som.interpreter.nodes.MessageSendNode.AbstractMessageSendNode;
-import som.interpreter.nodes.PreevaluatedExpression;
 import som.interpreter.nodes.dispatch.Dispatchable;
 import som.interpreter.nodes.dispatch.GenericDispatchNode;
 import som.primitives.arrays.ToArgumentsArrayNode;
@@ -40,7 +40,9 @@ public abstract class AbstractSymbolDispatch extends Node {
     return sourceSection;
   }
 
-  // TODO: think about how we can add a specialization for slot accesses, especially Caching Class lost stuff. Slot access are very expensive when uncached, we should avoid that, because we create nodes, every single time
+  // TODO: think about how we can add a specialization for slot accesses, especially Caching
+  // Class lost stuff. Slot access are very expensive when uncached, we should avoid that,
+  // because we create nodes, every single time
 
   // Is this an issue of the Dispatchable interface?
   // should a dispatchable have something like invoke()? do we need to get the
@@ -49,9 +51,8 @@ public abstract class AbstractSymbolDispatch extends Node {
   public abstract Object executeDispatch(VirtualFrame frame, Object receiver,
       SSymbol selector, Object argsArr);
 
-  public final AbstractMessageSendNode createForPerformNodes(
-      final SSymbol selector) {
-    return MessageSendNode.createForPerformNodes(selector, sourceSection,
+  public final AbstractMessageSendNode createForPerformNodes(final SSymbol selector) {
+    return MessageSendNode.createForPerformNodes(sourceSection, selector,
         SomLanguage.getVM(getRootNode()));
   }
 
@@ -59,7 +60,8 @@ public abstract class AbstractSymbolDispatch extends Node {
     return ToArgumentsArrayNodeFactory.create(null, null);
   }
 
-  @Specialization(limit = "INLINE_CACHE_SIZE", guards = {"selector == cachedSelector", "argsArr == null"})
+  @Specialization(limit = "INLINE_CACHE_SIZE",
+      guards = {"selector == cachedSelector", "argsArr == null"})
   public Object doCachedWithoutArgArr(final VirtualFrame frame,
       final Object receiver, final SSymbol selector, final Object argsArr,
       @Cached("selector") final SSymbol cachedSelector,
@@ -105,7 +107,8 @@ public abstract class AbstractSymbolDispatch extends Node {
       final SArray argsArr,
       @Cached("create()") final IndirectCallNode call,
       @Cached("createArgArrayNode()") final ToArgumentsArrayNode toArgArray) {
-    Dispatchable invokable = Types.getClassOf(receiver).lookupMessage(selector, AccessModifier.PUBLIC);
+    Dispatchable invokable =
+        Types.getClassOf(receiver).lookupMessage(selector, AccessModifier.PUBLIC);
 
     Object[] arguments = toArgArray.executedEvaluated(argsArr, receiver);
 

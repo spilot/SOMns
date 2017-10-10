@@ -5,16 +5,13 @@ import java.math.BigInteger;
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
-import com.oracle.truffle.api.source.SourceSection;
 
-import som.primitives.Primitive;
+import bd.primitives.Primitive;
 
 
 @GenerateNodeFactory
 @Primitive(primitive = "int:reminder:", selector = "rem:")
 public abstract class RemainderPrim extends ArithmeticPrim {
-  protected RemainderPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
   @Specialization
   public final double doDouble(final double left, final double right) {
     return left % right;

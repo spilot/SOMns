@@ -4,7 +4,6 @@ import com.oracle.truffle.api.dsl.UnsupportedSpecializationException;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.InstrumentableFactory.WrapperNode;
 import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.source.SourceSection;
 
 import som.VM;
 import som.interpreter.TruffleCompiler;
@@ -16,25 +15,19 @@ import som.vm.NotYetImplementedException;
 import som.vmobjects.SSymbol;
 
 
-public final class EagerTernaryPrimitiveNode extends EagerPrimitive {
+public final class EagerTernaryPrimitiveNode extends EagerPrimitiveNode {
 
-  @Child private ExpressionNode receiver;
-  @Child private ExpressionNode argument1;
-  @Child private ExpressionNode argument2;
+  @Child private ExpressionNode        receiver;
+  @Child private ExpressionNode        argument1;
+  @Child private ExpressionNode        argument2;
   @Child private TernaryExpressionNode primitive;
 
   private final SSymbol selector;
 
-  public EagerTernaryPrimitiveNode(
-      final SourceSection source,
-      final SSymbol selector,
-      final ExpressionNode receiver,
-      final ExpressionNode argument1,
-      final ExpressionNode argument2,
+  public EagerTernaryPrimitiveNode(final SSymbol selector, final ExpressionNode receiver,
+      final ExpressionNode argument1, final ExpressionNode argument2,
       final TernaryExpressionNode primitive) {
-    super(source);
-    assert source == primitive.getSourceSection();
-    this.receiver  = insert(receiver);
+    this.receiver = insert(receiver);
     this.argument1 = insert(argument1);
     this.argument2 = insert(argument2);
     this.primitive = insert(primitive);
@@ -102,11 +95,12 @@ public final class EagerTernaryPrimitiveNode extends EagerPrimitive {
   }
 
   public Object executeEvaluated(final VirtualFrame frame,
-    final Object receiver, final Object argument1, final Object argument2) {
+      final Object receiver, final Object argument1, final Object argument2) {
     try {
       return primitive.executeEvaluated(frame, receiver, argument1, argument2);
     } catch (UnsupportedSpecializationException e) {
-      TruffleCompiler.transferToInterpreterAndInvalidate("Eager Primitive with unsupported specialization.");
+      TruffleCompiler.transferToInterpreterAndInvalidate(
+          "Eager Primitive with unsupported specialization.");
       return makeGenericSend().doPreEvaluated(frame,
           new Object[] {receiver, argument1, argument2});
     }
@@ -133,7 +127,7 @@ public final class EagerTernaryPrimitiveNode extends EagerPrimitive {
   }
 
   @Override
-  protected void setTags(final byte tagMark) {
+  public void setTags(final byte tagMark) {
     primitive.tagMark = tagMark;
   }
 

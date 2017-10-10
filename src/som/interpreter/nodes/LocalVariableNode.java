@@ -1,30 +1,35 @@
 package som.interpreter.nodes;
 
+import com.oracle.truffle.api.dsl.Cached;
+import com.oracle.truffle.api.dsl.ImportStatic;
 import com.oracle.truffle.api.dsl.NodeChild;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.frame.FrameSlot;
 import com.oracle.truffle.api.frame.FrameSlotKind;
 import com.oracle.truffle.api.frame.FrameSlotTypeException;
 import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.source.SourceSection;
-
 import som.compiler.Variable.Local;
 import som.interpreter.InliningVisitor;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
+import som.interpreter.nodes.superinstructions.AssignProductToVariableNode;
+import som.interpreter.nodes.superinstructions.IncrementOperationNode;
+import som.vm.VmSettings;
 import som.vm.constants.Nil;
 import tools.debugger.Tags.LocalVariableTag;
 import tools.dym.Tags.LocalVarRead;
 import tools.dym.Tags.LocalVarWrite;
 
-
 public abstract class LocalVariableNode extends ExprWithTagsNode {
   protected final FrameSlot slot;
-  protected final Local var;
+  protected final Local     var;
 
-  private LocalVariableNode(final Local var, final SourceSection source) {
-    super(source);
+  protected LocalVariableNode(final Local var) {
     this.slot = var.getSlot();
-    this.var  = var;
+    this.var = var;
+  }
+
+  public Local getVar() {
+    return this.var;
   }
 
   @Override
@@ -38,12 +43,12 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
 
   public abstract static class LocalVariableReadNode extends LocalVariableNode {
 
-    public LocalVariableReadNode(final Local variable, final SourceSection source) {
-      super(variable, source);
+    public LocalVariableReadNode(final Local variable) {
+      super(variable);
     }
 
     public LocalVariableReadNode(final LocalVariableReadNode node) {
-      this(node.var, node.sourceSection);
+      this(node.var);
     }
 
     @Specialization(guards = "isUninitialized(frame)")
@@ -113,15 +118,16 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
     }
   }
 
+  @ImportStatic({IncrementOperationNode.class, AssignProductToVariableNode.class, VmSettings.class})
   @NodeChild(value = "exp", type = ExpressionNode.class)
   public abstract static class LocalVariableWriteNode extends LocalVariableNode {
 
-    public LocalVariableWriteNode(final Local variable, final SourceSection source) {
-      super(variable, source);
+    public LocalVariableWriteNode(final Local variable) {
+      super(variable);
     }
 
     public LocalVariableWriteNode(final LocalVariableWriteNode node) {
-      super(node.var, node.sourceSection);
+      super(node.var);
     }
 
     public abstract ExpressionNode getExp();
@@ -129,6 +135,26 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
     @Specialization(guards = "isBoolKind(expValue)")
     public final boolean writeBoolean(final VirtualFrame frame, final boolean expValue) {
       frame.setBoolean(slot, expValue);
+      return expValue;
+    }
+
+    /** Check for ``IncrementOperationNode`` superinstruction and replcae where applicable */
+    @Specialization(guards = {"SUPERINSTRUCTIONS", "isIncrement"})
+    public final long writeLongAndReplaceWithIncrement(final VirtualFrame frame,
+                         final long expValue,
+                         final @Cached("isIncrementOperation(getExp(), var)") boolean isIncrement) {
+      frame.setLong(slot, expValue);
+      IncrementOperationNode.replaceNode(this);
+      return expValue;
+    }
+
+    /** Check for ``WhileSmallerEqualThanArgumentNode`` superinstruction and replace where applicable */
+    @Specialization(guards = {"SUPERINSTRUCTIONS", "isAssign"})
+    public final double writeDoubleAndReplaceWithAssign(final VirtualFrame frame,
+                                         final double expValue,
+                                         final @Cached("isAssignOperation(getExp())") boolean isAssign) {
+      frame.setDouble(slot, expValue);
+      AssignProductToVariableNode.replaceNode(this);
       return expValue;
     }
 
@@ -151,7 +177,8 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       return expValue;
     }
 
-    protected final boolean isBoolKind(final boolean expValue) { // uses expValue to make sure guard is not converted to assertion
+    // uses expValue to make sure guard is not converted to assertion
+    protected final boolean isBoolKind(final boolean expValue) {
       if (slot.getKind() == FrameSlotKind.Boolean) {
         return true;
       }
@@ -162,7 +189,8 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       return false;
     }
 
-    protected final boolean isLongKind(final long expValue) { // uses expValue to make sure guard is not converted to assertion
+    // uses expValue to make sure guard is not converted to assertion
+    protected final boolean isLongKind(final long expValue) {
       if (slot.getKind() == FrameSlotKind.Long) {
         return true;
       }
@@ -173,7 +201,8 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       return false;
     }
 
-    protected final boolean isDoubleKind(final double expValue) { // uses expValue to make sure guard is not converted to assertion
+    // uses expValue to make sure guard is not converted to assertion
+    protected final boolean isDoubleKind(final double expValue) {
       if (slot.getKind() == FrameSlotKind.Double) {
         return true;
       }

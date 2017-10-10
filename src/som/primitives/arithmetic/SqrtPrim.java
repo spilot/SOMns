@@ -5,10 +5,9 @@ import java.math.BigInteger;
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.interpreter.nodes.nary.UnaryBasicOperation;
-import som.primitives.Primitive;
 import tools.dym.Tags.OpArithmetic;
 
 
@@ -17,8 +16,6 @@ import tools.dym.Tags.OpArithmetic;
 @Primitive(primitive = "doubleSqrt:")
 @Primitive(selector = "sqrt", receiverType = {Long.class, BigInteger.class, Double.class})
 public abstract class SqrtPrim extends UnaryBasicOperation {
-  public SqrtPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
   @Override
   protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
     if (tag == OpArithmetic.class) {

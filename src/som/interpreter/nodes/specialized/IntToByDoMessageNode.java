@@ -6,12 +6,11 @@ import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.nodes.DirectCallNode;
 import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.nary.QuaternaryExpressionNode;
 import som.interpreter.objectstorage.ObjectTransitionSafepoint;
-import som.primitives.Primitive;
 import som.vmobjects.SBlock;
 import som.vmobjects.SInvokable;
 import tools.dym.Tags.LoopNode;
@@ -20,22 +19,12 @@ import tools.dym.Tags.LoopNode;
 @GenerateNodeFactory
 @Primitive(selector = "to:by:do:", disabled = true, noWrapper = true, requiresArguments = true)
 public abstract class IntToByDoMessageNode extends QuaternaryExpressionNode {
-  protected final SInvokable blockMethod;
+  protected final SInvokable      blockMethod;
   @Child protected DirectCallNode valueSend;
 
-  public IntToByDoMessageNode(final boolean eagWrap,
-      final SourceSection section, final Object[] args) {
-    super(eagWrap, section);
-    assert !eagWrap;
+  public IntToByDoMessageNode(final Object[] args) {
     blockMethod = ((SBlock) args[3]).getMethod();
-    valueSend = Truffle.getRuntime().createDirectCallNode(
-                    blockMethod.getCallTarget());
-  }
-
-  public IntToByDoMessageNode(final IntToByDoMessageNode node) {
-    super(false, node.getSourceSection());
-    this.blockMethod = node.blockMethod;
-    this.valueSend   = node.valueSend;
+    valueSend = Truffle.getRuntime().createDirectCallNode(blockMethod.getCallTarget());
   }
 
   @Override

@@ -4,7 +4,6 @@ import com.oracle.truffle.api.dsl.UnsupportedSpecializationException;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.InstrumentableFactory.WrapperNode;
 import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.source.SourceSection;
 
 import som.VM;
 import som.interpreter.TruffleCompiler;
@@ -15,30 +14,27 @@ import som.vm.NotYetImplementedException;
 import som.vmobjects.SSymbol;
 
 
-public final class EagerBinaryPrimitiveNode extends EagerPrimitive {
+public final class EagerBinaryPrimitiveNode extends EagerPrimitiveNode {
 
-  @Child private ExpressionNode receiver;
-  @Child private ExpressionNode argument;
+  @Child private ExpressionNode       receiver;
+  @Child private ExpressionNode       argument;
   @Child private BinaryExpressionNode primitive;
 
   private final SSymbol selector;
 
-  public EagerBinaryPrimitiveNode(final SourceSection source,
-      final SSymbol selector,
-      final ExpressionNode receiver,
-      final ExpressionNode argument,
-      final BinaryExpressionNode primitive) {
-    super(source);
-    assert source == primitive.getSourceSection();
-    this.receiver  = insert(receiver);
-    this.argument  = insert(argument);
+  public EagerBinaryPrimitiveNode(final SSymbol selector, final ExpressionNode receiver,
+      final ExpressionNode argument, final BinaryExpressionNode primitive) {
+    this.receiver = insert(receiver);
+    this.argument = insert(argument);
     this.primitive = insert(primitive);
     this.selector = selector;
   }
 
   @Override
   protected boolean isTaggedWith(final Class<?> tag) {
-    assert !(primitive instanceof WrapperNode) : "primitive can't be WrapperNodes to avoid double wrapping. It is: " + primitive.getClass().getSimpleName() + " and contains a " + ((WrapperNode) primitive).getDelegateNode().getClass().getSimpleName();
+    assert !(primitive instanceof WrapperNode) : "primitive can't be WrapperNodes to avoid double wrapping. It is: "
+        + primitive.getClass().getSimpleName() + " and contains a "
+        + ((WrapperNode) primitive).getDelegateNode().getClass().getSimpleName();
     return primitive.isTaggedWithIgnoringEagerness(tag);
   }
 
@@ -90,17 +86,18 @@ public final class EagerBinaryPrimitiveNode extends EagerPrimitive {
   @Override
   public Object executeGeneric(final VirtualFrame frame) {
     Object rcvr = receiver.executeGeneric(frame);
-    Object arg  = argument.executeGeneric(frame);
+    Object arg = argument.executeGeneric(frame);
 
     return executeEvaluated(frame, rcvr, arg);
   }
 
   public Object executeEvaluated(final VirtualFrame frame,
-    final Object receiver, final Object argument) {
+      final Object receiver, final Object argument) {
     try {
       return primitive.executeEvaluated(frame, receiver, argument);
     } catch (UnsupportedSpecializationException e) {
-      TruffleCompiler.transferToInterpreterAndInvalidate("Eager Primitive with unsupported specialization.");
+      TruffleCompiler.transferToInterpreterAndInvalidate(
+          "Eager Primitive with unsupported specialization.");
       return makeGenericSend().doPreEvaluated(frame,
           new Object[] {receiver, argument});
     }
@@ -125,7 +122,7 @@ public final class EagerBinaryPrimitiveNode extends EagerPrimitive {
   }
 
   @Override
-  protected void setTags(final byte tagMark) {
+  public void setTags(final byte tagMark) {
     primitive.tagMark = tagMark;
   }
 
@@ -138,5 +135,17 @@ public final class EagerBinaryPrimitiveNode extends EagerPrimitive {
     } else {
       throw new NotYetImplementedException();
     }
+  }
+
+  public ExpressionNode getReceiver() {
+    return receiver;
+  }
+
+  public ExpressionNode getArgument() {
+    return argument;
+  }
+
+  public BinaryExpressionNode getPrimitive() {
+    return primitive;
   }
 }

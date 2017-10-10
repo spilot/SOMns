@@ -11,6 +11,7 @@ import com.oracle.truffle.api.nodes.DirectCallNode;
 import com.oracle.truffle.api.nodes.IndirectCallNode;
 import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.VM;
 import som.instrumentation.InstrumentableDirectCallNode.InstrumentableBlockApplyNode;
 import som.interpreter.nodes.DummyParent;
@@ -50,10 +51,8 @@ public abstract class BlockPrims {
   @GenerateNodeFactory
   @ImportStatic(BlockPrims.class)
   @Primitive(primitive = "blockValue:", selector = "value", inParser = false,
-             receiverType = {SBlock.class, Boolean.class})
+      receiverType = {SBlock.class, Boolean.class})
   public abstract static class ValueNonePrim extends UnaryExpressionNode {
-    public ValueNonePrim(final boolean eagerlyWrapped, final SourceSection source) { super(eagerlyWrapped, source); }
-
     @Override
     protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
       if (tag == OpClosureApplication.class) {
@@ -85,10 +84,8 @@ public abstract class BlockPrims {
   @GenerateNodeFactory
   @ImportStatic(BlockPrims.class)
   @Primitive(primitive = "blockValue:with:", selector = "value:", inParser = false,
-             receiverType = SBlock.class)
+      receiverType = SBlock.class)
   public abstract static class ValueOnePrim extends BinaryExpressionNode {
-    protected ValueOnePrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Override
     protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
       if (tag == OpClosureApplication.class) {
@@ -115,10 +112,8 @@ public abstract class BlockPrims {
   @GenerateNodeFactory
   @ImportStatic(BlockPrims.class)
   @Primitive(primitive = "blockValue:with:with:", selector = "value:with:", inParser = false,
-             receiverType = SBlock.class)
+      receiverType = SBlock.class)
   public abstract static class ValueTwoPrim extends TernaryExpressionNode {
-    public ValueTwoPrim(final boolean eagWrap, final SourceSection source) { super(eagWrap, source); }
-
     @Override
     protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
       if (tag == OpClosureApplication.class) {
@@ -129,7 +124,8 @@ public abstract class BlockPrims {
     }
 
     @Specialization(guards = "cached == receiver.getMethod()", limit = "CHAIN_LENGTH")
-    public final Object doCachedBlock(final SBlock receiver, final Object arg1, final Object arg2,
+    public final Object doCachedBlock(final SBlock receiver, final Object arg1,
+        final Object arg2,
         @Cached("createDirectCallNode(receiver, getSourceSection())") final DirectCallNode call,
         @Cached("receiver.getMethod()") final SInvokable cached) {
       return call.call(new Object[] {receiver, arg1, arg2});
@@ -145,12 +141,12 @@ public abstract class BlockPrims {
 
   @GenerateNodeFactory
   public abstract static class ValueMorePrim extends QuaternaryExpressionNode {
-    public ValueMorePrim() { super(null); }
     @Specialization
     public final Object doSBlock(final SBlock receiver, final Object firstArg,
         final Object secondArg, final Object thirdArg) {
       CompilerDirectives.transferToInterpreter();
-      throw new RuntimeException("This should never be called, because SOM Blocks have max. 2 arguments.");
+      throw new RuntimeException(
+          "This should never be called, because SOM Blocks have max. 2 arguments.");
     }
   }
 }

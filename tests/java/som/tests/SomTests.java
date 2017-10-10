@@ -47,33 +47,35 @@ public class SomTests {
   @Parameters(name = "{0} [{index}]")
   public static Iterable<Object[]> data() {
     return Arrays.asList(new Object[][] {
-        {"LanguageTests",    null},
-        {"MixinTests",       null},
-        {"CollectionTests",  null},
-        {"DoubleTests",      null },
-        {"IntegerTests",     null },
+        {"LanguageTests", null},
+        {"MixinTests", null},
+        {"CollectionTests", null},
+        {"DoubleTests", null},
+        {"IntegerTests", null},
 
-        {"StringTests",      null },
-        {"ArrayLiteralTests", null },
-        {"SymbolTests",      null },
-        {"SystemTests",      null },
-        {"BenchmarkHarnessTests", null },
-        {"ActorTests",       null },
-        {"ProcessTests",     null },
-        {"ReflectionTests",  null },
-        {"RegressionTests",  null },
-        {"ThreadingTests",   null },
-        {"TransactionTests", null },
-        {"TransferObjectTests", null },
-        {"MinitestTests", "DISABLED, see issue #10 Failing MinitestTests in JUnit Harness, caching causes comparison of Exception object with old one to fail" },
-      });
+        {"StringTests", null},
+        {"ArrayLiteralTests", null},
+        {"SymbolTests", null},
+        {"SystemTests", null},
+        {"BenchmarkHarnessTests", null},
+        {"ActorTests", null},
+        {"ProcessTests", null},
+        {"ReflectionTests", null},
+        {"RegressionTests", null},
+        {"ThreadingTests", null},
+        {"TransactionTests", null},
+        {"TransferObjectTests", null},
+        {"ObjectLiteralTests", null},
+        {"MinitestTests",
+            "DISABLED, see issue #10 Failing MinitestTests in JUnit Harness, caching causes comparison of Exception object with old one to fail"},
+    });
   }
 
   private final String testName;
   private final String ignoreReason;
 
   public SomTests(final String testName, final String ignoreReason) {
-    this.testName     = testName;
+    this.testName = testName;
     this.ignoreReason = ignoreReason;
   }
 
@@ -82,8 +84,8 @@ public class SomTests {
     Assume.assumeTrue(ignoreReason, ignoreReason == null);
 
     VM vm = new VM(new VmOptions(new String[] {
-        "core-lib/TestSuite/TestRunner.som",
-        "core-lib/TestSuite/" + testName + ".som"}), true);
+        "core-lib/TestSuite/TestRunner.ns",
+        "core-lib/TestSuite/" + testName + ".ns"}), true);
 
     Builder builder = vm.createPolyglotBuilder();
     PolyglotEngine engine = builder.build();

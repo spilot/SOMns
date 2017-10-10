@@ -14,13 +14,12 @@ import tools.dym.Tags.LoopNode;
 
 @GenerateNodeFactory
 public abstract class WhilePrimitiveNode extends BinaryComplexOperation {
-  final boolean predicateBool;
+  final boolean               predicateBool;
   @Child protected WhileCache whileNode;
 
   protected WhilePrimitiveNode(final SourceSection source, final boolean predicateBool) {
-    super(false, source);
     this.predicateBool = predicateBool;
-    this.whileNode = WhileCacheNodeGen.create(source, predicateBool, null, null);
+    this.whileNode = WhileCacheNodeGen.create(predicateBool, null, null).initialize(source);
   }
 
   protected WhilePrimitiveNode(final WhilePrimitiveNode node) {
@@ -43,11 +42,15 @@ public abstract class WhilePrimitiveNode extends BinaryComplexOperation {
   }
 
   public abstract static class WhileTruePrimitiveNode extends WhilePrimitiveNode {
-    public WhileTruePrimitiveNode(final SourceSection source) { super(source, true); }
+    public WhileTruePrimitiveNode(final SourceSection source) {
+      super(source, true);
+    }
   }
 
   public abstract static class WhileFalsePrimitiveNode extends WhilePrimitiveNode {
-    public WhileFalsePrimitiveNode(final SourceSection source) { super(source, false); }
+    public WhileFalsePrimitiveNode(final SourceSection source) {
+      super(source, false);
+    }
   }
 
   @Override

@@ -1,43 +1,42 @@
 package som.interpreter.nodes.specialized.whileloops;
 
 import com.oracle.truffle.api.CompilerDirectives;
+import com.oracle.truffle.api.dsl.Cached;
+import com.oracle.truffle.api.dsl.ImportStatic;
+import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.dsl.UnsupportedSpecializationException;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.UnexpectedResultException;
-import com.oracle.truffle.api.source.SourceSection;
 
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
 import som.interpreter.nodes.specialized.SomLoop;
+import som.interpreter.nodes.superinstructions.WhileSmallerEqualThanArgumentNode;
 import som.interpreter.objectstorage.ObjectTransitionSafepoint;
+import som.vm.VmSettings;
 import som.vm.constants.Nil;
 import tools.dym.Tags.LoopNode;
 
-
-public final class WhileInlinedLiteralsNode extends ExprWithTagsNode {
+@ImportStatic({WhileSmallerEqualThanArgumentNode.class, VmSettings.class})
+abstract public class WhileInlinedLiteralsNode extends ExprWithTagsNode {
 
   @Child private ExpressionNode conditionNode;
   @Child private ExpressionNode bodyNode;
 
-  private final boolean expectedBool;
+  protected final boolean expectedBool;
 
   @SuppressWarnings("unused") private final ExpressionNode conditionActualNode;
   @SuppressWarnings("unused") private final ExpressionNode bodyActualNode;
 
-  public WhileInlinedLiteralsNode(
-      final ExpressionNode inlinedConditionNode,
-      final ExpressionNode inlinedBodyNode,
-      final boolean expectedBool,
-      final ExpressionNode originalConditionNode,
-      final ExpressionNode originalBodyNode,
-      final SourceSection sourceSection) {
-    super(sourceSection);
+  public WhileInlinedLiteralsNode(final ExpressionNode inlinedConditionNode,
+      final ExpressionNode inlinedBodyNode, final boolean expectedBool,
+      final ExpressionNode originalConditionNode, final ExpressionNode originalBodyNode) {
     this.conditionNode = inlinedConditionNode;
-    this.bodyNode      = inlinedBodyNode;
-    this.expectedBool  = expectedBool;
+    this.bodyNode = inlinedBodyNode;
+    this.expectedBool = expectedBool;
     this.conditionActualNode = originalConditionNode;
-    this.bodyActualNode      = originalBodyNode;
+    this.bodyActualNode = originalBodyNode;
   }
 
   @Override
@@ -59,8 +58,16 @@ public final class WhileInlinedLiteralsNode extends ExprWithTagsNode {
     }
   }
 
-  @Override
-  public Object executeGeneric(final VirtualFrame frame) {
+  /** Check for superinstruction ``WhileSmallerEqualThanArgumentNode`` */
+  @Specialization(guards = {"SUPERINSTRUCTIONS", "isApplicable"} )
+  public Object executeAndReplace(final VirtualFrame frame,
+                                  @Cached("isWhileSmallerEqualThanArgumentNode(expectedBool, getConditionNode(), frame)")
+                                  boolean isApplicable) {
+    return WhileSmallerEqualThanArgumentNode.replaceNode(this).executeGeneric(frame);
+  }
+
+  @Specialization(replaces = {"executeAndReplace"})
+  public Object execute(final VirtualFrame frame) {
     long iterationCount = 0;
 
     // TODO: this is a simplification, we don't cover the case receiver isn't a boolean
@@ -71,7 +78,9 @@ public final class WhileInlinedLiteralsNode extends ExprWithTagsNode {
         bodyNode.executeGeneric(frame);
         loopConditionResult = evaluateCondition(frame);
 
-        if (CompilerDirectives.inInterpreter()) { iterationCount++; }
+        if (CompilerDirectives.inInterpreter()) {
+          iterationCount++;
+        }
         ObjectTransitionSafepoint.INSTANCE.checkAndPerformSafepoint();
       }
     } finally {
@@ -85,5 +94,13 @@ public final class WhileInlinedLiteralsNode extends ExprWithTagsNode {
   @Override
   public boolean isResultUsed(final ExpressionNode child) {
     return false;
+  }
+
+  public ExpressionNode getConditionNode() {
+    return conditionNode;
+  }
+
+  public ExpressionNode getBodyNode() {
+    return bodyNode;
   }
 }

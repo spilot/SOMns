@@ -5,8 +5,8 @@ import java.util.concurrent.locks.Lock;
 import com.oracle.truffle.api.CompilerDirectives;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.Instrumentable;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.nodes.PreevaluatedExpression;
 import som.VM;
 import som.compiler.MixinBuilder.MixinDefinitionId;
 import som.instrumentation.MessageSendNodeWrapper;
@@ -19,10 +19,10 @@ import som.vmobjects.SSymbol;
 @Instrumentable(factory = MessageSendNodeWrapper.class)
 public final class ResolvingImplicitReceiverSend extends AbstractMessageSendNode {
 
-  private final SSymbol     selector;
-  private final MethodScope currentScope;
+  private final SSymbol           selector;
+  private final MethodScope       currentScope;
   private final MixinDefinitionId mixinId;
-  private final VM vm;
+  private final VM                vm;
 
   /**
    * A helper field used to make sure we specialize this node only once,
@@ -38,23 +38,23 @@ public final class ResolvingImplicitReceiverSend extends AbstractMessageSendNode
 
   public ResolvingImplicitReceiverSend(final SSymbol selector,
       final ExpressionNode[] arguments, final MethodScope currentScope,
-      final MixinDefinitionId mixinId, final SourceSection source, final VM vm) {
-    super(arguments, source);
-    this.selector     = selector;
+      final MixinDefinitionId mixinId, final VM vm) {
+    super(arguments);
+    this.selector = selector;
     this.currentScope = currentScope;
-    this.mixinId      = mixinId;
-    this.vm           = vm;
+    this.mixinId = mixinId;
+    this.vm = vm;
   }
 
   /**
    * For wrapped nodes only.
    */
   protected ResolvingImplicitReceiverSend(final ResolvingImplicitReceiverSend wrappedNode) {
-    super(null, null);
-    this.selector     = wrappedNode.selector;
+    super(null);
+    this.selector = wrappedNode.selector;
     this.currentScope = wrappedNode.currentScope;
-    this.mixinId      = wrappedNode.mixinId;
-    this.vm           = wrappedNode.vm;
+    this.mixinId = wrappedNode.mixinId;
+    this.vm = wrappedNode.vm;
   }
 
   @Override
@@ -77,8 +77,7 @@ public final class ResolvingImplicitReceiverSend extends AbstractMessageSendNode
     } finally {
       lock.unlock();
     }
-    return newNode.
-        doPreEvaluated(frame, args);
+    return newNode.doPreEvaluated(frame, args);
   }
 
   private PreevaluatedExpression specialize(final Object[] args) {
@@ -95,19 +94,21 @@ public final class ResolvingImplicitReceiverSend extends AbstractMessageSendNode
     MixinIdAndContextLevel result = currentScope.lookupSlotOrClass(selector);
     if (result != null && result.contextLevel > 0) {
       newReceiverNodeForOuterSend = OuterObjectReadNodeGen.create(
-          result.contextLevel, mixinId, result.mixinId, sourceSection,
-          argumentNodes[0]);
+          result.contextLevel, mixinId, result.mixinId,
+          argumentNodes[0]).initialize(sourceSection);
       ExpressionNode[] msgArgNodes = argumentNodes.clone();
       msgArgNodes[0] = newReceiverNodeForOuterSend;
 
-      replacedBy = (PreevaluatedExpression) MessageSendNode.createMessageSend(selector, msgArgNodes,
-          getSourceSection(), vm);
+      replacedBy =
+          (PreevaluatedExpression) MessageSendNode.createMessageSend(selector, msgArgNodes,
+              getSourceSection(), vm);
 
       replace((ExpressionNode) replacedBy);
       args[0] = newReceiverNodeForOuterSend.executeEvaluated(args[0]);
     } else {
-      replacedBy = (PreevaluatedExpression) MessageSendNode.createMessageSend(selector, argumentNodes,
-          getSourceSection(), vm);
+      replacedBy =
+          (PreevaluatedExpression) MessageSendNode.createMessageSend(selector, argumentNodes,
+              getSourceSection(), vm);
       replace((ExpressionNode) replacedBy);
     }
     return replacedBy;

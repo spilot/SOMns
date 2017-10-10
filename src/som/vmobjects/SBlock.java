@@ -29,10 +29,10 @@ import com.oracle.truffle.api.interop.ForeignAccess;
 import com.oracle.truffle.api.interop.TruffleObject;
 
 import som.interop.SBlockInteropMessageResolutionForeign;
-import som.interpreter.SArguments;
 
 
-public final class SBlock extends SAbstractObject implements TruffleObject {
+public final class SBlock extends SAbstractObject
+    implements TruffleObject, SObjectWithContext {
 
   private final SInvokable        method;
   private final MaterializedFrame context;
@@ -40,8 +40,8 @@ public final class SBlock extends SAbstractObject implements TruffleObject {
 
   public SBlock(final SInvokable blockMethod, final MaterializedFrame context,
       final SClass blockClass) {
-    this.method     = blockMethod;
-    this.context    = context;
+    this.method = blockMethod;
+    this.context = context;
     this.blockClass = blockClass;
   }
 
@@ -49,13 +49,10 @@ public final class SBlock extends SAbstractObject implements TruffleObject {
     return method;
   }
 
+  @Override
   public MaterializedFrame getContext() {
     assert context != null;
     return context;
-  }
-
-  public Object getOuterSelf() {
-    return SArguments.rcvr(getContext());
   }
 
   @Override

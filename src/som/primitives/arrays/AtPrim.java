@@ -8,6 +8,8 @@ import com.oracle.truffle.api.nodes.RootNode;
 import com.oracle.truffle.api.profiles.ValueProfile;
 import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
+import bd.primitives.Specializer;
 import som.VM;
 import som.interpreter.Invokable;
 import som.interpreter.SArguments;
@@ -16,33 +18,33 @@ import som.interpreter.nodes.MessageSendNode;
 import som.interpreter.nodes.MessageSendNode.AbstractMessageSendNode;
 import som.interpreter.nodes.nary.BinaryBasicOperation;
 import som.interpreter.transactions.TxArrayAccessFactory.TxBinaryArrayOpNodeGen;
-import som.primitives.Primitive;
 import som.primitives.arrays.AtPrim.TxAtPrim;
-import som.vm.Primitives.Specializer;
 import som.vm.Symbols;
 import som.vm.constants.KernelObj;
 import som.vm.constants.Nil;
 import som.vmobjects.SArray;
+import som.vmobjects.SSymbol;
 import tools.dym.Tags.ArrayRead;
 
 
 @GenerateNodeFactory
 @Primitive(primitive = "array:at:", selector = "at:", receiverType = SArray.class,
-           inParser = false, specializer = TxAtPrim.class)
+    inParser = false, specializer = TxAtPrim.class)
 public abstract class AtPrim extends BinaryBasicOperation {
-  protected static final class TxAtPrim extends Specializer<BinaryBasicOperation> {
-    public TxAtPrim(final Primitive prim, final NodeFactory<BinaryBasicOperation> fact, final VM vm) {
+  protected static final class TxAtPrim extends Specializer<VM, ExpressionNode, SSymbol> {
+    public TxAtPrim(final Primitive prim, final NodeFactory<ExpressionNode> fact,
+        final VM vm) {
       super(prim, fact, vm);
     }
 
     @Override
-    public BinaryBasicOperation create(final Object[] arguments,
+    public ExpressionNode create(final Object[] arguments,
         final ExpressionNode[] argNodes, final SourceSection section,
         final boolean eagerWrapper) {
-      BinaryBasicOperation node = super.create(arguments, argNodes, section, eagerWrapper);
+      ExpressionNode node = super.create(arguments, argNodes, section, eagerWrapper);
 
       // TODO: seems a bit expensive,
-      //       might want to optimize for interpreter first iteration speed
+      // might want to optimize for interpreter first iteration speed
       // TODO: clone in UnitializedDispatchNode.AbstractUninitialized.forAtomic()
       RootNode root = argNodes[0].getRootNode();
       boolean forAtomic;
@@ -50,12 +52,13 @@ public abstract class AtPrim extends BinaryBasicOperation {
         forAtomic = ((Invokable) root).isAtomic();
       } else {
         // TODO: need to think about integration with actors, but, that's a
-        //       later research project
+        // later research project
         forAtomic = false;
       }
 
       if (forAtomic) {
-        return TxBinaryArrayOpNodeGen.create(eagerWrapper, section, node, null, null);
+        return TxBinaryArrayOpNodeGen.create((BinaryBasicOperation) node, null, null)
+                                     .initialize(section, eagerWrapper);
       } else {
         return node;
       }
@@ -66,10 +69,13 @@ public abstract class AtPrim extends BinaryBasicOperation {
 
   @Child protected AbstractMessageSendNode exception;
 
-  protected AtPrim(final boolean eagWrap, final SourceSection source) {
-    super(eagWrap, source);
-    exception = MessageSendNode.createGeneric(
-        Symbols.symbolFor("signalWith:index:"), null, getSourceSection());
+  @Override
+  @SuppressWarnings("unchecked")
+  public AtPrim initialize(final SourceSection sourceSection) {
+    super.initialize(sourceSection);
+    this.exception = MessageSendNode.createGeneric(
+        Symbols.symbolFor("signalWith:index:"), null, sourceSection);
+    return this;
   }
 
   @Override
@@ -83,7 +89,8 @@ public abstract class AtPrim extends BinaryBasicOperation {
 
   private Object triggerException(final VirtualFrame frame,
       final SArray arr, final long idx) {
-    int rcvrIdx = SArguments.RCVR_IDX; assert rcvrIdx == 0;
+    int rcvrIdx = SArguments.RCVR_IDX;
+    assert rcvrIdx == 0;
     return exception.doPreEvaluated(frame,
         new Object[] {KernelObj.indexOutOfBoundsClass, arr, idx});
   }

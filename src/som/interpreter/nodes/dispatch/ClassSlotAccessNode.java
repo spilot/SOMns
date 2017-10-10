@@ -7,8 +7,8 @@ import com.oracle.truffle.api.nodes.DirectCallNode;
 
 import som.compiler.MixinDefinition;
 import som.interpreter.Invokable;
-import som.interpreter.nodes.ClassInstantiationNode;
-import som.interpreter.nodes.ClassInstantiationNodeGen;
+import som.interpreter.nodes.InstantiationNode.ClassInstantiationNode;
+import som.interpreter.nodes.InstantiationNodeFactory.ClassInstantiationNodeGen;
 import som.vm.constants.Nil;
 import som.vmobjects.SClass;
 import som.vmobjects.SObject;
@@ -19,16 +19,17 @@ import som.vmobjects.SObject;
  * is realized as a simple message send in Newspeak, and as a result, part of
  * the dispatch chain.
  *
- * <p>The Newspeak semantics defines that class objects are allocated lazily.
+ * <p>
+ * The Newspeak semantics defines that class objects are allocated lazily.
  * This is realized here using read/write nodes on a slot of the enclosing
  * object, where the initialized class object is cached.
  */
 public final class ClassSlotAccessNode extends CachedSlotRead {
-  private final MixinDefinition mixinDef;
-  @Child protected DirectCallNode superclassAndMixinResolver;
+  private final MixinDefinition           mixinDef;
+  @Child protected DirectCallNode         superclassAndMixinResolver;
   @Child protected ClassInstantiationNode instantiation;
 
-  @Child protected CachedSlotRead read;
+  @Child protected CachedSlotRead  read;
   @Child protected CachedSlotWrite write;
 
   public ClassSlotAccessNode(final MixinDefinition mixinDef,

@@ -4,14 +4,13 @@ import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.StandardTags.StatementTag;
-import com.oracle.truffle.api.source.SourceSection;
 
+import bd.primitives.Primitive;
 import som.VM;
 import som.interpreter.actors.SuspendExecutionNodeGen;
-import som.interpreter.nodes.nary.BinaryComplexOperation;
+import som.interpreter.nodes.nary.BinaryComplexOperation.BinarySystemOperation;
 import som.interpreter.nodes.nary.UnaryExpressionNode;
 import som.interpreter.transactions.Transactions;
-import som.primitives.Primitive;
 import som.vm.VmSettings;
 import som.vmobjects.SBlock;
 import som.vmobjects.SClass;
@@ -26,22 +25,23 @@ import tools.debugger.session.Breakpoints;
 
 
 @GenerateNodeFactory
-@Primitive(primitive = "tx:atomic:", requiresContext = true, selector = "atomic:")
-public abstract class AtomicPrim extends BinaryComplexOperation {
-  private final VM vm;
-
+@Primitive(primitive = "tx:atomic:", selector = "atomic:")
+public abstract class AtomicPrim extends BinarySystemOperation {
   @Child protected AbstractBreakpointNode beforeCommit;
   @Child protected UnaryExpressionNode    haltNode;
 
-  protected AtomicPrim(final boolean eagWrap, final SourceSection source, final VM vm) {
-    super(eagWrap, source);
-    this.vm = vm;
-    beforeCommit = insert(Breakpoints.create(source, BreakpointType.ATOMIC_BEFORE_COMMIT, vm));
-    haltNode = SuspendExecutionNodeGen.create(false, sourceSection, null);
+  @Override
+  public final AtomicPrim initialize(final VM vm) {
+    super.initialize(vm);
+    beforeCommit = insert(
+        Breakpoints.create(sourceSection, BreakpointType.ATOMIC_BEFORE_COMMIT, vm));
+    haltNode = SuspendExecutionNodeGen.create(0, null).initialize(sourceSection);
+    return this;
   }
 
   @Specialization
-  public final Object atomic(final VirtualFrame frame, final SClass clazz, final SBlock block) {
+  public final Object atomic(final VirtualFrame frame, final SClass clazz,
+      final SBlock block) {
     // TODO: needs to be optimized for compilation
     if (VmSettings.TRUFFLE_DEBUGGER_ENABLED &&
         SteppingType.STEP_TO_NEXT_TX.isSet()) {
@@ -54,7 +54,8 @@ public abstract class AtomicPrim extends BinaryComplexOperation {
         if (VmSettings.TRUFFLE_DEBUGGER_ENABLED) {
           TracingActivityThread.currentThread().enterConcurrentScope(EntityType.TRANSACTION);
 
-          // TODO: here we are using a different approach for stepping, and for breakpointing, should unify
+          // TODO: here we are using a different approach for stepping, and for breakpointing,
+          // should unify
           if (beforeCommit.executeShouldHalt()) {
             vm.getWebDebugger().prepareSteppingAfterNextRootNode();
           }
@@ -74,7 +75,7 @@ public abstract class AtomicPrim extends BinaryComplexOperation {
           }
 
           // TODO: still need to make sure that we don't have
-          //       a working copy as `result`, I think, or do I?
+          // a working copy as `result`, I think, or do I?
           return result;
         }
       } catch (Throwable t) {
@@ -90,7 +91,7 @@ public abstract class AtomicPrim extends BinaryComplexOperation {
           }
 
           // TODO: still need to make sure that we don't have
-          //       a working copy as value in `t`, I think, or do I?
+          // a working copy as value in `t`, I think, or do I?
           throw t;
         }
       } finally {
@@ -100,7 +101,6 @@ public abstract class AtomicPrim extends BinaryComplexOperation {
       }
     }
   }
-
 
   @Override
   protected boolean isTaggedWithIgnoringEagerness(final Class<?> tag) {
