@@ -10,6 +10,7 @@ import tools.dym.profiles.TypeCounter;
 
 import java.util.Map;
 
+
 /**
  * Simple execution event node which may be used in conjunction with `TypeCounter`
  * to count node activations while also keeping track of the respective result types.
@@ -17,7 +18,9 @@ import java.util.Map;
 public class TypeCountingNode<T extends TypeCounter> extends ExecutionEventNode {
   protected final T counter;
 
-  public TypeCountingNode(final T counter) { this.counter = counter; }
+  public TypeCountingNode(final T counter) {
+    this.counter = counter;
+  }
 
   @Override
   protected void onReturnValue(final VirtualFrame frame, final Object result) {
@@ -29,9 +32,9 @@ public class TypeCountingNode<T extends TypeCounter> extends ExecutionEventNode 
     // TODO: make language independent
     if (e instanceof ReturnException) {
       counter.recordType(((ReturnException) e).result());
-    } else if(e instanceof UnexpectedResultException) {
+    } else if (e instanceof UnexpectedResultException) {
       counter.recordType(((UnexpectedResultException) e).getResult());
-    } else if(e instanceof SomException) {
+    } else if (e instanceof SomException) {
       return;
     } else {
       throw new NotYetImplementedException();

@@ -19,17 +19,18 @@ import tools.dym.Tags;
 
 import java.util.List;
 
+
 /**
  * Created by fred on 29/09/17.
  */
 public abstract class AssignProductToVariableNode extends LocalVariableNode {
-  protected final FrameSlot leftSlot, rightSlot;
+  protected final FrameSlot         leftSlot, rightSlot;
   protected final LocalVariableNode originalSubtree;
 
   public AssignProductToVariableNode(final Variable.Local destination,
-                                     final Variable.Local left,
-                                     final Variable.Local right,
-                                     final LocalVariableNode originalSubtree) {
+      final Variable.Local left,
+      final Variable.Local right,
+      final LocalVariableNode originalSubtree) {
     super(destination);
     this.leftSlot = left.getSlot();
     this.rightSlot = right.getSlot();
@@ -98,26 +99,31 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
 
   @Override
   public void replaceAfterScopeChange(final InliningVisitor inliner) {
-    /* This should never happen because ``replaceAfterScopeChange`` is only called in the
-    parsing stage, whereas the ``IncrementOperationNode`` superinstruction is only inserted
-    into the AST *after* parsing. */
+    /*
+     * This should never happen because ``replaceAfterScopeChange`` is only called in the
+     * parsing stage, whereas the ``IncrementOperationNode`` superinstruction is only inserted
+     * into the AST *after* parsing.
+     */
     throw new RuntimeException("replaceAfterScopeChange: This should never happen!");
   }
 
-  /** Check if the AST subtree has the correct shape, i.e. looks like this:
+  /**
+   * Check if the AST subtree has the correct shape, i.e. looks like this:
    * LocalVariableWriteNode
    * |- EagerBinaryPrimitiveNode
-   *    |- LocalVariableReadNode
-   *    |- LocalVariableReadNode
-   *    |- MultiplicationPrim
+   * |- LocalVariableReadNode
+   * |- LocalVariableReadNode
+   * |- MultiplicationPrim
    */
   public static boolean isAssignProductOperation(ExpressionNode exp) {
     exp = SOMNode.unwrapIfNecessary(exp);
-    if(exp instanceof EagerBinaryPrimitiveNode) {
-      EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode)exp;
-      if(SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode
-              && SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode
-              && SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof MultiplicationPrim) {
+    if (exp instanceof EagerBinaryPrimitiveNode) {
+      EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
+      if (SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode
+          && SOMNode.unwrapIfNecessary(
+              eagerNode.getArgument()) instanceof LocalVariableReadNode
+          && SOMNode.unwrapIfNecessary(
+              eagerNode.getPrimitive()) instanceof MultiplicationPrim) {
         return true;
       }
     }
@@ -125,13 +131,16 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
   }
 
   public static void replaceNode(LocalVariableWriteNode node) {
-    EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode)SOMNode.unwrapIfNecessary(node.getExp());
-    Variable.Local left = ((LocalVariableReadNode)SOMNode.unwrapIfNecessary(eagerNode.getReceiver())).getVar();
-    Variable.Local right = ((LocalVariableReadNode)SOMNode.unwrapIfNecessary(eagerNode.getArgument())).getVar();
+    EagerBinaryPrimitiveNode eagerNode =
+        (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getExp());
+    Variable.Local left =
+        ((LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getReceiver())).getVar();
+    Variable.Local right =
+        ((LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getArgument())).getVar();
     AssignProductToVariableNode newNode = AssignProductToVariableNodeGen.create(node.getVar(),
-            left,
-            right,
-            node).initialize(node.getSourceSection());
+        left,
+        right,
+        node).initialize(node.getSourceSection());
     node.replace(newNode);
     VM.insertInstrumentationWrapper(newNode);
   }

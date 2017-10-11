@@ -119,7 +119,7 @@ public abstract class SOMNode extends Node {
 
   @Override
   protected boolean isTaggedWith(Class<?> tag) {
-    if(tag == Tags.AnyNode.class) {
+    if (tag == Tags.AnyNode.class) {
       return true;
     } else {
       return false;

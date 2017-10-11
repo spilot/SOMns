@@ -2,6 +2,7 @@ package tools.dym.superinstructions;
 
 import java.util.*;
 
+
 /**
  * Representation of a superinstruction candidate. This is a tree
  * of nodes which denotes the AST subtree that would be replaced by the superinstruction.
@@ -56,8 +57,8 @@ public class Candidate {
   }
 
   public static class Node {
-    private String nodeClass;
-    private String javaType;
+    private String             nodeClass;
+    private String             javaType;
     private Map<Integer, Node> children;
 
     public Node(String nodeClass, String javaType) {
@@ -89,8 +90,8 @@ public class Candidate {
       if (o == null || getClass() != o.getClass()) return false;
       Node node = (Node) o;
       return Objects.equals(nodeClass, node.nodeClass) &&
-              Objects.equals(javaType, node.javaType) &&
-              Objects.equals(children, node.children);
+          Objects.equals(javaType, node.javaType) &&
+          Objects.equals(children, node.children);
     }
 
     @Override
@@ -108,17 +109,17 @@ public class Candidate {
         builder.append("  ");
       }
       builder.append(abbreviateClass(nodeClass))
-              .append('[')
-              .append(abbreviateClass(javaType))
-              .append(']')
-              .append('\n');
+             .append('[')
+             .append(abbreviateClass(javaType))
+             .append(']')
+             .append('\n');
       // Find the maximum slot index
       int maxKey = children.keySet().stream()
-              .max(Comparator.comparingInt(e -> e))
-              .orElse(-1);
+                           .max(Comparator.comparingInt(e -> e))
+                           .orElse(-1);
       // Recursively print all slots
       for (int slot = 0; slot <= maxKey; slot++) {
-        if(children.containsKey(slot)) {
+        if (children.containsKey(slot)) {
           children.get(slot).prettyPrint(builder, level + 1);
         } else {
           Node dummy = new Node("?", "?");

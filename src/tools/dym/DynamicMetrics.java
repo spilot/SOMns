@@ -83,7 +83,7 @@ public class DynamicMetrics extends TruffleInstrument {
   private final Map<SourceSection, ReadValueProfile> localsReadProfiles;
   private final Map<SourceSection, Counter>          localsWriteProfiles;
 
-  private final Map<Node, TypeCounter>                   activations;
+  private final Map<Node, TypeCounter> activations;
 
   private final StructuralProbe structuralProbe;
 
@@ -118,7 +118,7 @@ public class DynamicMetrics extends TruffleInstrument {
     localsReadProfiles = new HashMap<>();
     localsWriteProfiles = new HashMap<>();
 
-    activations      = new HashMap<>();
+    activations = new HashMap<>();
 
     rootNodes = new HashSet<>();
 
@@ -367,7 +367,7 @@ public class DynamicMetrics extends TruffleInstrument {
     SourceSectionFilter filter = SourceSectionFilter.newBuilder().tagIs(AnyNode.class).build();
     ExecutionEventNodeFactory factory = (final EventContext ctx) -> {
       TypeCounter p = activations.computeIfAbsent(ctx.getInstrumentedNode(),
-              k -> new TypeCounter(ctx.getInstrumentedSourceSection()));
+          k -> new TypeCounter(ctx.getInstrumentedSourceSection()));
       return new TypeCountingNode<>(p);
     };
     instrumenter.attachFactory(filter, factory);
@@ -414,7 +414,7 @@ public class DynamicMetrics extends TruffleInstrument {
     Path reportPath = Paths.get(metricsFolder, "superinstruction-candidates.txt");
     try {
       Files.write(reportPath, report.getBytes());
-    } catch(IOException e) {
+    } catch (IOException e) {
       throw new RuntimeException("Could not write superinstruction candidate report: " + e);
     }
   }

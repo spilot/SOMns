@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+
 /**
  * This class represents an activation context consisting of a trace and a Java type.
  * Its objects are immutable and hashable.
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
  */
 public class ActivationContext {
   private final Object[] trace;
-  private final String javaType;
+  private final String   javaType;
 
   public ActivationContext(Object[] trace, String javaType) {
     this.trace = trace;
@@ -26,7 +27,7 @@ public class ActivationContext {
     if (o == null || getClass() != o.getClass()) return false;
     ActivationContext that = (ActivationContext) o;
     return Arrays.equals(trace, that.trace) &&
-            Objects.equals(javaType, that.javaType);
+        Objects.equals(javaType, that.javaType);
   }
 
   @Override
@@ -43,7 +44,7 @@ public class ActivationContext {
 
   /**
    * @return a String representation of the activation context in
-   * the form of "C_0,s_0,...C_n[type]"
+   *         the form of "C_0,s_0,...C_n[type]"
    */
   public String toString() {
     return String.format("%s[%s]", getTraceAsString(), javaType);
@@ -83,7 +84,7 @@ public class ActivationContext {
    */
   public String getClass(int i) {
     assert i < getNumberOfClasses();
-    return (String)trace[i * 2];
+    return (String) trace[i * 2];
   }
 
   /**
@@ -91,19 +92,18 @@ public class ActivationContext {
    */
   public int getChildIndex(int i) {
     assert i < getNumberOfClasses() - 1;
-    return (Integer)trace[i * 2 + 1];
+    return (Integer) trace[i * 2 + 1];
   }
-
 
   /**
    * Given an object array, return true if it is a prefix of the activation trace.
    */
   public boolean traceStartsWith(Object[] prefix) {
-    if(trace.length < prefix.length) return false;
-    for(int i = 0; i < prefix.length; i++)
-      if(!trace[i].equals(prefix[i])) {
+    if (trace.length < prefix.length) return false;
+    for (int i = 0; i < prefix.length; i++)
+      if (!trace[i].equals(prefix[i])) {
         return false;
-    }
+      }
     return true;
   }
 }

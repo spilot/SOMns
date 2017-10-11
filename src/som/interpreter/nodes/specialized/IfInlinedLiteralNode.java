@@ -46,10 +46,9 @@ abstract public class IfInlinedLiteralNode extends ExprWithTagsNode {
     }
   }
 
-  @Specialization(guards = { "SUPERINSTRUCTIONS", "isApplicable"})
+  @Specialization(guards = {"SUPERINSTRUCTIONS", "isApplicable"})
   public Object executeAndReplace(final VirtualFrame frame,
-                                  @Cached("isIfSumGreaterNode(expectedBool, getConditionNode(), frame)")
-                                          boolean isApplicable) {
+      @Cached("isIfSumGreaterNode(expectedBool, getConditionNode(), frame)") boolean isApplicable) {
     return IfSumGreaterNode.replaceNode(this).executeGeneric(frame);
   }
 

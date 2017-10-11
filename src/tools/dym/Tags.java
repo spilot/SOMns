@@ -116,6 +116,6 @@ public abstract class Tags {
   }
 
   public final class AnyNode extends Tags {
-    private AnyNode() { }
+    private AnyNode() {}
   }
 }

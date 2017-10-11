@@ -10,6 +10,7 @@ import tools.dym.profiles.TypeCounter;
 
 import java.util.*;
 
+
 /**
  * The context collector performs the first step of the superinstruction
  * detection heuristic.
@@ -18,7 +19,7 @@ import java.util.*;
  * a map mapping activation contexts to activation counts.
  */
 public class ContextCollector implements NodeVisitor {
-  private Map<Node, TypeCounter> activationCounters;
+  private Map<Node, TypeCounter>       activationCounters;
   private Map<ActivationContext, Long> contexts;
 
   private static final int CONTEXT_LEVEL = 2;
@@ -33,7 +34,7 @@ public class ContextCollector implements NodeVisitor {
    * and return it as a ``List<Object>``.
    */
   private List<Object> constructTrace(Node node, int contextLevel) {
-    if(contextLevel == 0 || node.getParent() == null) {
+    if (contextLevel == 0 || node.getParent() == null) {
       // If the contextLevel is 0 or if the node is the tree root,
       // we return a list with just one element: The node class name.
       assert !(node instanceof InstrumentableFactory.WrapperNode);
@@ -75,12 +76,14 @@ public class ContextCollector implements NodeVisitor {
   }
 
   /**
-   * Construct an activation context of a given length for a given node and activation result Java class.
+   * Construct an activation context of a given length for a given node and activation result
+   * Java class.
    */
-  private ActivationContext makeActivationContext(Node node, Class<?> javaType, int contextLevel) {
+  private ActivationContext makeActivationContext(Node node, Class<?> javaType,
+      int contextLevel) {
     return new ActivationContext(
-            constructTrace(node, contextLevel).toArray(),
-            javaType.getName());
+        constructTrace(node, contextLevel).toArray(),
+        javaType.getName());
   }
 
   /**
@@ -88,7 +91,7 @@ public class ContextCollector implements NodeVisitor {
    */
   public String getNodeClass(Node node) {
     // EagerPrimitive nodes get an artificial class name that contains their operation.
-    if(node instanceof EagerPrimitive) {
+    if (node instanceof EagerPrimitive) {
       return "PrimitiveOperation:" + ((EagerPrimitive) node).getOperation();
     } else {
       return node.getClass().getName();
@@ -99,17 +102,17 @@ public class ContextCollector implements NodeVisitor {
    * Recursively visit a Node and its children and construct activation contexts.
    */
   public boolean visit(Node node) {
-    if(node instanceof InstrumentableFactory.WrapperNode
-            || node instanceof RootNode)
+    if (node instanceof InstrumentableFactory.WrapperNode
+        || node instanceof RootNode)
       return true;
     TypeCounter activationCounter = activationCounters.get(node);
-    if(activationCounter != null) {
+    if (activationCounter != null) {
       Map<Class<?>, Long> activationsByType = activationCounter.getActivations();
       // Handle each activation result Java type separately.
-      for(Class<?> javaType : activationsByType.keySet()) {
+      for (Class<?> javaType : activationsByType.keySet()) {
         long typeActivations = activationsByType.get(javaType);
         // Construct contexts up to CONTEXT_LENGTH and store them in ``contexts``.
-        for(int level = 0; level <= CONTEXT_LEVEL; level++) {
+        for (int level = 0; level <= CONTEXT_LEVEL; level++) {
           ActivationContext context = makeActivationContext(node, javaType, level);
           contexts.merge(context, typeActivations, Long::sum);
         }

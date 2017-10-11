@@ -59,10 +59,9 @@ abstract public class WhileInlinedLiteralsNode extends ExprWithTagsNode {
   }
 
   /** Check for superinstruction ``WhileSmallerEqualThanArgumentNode`` */
-  @Specialization(guards = {"SUPERINSTRUCTIONS", "isApplicable"} )
+  @Specialization(guards = {"SUPERINSTRUCTIONS", "isApplicable"})
   public Object executeAndReplace(final VirtualFrame frame,
-                                  @Cached("isWhileSmallerEqualThanArgumentNode(expectedBool, getConditionNode(), frame)")
-                                  boolean isApplicable) {
+      @Cached("isWhileSmallerEqualThanArgumentNode(expectedBool, getConditionNode(), frame)") boolean isApplicable) {
     return WhileSmallerEqualThanArgumentNode.replaceNode(this).executeGeneric(frame);
   }
 

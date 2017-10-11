@@ -5,13 +5,14 @@ import com.oracle.truffle.api.source.SourceSection;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * A counter which keeps track of the number of node activations
  * and their respective result types (that is, Java types).
  */
 public class TypeCounter {
   protected final SourceSection source;
-  private Map<Class<?>, Long> activations;
+  private Map<Class<?>, Long>   activations;
 
   public TypeCounter(final SourceSection source) {
     this.source = source;
