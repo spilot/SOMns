@@ -24,25 +24,47 @@ The heuristic consist of two stages: The \emph{context collection} stage and the
 
 \subsection{Context Collection}
 
-During execution of the program in question, the modified SOMns interpreter dynamically counts the number of activations for each AST node. Here, it also takes the Java type of the activation result into account. Consider, for example, the following code snippet:
+During execution of the program in question, the modified SOMns interpreter dynamically counts the number of activations for each AST node. In this, it also takes the Java type of the activation result into account. Consider, for example, the following code snippet:
 \begin{verbatim}
 value:: value + 1
 \end{verbatim}
-which will be parsed into an AST similar to the one shown in Figure~\ref{fig:increment}. Let us assume that the \textsf{value} slot stores a numeric value represented by a Java \textsf{Long} and let us consider a program run in which the \textsf{LocalVariableReadNode} is activated 100 times. During execution, the dynamic analysis records the fact that the \textsf{LocalVariableReadNode} has been activated 100 times, each time producing a \textsf{Long} value. This analysis is implemented in the \textsf{tools.dym.nodes.TypeCountingNode} and \textsf{tools.dym.profiles.TypeCounter} classes.
+which will be parsed into an AST similar to the following:
+\begin{verbatim}
+LocalVariableWriteNode
+  EagerBinaryPrimitiveNode
+    LocalVariableReadNode
+    IntegerLiteralNode
+    AdditionPrim
+\end{verbatim}
+We now assume that the \textsf{value} slot stores a numeric value represented by a Java \textsf{Long} and consider a program run in which the \textsf{LocalVariableReadNode} is activated 100 times. During execution, the dynamic analysis records the fact that the \textsf{LocalVariableReadNode} has been activated 100 times, each time producing a \textsf{Long} value. This dynamic analysis is implemented in the \textsf{tools.dym.nodes.TypeCountingNode} and \textsf{tools.dym.profiles.TypeCounter} classes.
 
-After execution, the analysis constructs a set of activation contexts from the execution. For each node in the complete AST, it constructs a \emph{trace} which represents the execution context:
+After execution, the analysis constructs a set of so-called \emph{activation contexts}. An activation context consists of two parts, a \emph{trace} and a \emph{type}, and is implemented in \textsf{tools.dym.superinstructions.ActivationContext}.
 
-A trace is a sequence of strings and integers and has the general form
-
+The \emph{type} denotes the Java type of the node activation result. A \emph{trace} is a sequence of strings and integers and has the general form
 \begin{align*}
-[ C_0, i_0, C_1, ..., i_{k - 1}, C_{k}]
+[ C_0, s_0, C_1, ..., s_{n - 1}, C_{n}]
 \end{align*}
+in which all $C_k$ are Java node class names and all $s_k$ are child slot indices. A trace represents the environment in which a node was activated. The rightmost node class name (i.e. $C_n$) is the class name of the activated node. Its preceding node class name $C_{n-1}$ denotes its parent AST node and $s_{n-1}$ denotes the child slot in which the activated node is located. This construction is continued extended up to a predefined length.
 
-in which all $C_i$ are Java node class names and all $i_0$ are child slot indices.
+Instances of \textsf{EagerPrimitive} nodes are handled separately: Here, the heuristic constructs an artificial node class from the operation name, e.g.\ an \textsf{EagerBinaryPrimitiveNode} node with an addition primitive is denoted as \textsf{PrimitiveOperation:+}.
 
-\begin{align*}
-[ LocalVariableWriteNode, 0, PrimitiveOperation:+, 0, LocalVariableReadNode]
-\end{align*}
+In my heuristic, I construct traces up to $n=2$. Thus, for the \textsf{LocalVariableReadNode} in the exemplary AST, the following activation contexts are constructed:
+
+\begin{verbatim}
+ActivationContext(type=Long, trace=[LocalVariableReadNode])
+ActivationContext(type=Long, trace=[PrimitiveOperation:+, 0,
+                                    LocalVariableReadNode])
+ActivationContext(type=Long, trace=[LocalVariableWriteNode, 0,
+                                    PrimitiveOperation:+, 0,
+                                    LocalVariableReadNode])
+\end{verbatim}
+
+Each activation context is annotated with its number of activations. In the example, all three activation contexts are annotated with $100$ (because the corresponding \textsf{LocalVariableReadNode} was activated 100 times). The context collector is implemented in \textsf{tools.dym.superinstructions.ContextCollector}.
+
+The result of the context collection stage is a map mapping activation contexts to activation counts.
+
+\subsection{Candidate Detection}
+
 
 
 \section{Superinstructions}
@@ -52,21 +74,5 @@ in which all $C_i$ are Java node class names and all $i_0$ are child slot indice
 The superinstruction \sinst{increment} represents the increment of a local \textsf{Long} variable by a fixed integer.
 In other words, the following subtree:
 
-\begin{figure}
-	\centering
-\begin{tikzpicture}[%
-grow via three points={one child at (0.5,-0.7) and
-	two children at (0.5,-0.7) and (0.5,-1.4)},
-edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
-\node {LocalVariableWriteNode}
-child { node {EagerBinaryPrimitiveNode}
-	child { node {LocalVariableReadNode}}
-	child { node {IntegerLiteralNode}}
-	child { node {AdditionPrim}}
-};
-\end{tikzpicture}
-\caption{AST subtree}
-\label{fig:increment}
-\end{figure}
-	
+
 \end{document}

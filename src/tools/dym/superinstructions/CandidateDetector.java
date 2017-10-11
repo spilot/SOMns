@@ -8,34 +8,43 @@ import java.util.stream.Stream;
  * Created by fred on 04/10/17.
  */
 public class CandidateDetector {
-  static public int CONSIDER_CHILDREN = 100;
+  static public int CONSIDER_TOP_CONTEXTS = 100;
   private Map<ActivationContext, Long> contexts;
 
   public CandidateDetector(Map<ActivationContext, Long> contexts) {
     this.contexts = contexts;
   }
 
-  public Stream<ActivationContext> contextsWithPrefix(Object[] prefix) {
+  /**
+   * Return a stream of ActivationContext objects whose traces begin with ``prefix``.
+   */
+  private Stream<ActivationContext> contextsWithPrefix(Object[] prefix) {
     return contexts.keySet().stream()
             .filter(ctx -> ctx.traceStartsWith(prefix));
   }
 
-  /** Given a prefix { C_0, i_0, ..., i_k, C_{k+1} } this returns a map
-   * that maps each i_{k+1} to an activation context with a trace
-   * { C_0, i_0, ..., i_k, C_{k+1}, i_{k+1}, C_{k+2} }
-   * for which activations(ctx) is maximal.
-   * @param prefix
-   * @return
+  /** Given a prefix
+   *    [ C_0, s_0, ..., s_{n-1}, C_n ]
+   * this returns a map mapping each s_{n-1} to an activation context with a trace
+   *    [ C_0, s_0, ..., s_{n-1}, C_n, s_n, C_{n+1} ]
+   * for which the number of activations is maximal.
    */
   private Map<Integer, ActivationContext> findExtensions(Object[] prefix) {
     Map<Integer, ActivationContext> result = new HashMap<>();
+    // Find all activation contexts which extend ``prefix``
+    // with one child slot index and one class name.
     Set<ActivationContext> extensions = contextsWithPrefix(prefix)
             .filter(ctx -> ctx.getTrace().length == prefix.length + 2)
             .collect(Collectors.toSet());
+    // Extract all possible values of ``s_n``.
     Set<Integer> childIndices = extensions.stream()
             .map(ActivationContext::getLeafChildIndex)
             .collect(Collectors.toSet());
+    // Handle each ``s_n`` separately ...
     for(int childIndex : childIndices) {
+      // Get all extensions for which ``s_n`` == childIndex,
+      // get the extension with the most activations,
+      // put it into the map.
       ActivationContext extension = extensions.stream()
               .filter(ctx -> ctx.getLeafChildIndex() == childIndex)
               .max(Comparator.comparingLong(ctx -> contexts.get(ctx)))
@@ -45,14 +54,25 @@ public class CandidateDetector {
     return result;
   }
 
-  public Candidate constructCandidate(ActivationContext currentContext) {
+  /**
+   * Given an activation context, construct a candidate for a superinstruction
+   * and return it.
+   */
+  private Candidate constructCandidate(ActivationContext currentContext) {
     assert currentContext.getNumberOfClasses() == 3;
-    Candidate candidate = new Candidate(currentContext.getClass(0), "?");
+    // ``currentContext`` has a trace:
+    //    [C_0, s_0, C_1, s_1, C_2]
+    // We now find possible "piblings", i.e. siblings of its parent.
+    // For that, we invoke ``findExtensions`` on the prefix
+    //    [C_0]
     Map<Integer, ActivationContext> piblings = findExtensions(
             new Object[] {
                     currentContext.getClass(0)
             }
     );
+    // Also, we find possible siblings. For that, we invoke ``findExtensions``
+    // on the prefix
+    //    [C_0, s_0, C_1]
     Map<Integer, ActivationContext> siblings = findExtensions(
             new Object[] {
                     currentContext.getClass(0),
@@ -60,17 +80,25 @@ public class CandidateDetector {
                     currentContext.getClass(1)
             }
     );
+    // We now construct a superinstruction candidate, i.e.
+    // a tree of height 2. The root of the tree is C_0 (its Java type is unknown).
+    Candidate candidate = new Candidate(currentContext.getClass(0), "?");
+    // Now, we add the children of C_0, i.e. the siblings of C_1 and C_1 itself.
     for(int piblingSlot : piblings.keySet()) {
       if(piblingSlot == currentContext.getChildIndex(0)) {
+        // This is C_1. We add it to the candidate and proceed
+        // with adding the siblings of C_2 and C_2 itself.
         Candidate.Node child = candidate.getRoot().setChild(piblingSlot,
                 currentContext.getClass(1),
                 "?");
         for(int siblingSlot : siblings.keySet()) {
           if(siblingSlot == currentContext.getChildIndex(1)) {
+            // Add C_2
             child.setChild(siblingSlot,
                     currentContext.getClass(2),
                     currentContext.getJavaType());
           } else {
+            // Add a sibling of C_2
             ActivationContext sibling = siblings.get(siblingSlot);
             child.setChild(siblingSlot,
                     sibling.getClass(2),
@@ -79,27 +107,39 @@ public class CandidateDetector {
         }
       } else {
         ActivationContext pibling = piblings.get(piblingSlot);
+        // Add a sibling of C_1.
         assert pibling.getNumberOfClasses() == 2;
         candidate.getRoot().setChild(piblingSlot,
                 pibling.getClass(1),
                 pibling.getJavaType());
       }
     }
+    // The score of the superinstruction candidate corresponds to the number
+    // of activations of the current context.
     candidate.setScore(contexts.get(currentContext));
     return candidate;
   }
 
+  /**
+   * Run the candidate detection heuristic and return a report as a String.
+   */
   public String detect() {
-    // Sort the traces
+    // Find all activation contexts with traces of length n = 2,
+    // exclude traces containing SequenceNodes (they do not yield
+    // viable candidates for superinstructions),
+    // sort them by activation counts in descending order.
     List<ActivationContext> sorted = contexts.keySet().stream()
             .filter(context -> context.getNumberOfClasses() == 3)
             .filter(context -> !Arrays.asList(context.getTrace()).contains("som.interpreter.nodes.SequenceNode"))
             .sorted(Comparator.comparingLong(context -> contexts.get(context)).reversed())
             .collect(Collectors.toList());
+    // Fetch the top ``CONSIDER_TOP_CONTEXTS`` activation contexts
+    // and construct a candidate for each of them.
     Set<Candidate> candidates = new HashSet<>();
-    for(int i = 0; i < CONSIDER_CHILDREN; i++) {
+    for(int i = 0; i < CONSIDER_TOP_CONTEXTS; i++) {
       candidates.add(constructCandidate(sorted.get(i)));
     }
+    // Sort the candidates by their score and format the results.
     List<Candidate> tops = candidates.stream()
             .sorted(Comparator.comparingLong(Candidate::getScore).reversed())
             .collect(Collectors.toList());

@@ -7,7 +7,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Created by fred on 03/10/17.
+ * This class represents an activation context consisting of a trace and a Java type.
+ * Its objects are immutable and hashable.
+ * Traces are represented as Object arrays.
  */
 public class ActivationContext {
   private final Object[] trace;
@@ -32,64 +34,70 @@ public class ActivationContext {
     return Objects.hash(Arrays.deepHashCode(trace), javaType);
   }
 
+  /**
+   * @return a String representation of the activation trace
+   */
   public String getTraceAsString() {
     return Arrays.stream(trace).map(Object::toString).collect(Collectors.joining(","));
   }
 
+  /**
+   * @return a String representation of the activation context in
+   * the form of "C_0,s_0,...C_n[type]"
+   */
   public String toString() {
     return String.format("%s[%s]", getTraceAsString(), javaType);
-  }
-
-  public String getTraceAsPrettyString() {
-    return Arrays.stream(trace).map(
-            entry -> entry instanceof String ? abbreviateClass((String)entry) : entry.toString()
-    ).collect(Collectors.joining(","));
-  }
-
-  public String toPrettyString() {
-    return String.format("%s[%s]", getTraceAsPrettyString(), abbreviateClass(javaType));
   }
 
   public Object[] getTrace() {
     return trace;
   }
 
+  public String getJavaType() {
+    return javaType;
+  }
+
+  /**
+   * Assuming a trace [C_0, s_0, ..., C_n], return C_n.
+   */
   public String getLeafClass() {
     return getClass(getNumberOfClasses() - 1);
   }
 
+  /**
+   * Assuming a trace [C_0, s_0, ..., s_{n-1}, C_n], return s_{n-1}.
+   */
   public int getLeafChildIndex() {
     return getChildIndex(getNumberOfClasses() - 2);
   }
 
+  /**
+   * Assuming a trace [C_0, s_0, ..., C_n], return n.
+   */
   public int getNumberOfClasses() {
     return (trace.length + 1) / 2;
   }
 
+  /**
+   * Given i and assuming a trace [C_0, s_0, ..., C_n], return C_i.
+   */
   public String getClass(int i) {
     assert i < getNumberOfClasses();
     return (String)trace[i * 2];
   }
 
+  /**
+   * Given i and assuming a trace [C_0, s_0, ..., C_n], return s_i.
+   */
   public int getChildIndex(int i) {
     assert i < getNumberOfClasses() - 1;
     return (Integer)trace[i * 2 + 1];
   }
 
-  public String getJavaType() {
-    return javaType;
-  }
 
-  static public boolean subtraceEquals(Object[] a, Object[] b, int length) {
-    if(a.length < length || b.length < length) return false;
-    for(int i = 0; i < length; i++) {
-      if(!a[i].equals(b[i])) {
-        return false;
-      }
-    }
-    return true;
-  }
-
+  /**
+   * Given an object array, return true if it is a prefix of the activation trace.
+   */
   public boolean traceStartsWith(Object[] prefix) {
     if(trace.length < prefix.length) return false;
     for(int i = 0; i < prefix.length; i++)
@@ -97,16 +105,5 @@ public class ActivationContext {
         return false;
     }
     return true;
-  }
-
-  static public Object[] getSuffix(Object[] trace, int length) {
-    Object[] suffix = new Object[length];
-    System.arraycopy(trace, trace.length - length, suffix, 0, length);
-    return suffix;
-  }
-
-  static public String abbreviateClass(String className) {
-    String[] splitted = className.split("\\.");
-    return splitted[splitted.length - 1];
   }
 }
