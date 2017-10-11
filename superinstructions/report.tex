@@ -18,9 +18,15 @@
 	
 \maketitle
 
-\section{Heuristic}
+My superinstruction project for the SOMns interpreter consists of two parts:
+\begin{itemize}
+	\item A dynamic analysis for automatically identifying promising candidates for superinstructions. The idea of the candidate detection heuristic is explained in Section~\ref{sec:heuristic}.
+	\item Implementation of several candidates for superinstructions. A short description of the implemented candidates can be found in Section~\ref{sec:superinst}.
+\end{itemize}
 
-The heuristic consist of two stages: The \emph{context collection} stage and the \emph{candidate detection} stage. They are explained separately in the following.
+\section{Heuristic}\label{sec:heuristic}
+
+The heuristic consists of two stages: The \emph{context collection} stage and the \emph{candidate detection} stage. They are explained separately in the following.
 
 \subsection{Context Collection}
 
@@ -59,15 +65,31 @@ ActivationContext(type=Long, trace=[LocalVariableWriteNode, 0,
                                     LocalVariableReadNode])
 \end{verbatim}
 
-Each activation context is annotated with its number of activations. In the example, all three activation contexts are annotated with $100$ (because the corresponding \textsf{LocalVariableReadNode} was activated 100 times). The context collector is implemented in \textsf{tools.dym.superinstructions.ContextCollector}.
+Each activation context is annotated with its number of activations. In the example, all three activation contexts are annotated with $100$ (because the corresponding \textsf{LocalVariableReadNode} was activated 100 times). 
 
-The result of the context collection stage is a map mapping activation contexts to activation counts.
+The result of the context collection stage is a map mapping activation contexts to activation counts. The context collector is implemented in the Java class \textsf{tools.dym.superinstructions.ContextCollector}.
 
 \subsection{Candidate Detection}
 
+Based on this map, the heuristic aims to detect superinstruction candidates. A superinstruction candidate is represented by an AST subtree containing a number of nodes which could be replaced by just one node, constituting a superinstruction.
+
+First, the heuristic extracts all activation contexts with traces of length $n = 2$, sorts them by their activation count in descending order and extracts a predefined number of contexts with the highest activation counts (currently 100).
+
+Consequently, these contexts are all of the form
+
+\begin{quotation}
+\verb|ActivationContext(type=|$type$, \verb|trace=|$[C_0, s_0, C_1, s_1, C_2]$\verb|)|
+\end{quotation}
+and represent the 100 AST subtrees that were activated most frequently during the execution. For each of these activation contexts, the heuristic attempts to construct a superinstruction candidate. Let us consider an example and choose the context $ctx$ which we define as follows:
+
+\begin{verbatim}
+ctx = ActivationContext(type=Long, trace=[LocalVariableWriteNode, 0,
+                                          PrimitiveOperation:+, 0,
+                                          LocalVariableReadNode])
+\end{verbatim}
 
 
-\section{Superinstructions}
+\section{Superinstructions}\label{sec:superinst}
 
 \subsection{Increment Operation}
 
