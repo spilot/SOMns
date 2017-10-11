@@ -7,7 +7,7 @@
 \usepackage{tikz}
 \author{Friedrich Weber\\
 \small fweber@posteo.de}
-\title{Superinstructions for the SOMns interpreter}
+\title{Superinstructions for the SOMns Interpreter}
 
 \usetikzlibrary{trees}
 \tikzstyle{every node}=[draw=black,thick,anchor=west]
@@ -151,13 +151,69 @@ Please note that the example shows a simplified scenario, as the \textsf{LocalVa
 
 \section{Superinstructions}\label{sec:superinst}
 
-I have implemented five superinstructions in the SOMns interpreter which can be found in the package \textsf{som.interpreter.{\allowbreak}nodes.superinstructions}. Three of them are optimized variants of local variable writes.
+I have implemented five superinstructions in the SOMns interpreter which can be found in the package \textsf{som.interpreter.{\allowbreak}nodes.superinstructions}. For each superinstruction, a \emph{replacement routine} takes care of replacing matching subtrees with the respective superinstruction at runtime.
 
-The superinstructions can be globally disabled by setting the \textsf{som.superinstructions} option to \textsf{false}:
+Superinstructions can be globally disabled by setting the \textsf{som.superinstructions} option to \textsf{false}:
 
 \begin{verbatim}
 ./som -G -Dsom.superinstructions=false ...
 \end{verbatim}
+
+\subsection{WhileSmallerEqualThanArgumentNode}
+
+This superinstruction represents a \textsf{while} loop whose guard checks that a local numeric variable is less than or equal to a local argument. It replaces the subtree
+\begin{verbatim}
+WhileInlinedLiteralsNode (with expectedBool == true)
+  EagerBinaryPrimitiveNode
+    LocalVariableReadNode (of type Long)
+    LocalArgumentReadNode (of type Long)
+    LessThanOrEqualPrim
+  ExpressionNode
+\end{verbatim}
+with the superinstruction
+\begin{verbatim}
+WhileSmallerEqualThanArgumentNode
+  ExpressionNode
+\end{verbatim}
+The replacement routine can be found in \textsf{som.interpreter.nodes.specialized.whileloops{\allowbreak}.WhileInlinedLiteralsNode}.
+
+An exemplary instance of the superinstruction is found in \textsf{core-lib/Kernel.ns}:
+\begin{verbatim}
+[ i <= limit ] whileTrue: [ block value: i. i:: i + step ]
+\end{verbatim}
+
+\subsection{IfSumGreaterNode}
+
+This superinstruction is somewhat specific: It replaces the subtree
+\begin{verbatim}
+IfInlinedLiteralsNode (expectedBool == true)
+  EagerBinaryPrimitiveNode
+    EagerBinaryPrimitiveNode
+      LocalVariableReadNode (of type double)
+      LocalVariableReadNode (of type double)
+      AdditionPrim
+    DoubleLiteralNode
+    GreaterThanPrim
+  ExpressionNode
+\end{verbatim}
+with the superinstruction
+\begin{verbatim}
+IfSumGreaterNode
+  ExpressionNode
+\end{verbatim}
+In other words, the superinstruction encapsulates the expression
+\begin{verbatim}
+(left + right > than) ifTrue: body
+\end{verbatim}
+whereas \textsf{left} and \textsf{right} are local variables, and \textsf{than} is a Double literal. The replacement routine can be found in \textsf{som.interpreter.nodes.specialized{\allowbreak}.IfInlinedLiteralsNode}.
+
+An instance (and, as it seems, the only instance) of the superinstruction can be found in \textsf{core-lib/Benchmarks/Mandelbrot.ns}:
+\begin{verbatim}
+(zrzr + zizi > 4.0) ifTrue: [
+  ...
+].
+\end{verbatim}
+
 
 \subsection{Optimized Variable Writes}
 
@@ -231,57 +287,6 @@ AssignSubtractionResultNode
 An exemplary instance of the superinstruction can be found in \textsf{core-lib/Benchmarks/NBody.ns}:
 \begin{verbatim}
 dx:: iBody x - jBody x
-\end{verbatim}
-
-\subsection{WhileSmallerEqualThanArgumentNode}
-
-This superinstruction represents a \textsf{while} loop whose guard checks that a local numeric variable is less than or equal to a local argument. It replaces the subtree
-\begin{verbatim}
-WhileInlinedLiteralsNode (with expectedBool == true)
-  EagerBinaryPrimitiveNode
-    LocalVariableReadNode (of type Long)
-    LocalArgumentReadNode (of type Long)
-    LessThanOrEqualPrim
-  ExpressionNode
-\end{verbatim}
-with the superinstruction
-\begin{verbatim}
-WhileSmallerEqualThanArgumentNode
-  ExpressionNode
-\end{verbatim}
-An exemplary instance of the superinstruction is found in \textsf{core-lib/Kernel.ns}:
-\begin{verbatim}
-[ i <= limit ] whileTrue: [ block value: i. i:: i + step ]
-\end{verbatim}
-
-\subsection{IfSumGreaterNode}
-
-This superinstruction is somewhat specific: It replaces the subtree
-\begin{verbatim}
-IfInlinedLiteralsNode (expectedBool == true)
-  EagerBinaryPrimitiveNode
-    EagerBinaryPrimitiveNode
-      LocalVariableReadNode (of type double)
-      LocalVariableReadNode (of type double)
-      AdditionPrim
-    DoubleLiteralNode
-    GreaterThanPrim
-  ExpressionNode
-\end{verbatim}
-with the superinstruction
-\begin{verbatim}
-IfSumGreaterNode
-  ExpressionNode
-\end{verbatim}
-In other words, the superinstruction encapsulates the expression
-\begin{verbatim}
-(left + right > than) ifTrue: body
-\end{verbatim}
-whereas \textsf{left} and \textsf{right} are local variables, and \textsf{than} is a Double literal. An instance (and, as it seems, the only instance) of the superinstruction can be found in \textsf{core-lib/Benchmarks/Mandelbrot.ns}:
-\begin{verbatim}
-(zrzr + zizi > 4.0) ifTrue: [
-  ...
-].
 \end{verbatim}
 
 \end{document}
