@@ -5,6 +5,7 @@ import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.frame.FrameSlot;
 import com.oracle.truffle.api.frame.FrameSlotTypeException;
 import com.oracle.truffle.api.frame.VirtualFrame;
+import com.oracle.truffle.api.instrumentation.InstrumentableFactory;
 import som.VM;
 import som.compiler.Variable;
 import som.interpreter.SArguments;
@@ -142,9 +143,10 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
     // replace node with superinstruction
     WhileSmallerEqualThanArgumentNode newNode = WhileSmallerEqualThanArgumentNodeGen.create(
       variableRead.getVar(), argumentRead.getArgumentIndex(), node.getBodyNode(), node
-    );
+    ).initialize(node.getSourceSection());
     node.replace(newNode);
-    VM.insertInstrumentationWrapper(newNode);
+    //VM.insertInstrumentationWrapper(newNode); // TODO: Fix instrumentation of While Node!!
+    //newNode.adoptChildren();
     return newNode;
   }
 }

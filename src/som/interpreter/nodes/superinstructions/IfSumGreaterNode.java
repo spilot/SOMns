@@ -103,6 +103,7 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
             node.getBodyNode(),
             node).initialize(node.getSourceSection());
     node.replace(newNode);
+    newNode.adoptChildren(); // because we adopt the body node
     VM.insertInstrumentationWrapper(newNode);
     return newNode;
   }
