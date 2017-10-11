@@ -12,6 +12,7 @@ import som.compiler.Variable.Local;
 import som.interpreter.InliningVisitor;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
 import som.interpreter.nodes.superinstructions.AssignProductToVariableNode;
+import som.interpreter.nodes.superinstructions.AssignSubtractionResultNode;
 import som.interpreter.nodes.superinstructions.IncrementOperationNode;
 import som.vm.VmSettings;
 import som.vm.constants.Nil;
@@ -118,7 +119,11 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
     }
   }
 
-  @ImportStatic({IncrementOperationNode.class, AssignProductToVariableNode.class, VmSettings.class})
+  @ImportStatic({
+          IncrementOperationNode.class,
+          AssignSubtractionResultNode.class,
+          AssignProductToVariableNode.class,
+          VmSettings.class})
   @NodeChild(value = "exp", type = ExpressionNode.class)
   public abstract static class LocalVariableWriteNode extends LocalVariableNode {
 
@@ -138,6 +143,17 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
       return expValue;
     }
 
+    /** Check for ``AssignSubtractionResultNode`` superinstruction and replcae where applicable */
+    @Specialization(guards = {"SUPERINSTRUCTIONS", "isAssignSubtract", "isDoubleKind(expValue)"})
+    public final double writeDoubleAndReplaceWithAssignSubtract(final VirtualFrame frame,
+                                                        final double expValue,
+                                                        final @Cached("isAssignSubtractionResultOperation(getExp())")
+                                                                   boolean isAssignSubtract) {
+      frame.setDouble(slot, expValue);
+      AssignSubtractionResultNode.replaceNode(this);
+      return expValue;
+    }
+
     /** Check for ``IncrementOperationNode`` superinstruction and replcae where applicable */
     @Specialization(guards = {"SUPERINSTRUCTIONS", "isIncrement"})
     public final long writeLongAndReplaceWithIncrement(final VirtualFrame frame,
@@ -150,9 +166,9 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
 
     /** Check for ``WhileSmallerEqualThanArgumentNode`` superinstruction and replace where applicable */
     @Specialization(guards = {"SUPERINSTRUCTIONS", "isAssign"})
-    public final double writeDoubleAndReplaceWithAssign(final VirtualFrame frame,
+    public final double writeDoubleAndReplaceWithAssignProduct(final VirtualFrame frame,
                                          final double expValue,
-                                         final @Cached("isAssignOperation(getExp())") boolean isAssign) {
+                                         final @Cached("isAssignProductOperation(getExp())") boolean isAssign) {
       frame.setDouble(slot, expValue);
       AssignProductToVariableNode.replaceNode(this);
       return expValue;
