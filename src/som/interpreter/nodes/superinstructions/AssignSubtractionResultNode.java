@@ -20,7 +20,20 @@ import tools.dym.Tags;
 
 
 /**
- * Created by fred on 11/10/17.
+ * Matches the following AST subtree:
+ *
+ * LocalVariableWriteNode
+ *   EagerBinaryPrimitiveNode
+ *     GenericMessageSendNode
+ *     GenericMessageSendNode
+ *     SubtractionPrim
+ *
+ * and replaces it with
+ *
+ * AssignSubtractionResultNode
+ *   GenericMessageSendNode
+ *   GenericMessageSendNode
+ *
  */
 @NodeChildren({
     @NodeChild(value = "left", type = AbstractMessageSendNode.class),
@@ -44,6 +57,7 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
   public final double writeDouble(final VirtualFrame frame,
       final double leftValue,
       final double rightValue) {
+    // Use Truffle DSL to retrieve the left and right values, set slot, return value
     double result = leftValue - rightValue;
     frame.setDouble(slot, result);
     return result;
@@ -53,13 +67,19 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
   public final Object writeGeneric(final VirtualFrame frame,
       final Object leftValue,
       final Object rightValue) {
-    /* Replace myself with the stored original subtree */
+    // Replace myself with the stored original subtree
+    // As ``left`` and ``right`` are already evaluated, we have to take
+    // special care to avoid evaluating them twice. Thus, we extract
+    // the EagerBinaryPrimitiveNode, invoke its ``executeEvaluated``
+    // method to get the subtraction result and use the original subtree's
+    // ``writeGeneric`` method to write the result to a slot.
     assert SOMNode.unwrapIfNecessary(
         originalSubtree.getExp()) instanceof EagerBinaryPrimitiveNode;
     EagerBinaryPrimitiveNode eagerNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(originalSubtree.getExp());
     Object result = eagerNode.executeEvaluated(frame, leftValue, rightValue);
     originalSubtree.writeGeneric(frame, result);
+    // Then, we replace ourselves.
     replace(originalSubtree);
     return result;
   }
@@ -104,6 +124,9 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
     return originalSubtree;
   }
 
+  /**
+   * Check if the subtree has the correct shape.
+   */
   public static boolean isAssignSubtractionResultOperation(ExpressionNode exp) {
     exp = SOMNode.unwrapIfNecessary(exp);
     if (exp instanceof EagerBinaryPrimitiveNode) {
@@ -118,6 +141,9 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
     return false;
   }
 
+  /**
+   * Replace ``node`` with a superinstruction. This assumes that the subtree has the correct shape.
+   */
   public static void replaceNode(LocalVariableWriteNode node) {
     EagerBinaryPrimitiveNode eagerNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getExp());

@@ -27,16 +27,16 @@ import tools.dym.Tags;
  * Matches the following AST:
  *
  * WhileInlinedLiteralsNode (expectedBool == true)
- * EagerBinaryPrimitiveNode
- * LocalVariableReadNode (of type Long)
- * LocalArgumentReadNode (of type Long)
- * LessThanOrEqualPrim
- * ExpressionNode
+ *   EagerBinaryPrimitiveNode
+ *     LocalVariableReadNode (of type Long)
+ *     LocalArgumentReadNode (of type Long)
+ *     LessThanOrEqualPrim
+ *   ExpressionNode
  *
  * and replaces it with
  *
  * WhileSmallerEqualThanArgumentNode
- * ExpressionNode
+ *   ExpressionNode
  *
  */
 abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode {
@@ -112,6 +112,9 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
     return false;
   }
 
+  /**
+   * Check if the AST subtree has the correct shape.
+   */
   static public boolean isWhileSmallerEqualThanArgumentNode(boolean expectedBool,
       ExpressionNode conditionNode,
       VirtualFrame frame) {
@@ -142,6 +145,9 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
     return false;
   }
 
+  /**
+   * Replace ``node`` with a superinstruction. Assumes that the AST subtree has the correct shape.
+   */
   static public WhileSmallerEqualThanArgumentNode replaceNode(WhileInlinedLiteralsNode node) {
     // Extract local variable slot and argument index
     EagerBinaryPrimitiveNode conditionNode =

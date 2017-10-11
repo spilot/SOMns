@@ -22,20 +22,20 @@ import som.vm.constants.Nil;
 /**
  * Matches the following AST:
  *
- * IfInlinedLiteralsNode
- * EagerBinaryPrimitiveNode
- * EagerBinaryPrimitiveNode
- * LocalVariableReadNode (of type double)
- * LocalVariableReadNode (of type double)
- * AdditionPrim
- * DoubleLiteralNode
- * GreaterThanPrim
- * ExpressionNode
+ * IfInlinedLiteralsNode (expectedBool = true)
+ *   EagerBinaryPrimitiveNode
+ *     EagerBinaryPrimitiveNode
+ *       LocalVariableReadNode (of type double)
+ *       LocalVariableReadNode (of type double)
+ *       AdditionPrim
+ *     DoubleLiteralNode
+ *     GreaterThanPrim
+ *   ExpressionNode
  *
  * and replaces it with
  *
  * IfSumGreaterNode
- * ExpressionNode
+ *   ExpressionNode
  */
 abstract public class IfSumGreaterNode extends ExprWithTagsNode {
   // equivalent to:
@@ -60,6 +60,7 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
   }
 
   private boolean evaluateCondition(final VirtualFrame frame) throws FrameSlotTypeException {
+    // Evaluate the condition in a fast way!
     return (frame.getDouble(left) + frame.getDouble(right)) > than;
   }
 
@@ -88,6 +89,9 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
     return true;
   }
 
+  /**
+   * Replace ``node`` with a superinstruction. This assumes that the subtree has the correct shape.
+   */
   public static IfSumGreaterNode replaceNode(final IfInlinedLiteralNode node) {
     // fetch the branching condition, which is a comparison (>)
     EagerBinaryPrimitiveNode condition =
@@ -111,6 +115,9 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
     return newNode;
   }
 
+  /**
+   * Helper functions to increase readability.
+   */
   private static ExpressionNode unwrapReceiver(EagerBinaryPrimitiveNode eagerNode) {
     return SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
   }
@@ -119,6 +126,9 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
     return SOMNode.unwrapIfNecessary(eagerNode.getArgument());
   }
 
+  /**
+   * Check if the AST subtree has the correct shape.
+   */
   public static boolean isIfSumGreaterNode(boolean expectedBool,
       ExpressionNode conditionNode,
       VirtualFrame frame) {

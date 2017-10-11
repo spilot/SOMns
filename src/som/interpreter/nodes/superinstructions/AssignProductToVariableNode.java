@@ -21,7 +21,17 @@ import java.util.List;
 
 
 /**
- * Created by fred on 29/09/17.
+ * Matches the following AST:
+ *
+ * LocalVariableWriteNode
+ *   EagerBinaryPrimitiveNode
+ *     LocalVariableReadNode
+ *     LocalVariableReadNode
+ *     MultiplicationPrim
+ *
+ * and replaces it with
+ *
+ * AssignProductToVariable
  */
 public abstract class AssignProductToVariableNode extends LocalVariableNode {
   protected final FrameSlot         leftSlot, rightSlot;
@@ -58,6 +68,9 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
 
   @Specialization(guards = "isDoubleKind(frame)", rewriteOn = {FrameSlotTypeException.class})
   public final double writeDouble(final VirtualFrame frame) throws FrameSlotTypeException {
+    // Read the two slots, multiply their contents, set the variable
+    // This might throw a FrameSlotTypeException, in which case the
+    // original subtree is restored
     double newValue = frame.getDouble(leftSlot) * frame.getDouble(rightSlot);
     frame.setDouble(slot, newValue);
     return newValue;
@@ -65,7 +78,7 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
 
   @Specialization(replaces = {"writeDouble"})
   public final Object writeGeneric(final VirtualFrame frame) {
-    /* Replace myself with the stored original subtree */
+    // Replace myself with the stored original subtree
     Object result = originalSubtree.executeGeneric(frame);
     replace(originalSubtree);
     return result;
@@ -108,12 +121,7 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
   }
 
   /**
-   * Check if the AST subtree has the correct shape, i.e. looks like this:
-   * LocalVariableWriteNode
-   * |- EagerBinaryPrimitiveNode
-   * |- LocalVariableReadNode
-   * |- LocalVariableReadNode
-   * |- MultiplicationPrim
+   * Check if the AST subtree has the correct shape.
    */
   public static boolean isAssignProductOperation(ExpressionNode exp) {
     exp = SOMNode.unwrapIfNecessary(exp);
@@ -130,6 +138,9 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
     return false;
   }
 
+  /**
+   * Replace ``node`` with a superinstruction. This assumes that the subtree has the correct shape.
+   */
   public static void replaceNode(LocalVariableWriteNode node) {
     EagerBinaryPrimitiveNode eagerNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getExp());

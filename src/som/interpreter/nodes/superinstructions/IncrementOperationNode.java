@@ -5,8 +5,6 @@ import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.frame.FrameSlotKind;
 import com.oracle.truffle.api.frame.FrameSlotTypeException;
 import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.nodes.NodeUtil;
 import som.VM;
 import som.compiler.Variable;
 import som.interpreter.InliningVisitor;
@@ -18,9 +16,20 @@ import som.interpreter.nodes.nary.EagerBinaryPrimitiveNode;
 import som.primitives.arithmetic.AdditionPrim;
 import tools.dym.Tags;
 
-import java.util.List;
-
-
+/**
+ * Matches the following AST:
+ *
+ * LocalVariableWriteNode
+ *   EagerBinaryPrimitiveNode
+ *     LocalVariableReadNode (with the same variable as LocalVariableWriteNode above)
+ *     IntegerLiteralNode
+ *     AdditionPrim
+ *
+ * and replaces it with
+ *
+ * IncrementOperationNode
+ *
+ */
 public abstract class IncrementOperationNode extends LocalVariableNode {
   private final long              increment;
   private final LocalVariableNode originalSubtree;
@@ -100,12 +109,7 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
   }
 
   /**
-   * Check if the AST subtree has the shape of an increment operation, i.e. looks like this:
-   * LocalVariableWriteNode
-   * |- EagerBinaryPrimitiveNode
-   * |- LocalVariableReadNode (with var == this.var)
-   * |- IntegerLiteralNode
-   * |- AdditionPrim
+   * Check if the AST subtree has the shape of an increment operation.
    */
   public static boolean isIncrementOperation(ExpressionNode exp, Variable.Local var) {
     exp = SOMNode.unwrapIfNecessary(exp);
@@ -124,6 +128,9 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
     return false;
   }
 
+  /**
+   * Replace ``node`` with a superinstruction. Assumes that the AST subtree has the correct shape.
+   */
   public static void replaceNode(LocalVariableWriteNode node) {
     EagerBinaryPrimitiveNode eagerNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getExp());
