@@ -178,7 +178,12 @@ LocalVariableWriteNode
 
 is replaced with a superinstruction \verb|IncrementOperationNode|. Note that the frame slot referenced by the \textsf{LocalVariableWriteNode} node needs to coincide with the frame slot referenced by the node \textsf{LocalVariableReadNode}.
 
-This superinstruction comes in handy if the executed program increments a local counter variable, e.g.\ via the aforementioned statement \verb|value:: value + 1|.
+This superinstruction comes in handy if the executed program increments a local counter variable, e.g.\ via the aforementioned statement \verb|value:: value + 1|. The directory \emph{superinstructions/increment} contains two interesting case studies:
+
+\begin{itemize}
+	\item \textsf{deoptimize-increment.ns} illustrates a scenario in which a subtree is optimized to a \textsf{IncrementOperationNode} superinstruction, but has to be deoptimized to the original subtree shortly after. This is because the slot type changes from \textsf{Long} to \textsf{Object}.
+	\item \textsf{no-optimization.ns} illustrates the case in which a possible optimization is not performed because the slot type is changed during the execution of the program.
+\end{itemize}
 
 \subsubsection{AssignProductToVariableNode}
 
@@ -228,7 +233,7 @@ An exemplary instance of the superinstruction can be found in \textsf{core-lib/B
 dx:: iBody x - jBody x
 \end{verbatim}
 
-\subsubsection{WhileSmallerEqualThanArgumentNode}
+\subsection{WhileSmallerEqualThanArgumentNode}
 
 This superinstruction represents a \textsf{while} loop whose guard checks that a local numeric variable is less than or equal to a local argument. It replaces the subtree
 \begin{verbatim}
