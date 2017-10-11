@@ -6,10 +6,11 @@ import java.util.stream.Stream;
 
 
 /**
- * Created by fred on 04/10/17.
+ * Given a map mapping activation contexts to activation counts,
+ * create a list of superinstruction candidates.
  */
 public class CandidateDetector {
-  static public int                    CONSIDER_TOP_CONTEXTS = 100;
+  static private int                    CONSIDER_TOP_CONTEXTS = 100;
   private Map<ActivationContext, Long> contexts;
 
   public CandidateDetector(Map<ActivationContext, Long> contexts) {
