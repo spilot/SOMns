@@ -133,7 +133,9 @@ public class CandidateDetector {
     // Find all activation contexts with traces of length n = 2,
     // exclude traces containing SequenceNodes (they do not yield
     // viable candidates for superinstructions),
-    // sort them by activation counts in descending order.
+    // sort them by activation counts in descending order,
+    // fetch the top ``CONSIDER_TOP_CONTEXTS`` activation contexts
+    // and construct a candidate for each of them.
     List<ActivationContext> sorted = contexts.keySet().stream()
                                              .filter(
                                                  context -> context.getNumberOfClasses() == 3)
@@ -142,12 +144,11 @@ public class CandidateDetector {
                                                      "som.interpreter.nodes.SequenceNode"))
                                              .sorted(Comparator.comparingLong(
                                                  context -> contexts.get(context)).reversed())
+                                             .limit(CONSIDER_TOP_CONTEXTS)
                                              .collect(Collectors.toList());
-    // Fetch the top ``CONSIDER_TOP_CONTEXTS`` activation contexts
-    // and construct a candidate for each of them.
     Set<Candidate> candidates = new HashSet<>();
-    for (int i = 0; i < CONSIDER_TOP_CONTEXTS; i++) {
-      candidates.add(constructCandidate(sorted.get(i)));
+    for (ActivationContext context : sorted) {
+      candidates.add(constructCandidate(context));
     }
     // Sort the candidates by their score and format the results.
     List<Candidate> tops = candidates.stream()

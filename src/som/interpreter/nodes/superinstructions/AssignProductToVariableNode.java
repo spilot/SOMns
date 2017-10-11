@@ -25,8 +25,8 @@ import java.util.List;
  *
  * LocalVariableWriteNode
  *   EagerBinaryPrimitiveNode
- *     LocalVariableReadNode
- *     LocalVariableReadNode
+ *     LocalVariableReadNode (of type Double)
+ *     LocalVariableReadNode (of type Double)
  *     MultiplicationPrim
  *
  * and replaces it with
@@ -123,7 +123,7 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
   /**
    * Check if the AST subtree has the correct shape.
    */
-  public static boolean isAssignProductOperation(ExpressionNode exp) {
+  public static boolean isAssignProductOperation(ExpressionNode exp, VirtualFrame frame) {
     exp = SOMNode.unwrapIfNecessary(exp);
     if (exp instanceof EagerBinaryPrimitiveNode) {
       EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
@@ -132,7 +132,11 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
               eagerNode.getArgument()) instanceof LocalVariableReadNode
           && SOMNode.unwrapIfNecessary(
               eagerNode.getPrimitive()) instanceof MultiplicationPrim) {
-        return true;
+        LocalVariableReadNode left = (LocalVariableReadNode)SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
+        LocalVariableReadNode right = (LocalVariableReadNode)SOMNode.unwrapIfNecessary(eagerNode.getArgument());
+        if(frame.isDouble(left.getVar().getSlot()) && frame.isDouble(right.getVar().getSlot())) {
+          return true;
+        }
       }
     }
     return false;

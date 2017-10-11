@@ -144,7 +144,8 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
     }
 
     /**
-     * Check for ``AssignSubtractionResultNode`` superinstruction and replcae where applicable
+     * Check for ``AssignSubtractionResultNode`` superinstruction and replcae where
+     * applicable.
      */
     @Specialization(
         guards = {"SUPERINSTRUCTIONS", "isAssignSubtract", "isDoubleKind(expValue)"})
@@ -167,13 +168,13 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
     }
 
     /**
-     * Check for ``WhileSmallerEqualThanArgumentNode`` superinstruction and replace where
+     * Check for ``AssignProductToVariableNode`` superinstruction and replace where
      * applicable
      */
-    @Specialization(guards = {"SUPERINSTRUCTIONS", "isAssign", "isDoubleKind(expValue)"})
+    @Specialization(guards = {"SUPERINSTRUCTIONS", "isAssignProduct", "isDoubleKind(expValue)"})
     public final double writeDoubleAndReplaceWithAssignProduct(final VirtualFrame frame,
         final double expValue,
-        final @Cached("isAssignProductOperation(getExp())") boolean isAssign) {
+        final @Cached("isAssignProductOperation(getExp(), frame)") boolean isAssignProduct) {
       frame.setDouble(slot, expValue);
       AssignProductToVariableNode.replaceNode(this);
       return expValue;
