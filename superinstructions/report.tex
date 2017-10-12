@@ -18,25 +18,25 @@
 	
 \maketitle
 
-My superinstruction project for the SOMns interpreter consists of two parts:
+My project consists of two parts:
 \begin{itemize}
-	\item A dynamic analysis for automatically identifying promising candidates for superinstructions. The idea of the candidate detection heuristic is explained in Section~\ref{sec:heuristic}.
-	\item Implementation of several candidates for superinstructions. A short description of the implemented candidates can be found in Section~\ref{sec:superinst}.
+	\item A dynamic analysis for automatically identifying promising candidates for superinstructions. The underlying idea of the candidate detection heuristic is explained in Section~\ref{sec:heuristic}.
+	\item Integration of several candidates for superinstructions into the SOMns interpreter. A short description of the implemented candidates can be found in Section~\ref{sec:superinst}.
 \end{itemize}
 
 \section{Heuristic}\label{sec:heuristic}
 
-I integrated the superinstruction detection into the dynamic metrics tool of SOMns. Consequently, it can be invoked by passing the \verb|-dm| option to the SOMns interpreter. For example, the invocation
+I integrated the superinstruction detection into the dynamic metrics tool coming with SOMns. Thus, it can be invoked by passing the \verb|-dm| option to the SOMns interpreter. For example, the invocation
 \begin{verbatim}
 ./som -G -dm ./core-lib/Hello.ns
 \end{verbatim}
-prints a sorted list of superinstruction candidates to the file \textsf{metrics/superinstruction-candidates.txt}.
+prints a sorted list of superinstruction candidates to the file \textsf{metrics/superinstruction-candidates.txt}. The option \verb|-G| is necessary to disable JIT compilation using Graal.
 
-The heuristic consists of two stages: The \emph{context collection} stage and the \emph{candidate detection} stage, which are explained separately in the following.
+The heuristic consists of two stages, namely the \emph{context collection} stage and the \emph{candidate detection} stage, which are explained separately in the following.
 
 \subsection{Context Collection}
 
-During execution of the program in question, the modified SOMns interpreter dynamically counts the number of activations for each AST node. In this, it also takes the Java type of the activation result into account. Consider, for example, the following code snippet:
+During execution of the program in question, the modified SOMns interpreter counts the number of activations for each AST node. In this, it also takes the Java type of the activation result into account. Consider, for example, the following code snippet:
 \begin{verbatim}
 value:: value + 1
 \end{verbatim}
@@ -54,14 +54,13 @@ After execution, the analysis constructs a set of so-called \emph{activation con
 \begin{verbatim}
 ActivationContext(type=..., trace=...)
 \end{verbatim}
+Application contexts are implemented in the Java class \textsf{tools.dym.superinstructions.{\allowbreak}ActivationContext}.
 
-Application contexts are implemented in \textsf{tools.dym.superinstructions.{\allowbreak}ActivationContext}.
-
-The \emph{type} denotes the Java type of the node activation result. A \emph{trace} is a alternating sequence of strings and integers and has the general form
+The \emph{type} denotes the Java type of the node activation result. The \emph{trace} is a alternating sequence of strings and integers and has the general form
 \begin{align*}
 [ C_0, s_0, C_1, ..., s_{n - 1}, C_{n}]
 \end{align*}
-in which all $C_k$ are Java node class names (Strings) and all $s_k$ are child slot indices (Integers).
+in which all $C_k$ are Java node class names (Strings) and all $s_k$ are child slot indices (Integers). We call the number $n$ the \emph{trace length}.
 
 A trace represents the execution environment in which a node was activated. The rightmost node class name (i.e. $C_n$) is the class name of the activated node. Its preceding node class name $C_{n-1}$ denotes its parent AST node and $s_{n-1}$ denotes the slot in which the activated node can be found in the parent's list of children. Similarly, the class name $C_{n-2}$ denotes its grandparent AST node and $s_{n-2}$ denotes the slot in which the activated node's parent can be found in the grandparent's list of children. This construction is continued up to a predefined length. Thus, an activation trace contains the ancestors of a node up to a predefined depth.
 
@@ -78,15 +77,13 @@ ActivationContext(type=Long, trace=[LocalVariableWriteNode, 0,
                                     LocalVariableReadNode])
 \end{verbatim}
 
-Each activation context is annotated with its number of activations. In the example, all three activation contexts are annotated with $100$ (because the corresponding \textsf{LocalVariableReadNode} was activated 100 times). 
+Each activation context is annotated with its total number of activations. In the example, all three activation contexts are annotated with $100$ (because the corresponding \textsf{LocalVariableReadNode} was activated 100 times). 
 
 The result of the context collection stage is a map mapping activation contexts to activation counts. The context collector is implemented in the Java class \textsf{tools.dym.superinstructions.ContextCollector}.
 
 \subsection{Candidate Detection}
 
-Based on this map, the heuristic aims to detect superinstruction candidates. A superinstruction candidate is represented by an AST subtree which could be replaced by just one new node, constituting a superinstruction.
-
-The underlying objective of the heuristic is to find candidates for which the resulting superinstruction would be activated a large number of times. In the optimal case, this would result in a considerable speedup as the number of dynamic dispatches at runtime is significantly reduced.
+Based on this map, the heuristic aims to detect superinstruction candidates. A superinstruction candidate is represented by an AST subtree which could be replaced by just one new node (constituting a superinstruction). The underlying objective is to find candidates for which the resulting superinstruction would be activated a large number of times. In the optimal case, this would result in a considerable speedup as the number of dynamic dispatches at runtime is significantly reduced.
 
 First, the heuristic extracts all activation contexts with traces of length $n = 2$, sorts them by their activation count in descending order and extracts a predefined number of contexts with the highest activation counts (currently 100).
 
@@ -114,9 +111,9 @@ LocalVariableWriteNode
     <unknown>
 \end{verbatim}
 
-As \textsf{PrimitiveOperation:+} is a binary operation, it requires two node children. However, only the node class located in the first child slot is known. The second child class is yet to be determined.
+As \textsf{PrimitiveOperation:+} is a binary operation, it requires two node children. However, only the node class located in the first child slot is fixed. The second child class is yet to be determined.
 
-To determine the second child node class of the \textsf{PrimitiveOperation:+} node, the heuristic searches through \emph{all} collected activation contexts to find contexts that match the following shape:
+In order to determine the second child node class of the \textsf{PrimitiveOperation:+} node, the heuristic searches through \emph{all} collected activation contexts to find contexts that match the following shape:
 
 \begin{verbatim}
 ActivationContext(type=?, trace=[LocalVariableWriteNode, 0,
@@ -138,7 +135,7 @@ ActivationContext(type=Long, trace=[LocalVariableWriteNode, 0
                                     IntegerLiteralNode])
 \end{verbatim}
 
-As a consequence, the heuristic decides to use the \textsf{IntegerLiteralNode} class as the second child of the \textsf{PrimitiveOperation:+} node. The resulting superinstruction candidate looks as follows:
+As a consequence, the heuristic decides to use the \textsf{IntegerLiteralNode} class as the second child of the \textsf{PrimitiveOperation:+} node and the resulting superinstruction candidate looks as follows:
 
 \begin{verbatim}
 LocalVariableWriteNode
@@ -149,9 +146,11 @@ LocalVariableWriteNode
 
 Please note that the example shows a simplified scenario, as the \textsf{LocalVariableWriteNode} node class only has one child slot. If $C_0$ references a node class with more than one child slot, the remaining child slots of the candidate are determined similarly to above. Please refer to the source code of \textsf{tools.dym.superinstructions.CandidateDetector} for more information.
 
+After having constructed one candidate for each of the top 100 superinstruction contexts, the candidates are written to the file \textsf{metrics/superinstruction-candidates.txt}.
+
 \section{Superinstructions}\label{sec:superinst}
 
-I have implemented five superinstructions in the SOMns interpreter which can be found in the package \textsf{som.interpreter.{\allowbreak}nodes.superinstructions}. For each superinstruction, a \emph{replacement routine} takes care of replacing matching subtrees with the respective superinstruction at runtime.
+I have implemented five superinstructions in the SOMns interpreter. Their implementations can be found in the package \textsf{som.interpreter.{\allowbreak}nodes.superinstructions}. For each superinstruction, a \emph{replacement routine} takes care of replacing matching subtrees with the respective superinstruction at runtime.
 
 Superinstructions can be globally disabled by setting the \textsf{som.superinstructions} option to \textsf{false}:
 
@@ -232,7 +231,7 @@ LocalVariableWriteNode
     AdditionPrim
 \end{verbatim}
 
-is replaced with a superinstruction \verb|IncrementOperationNode|. Note that the frame slot referenced by the \textsf{LocalVariableWriteNode} node needs to coincide with the frame slot referenced by the node \textsf{LocalVariableReadNode}.
+is replaced with a superinstruction \verb|IncrementOperationNode|. Note that the frame slot referenced by the \textsf{LocalVariableWriteNode} node needs to coincide with the frame slot referenced by the \textsf{LocalVariableReadNode} node.
 
 This superinstruction comes in handy if the executed program increments a local counter variable, e.g.\ via the aforementioned statement \verb|value:: value + 1|. The directory \emph{superinstructions/increment} contains two interesting case studies:
 
@@ -268,7 +267,7 @@ This superinstruction encapsulates the following sequence of actions:
 \begin{itemize}
 	\item sending two different messages to two different receivers
 	\item subtracting the two result values
-	\item writing the result to a local slot
+	\item writing the result (a Double) to a local slot
 \end{itemize}
 In other words, the superinstruction replaces the subtree
 \begin{verbatim}

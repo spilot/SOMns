@@ -5,7 +5,6 @@ import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.frame.FrameSlot;
 import com.oracle.truffle.api.frame.FrameSlotTypeException;
 import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.instrumentation.InstrumentableFactory;
 import som.VM;
 import som.compiler.Variable;
 import som.interpreter.SArguments;
@@ -162,8 +161,16 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
                                                                                     .initialize(
                                                                                         node.getSourceSection());
     node.replace(newNode);
-    // VM.insertInstrumentationWrapper(newNode); // TODO: Fix instrumentation of While Node!!
-    // newNode.adoptChildren();
+    newNode.adoptChildren();
+    // Without the following line, WhileSmallerEqualThanArgumentNode is not taken into
+    // account when running the dynamic metrics tool.
+    // However, if we uncomment the following line, `./som -dm` fails because of
+    // the instrumentation nodes are messed up. But why?
+    //VM.insertInstrumentationWrapper(newNode);
     return newNode;
+  }
+
+  public ExpressionNode getBodyNode() {
+    return bodyNode;
   }
 }
