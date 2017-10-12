@@ -28,7 +28,7 @@ public class CandidateDetector {
   /**
    * Given a prefix
    * [ C_0, s_0, ..., s_{n-1}, C_n ]
-   * this returns a map mapping each s_{n-1} to an activation context with a trace
+   * this returns a map mapping each s_n to an activation context with a trace
    * [ C_0, s_0, ..., s_{n-1}, C_n, s_n, C_{n+1} ]
    * for which the number of activations is maximal.
    */
