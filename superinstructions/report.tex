@@ -154,7 +154,7 @@ Please refer to the source code of \textsf{tools.dym.superinstructions.Candidate
 
 \section{Superinstructions}\label{sec:superinst}
 
-I have implemented five superinstructions in the SOMns interpreter. Their implementations can be found in the package \textsf{som.interpreter.{\allowbreak}nodes.superinstructions}. For each superinstruction, a \emph{replacement routine} takes care of replacing matching subtrees with the respective superinstruction at runtime.
+I have implemented five superinstructions in the SOMns interpreter which I chose after running the detection heuristic on \textsf{core-lib/Benchmarks/AllSmall.ns}\footnote{This file corresponds to \textsf{All.ns} but excludes the expensive \textsf{PageRank} and \textsf{GraphSearch} runs.}. The respective implementations can be found in the package \textsf{som.interpreter.{\allowbreak}nodes.superinstructions}. For each superinstruction, a \emph{replacement routine} takes care of replacing matching subtrees with the respective superinstruction at runtime.
 
 Superinstructions can be globally disabled by setting the \textsf{som.superinstructions} option to \textsf{false}:
 
