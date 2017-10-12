@@ -75,6 +75,7 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
 
   @Specialization(replaces = {"executeSpecialized"})
   public Object executeAndDeoptimize(final VirtualFrame frame) {
+    // Execute and replace myself with the original subtree
     Object result = originalSubtree.executeGeneric(frame);
     replace(originalSubtree);
     return result;

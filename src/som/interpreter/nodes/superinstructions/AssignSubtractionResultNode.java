@@ -84,7 +84,7 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
     return result;
   }
 
-  // uses expValue to make sure guard is not converted to assertion
+  // uses leftValue to make sure guard is not converted to assertion
   protected final boolean isDoubleKind(final double leftValue) {
     if (slot.getKind() == FrameSlotKind.Double) {
       return true;
@@ -114,7 +114,7 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
   public void replaceAfterScopeChange(final InliningVisitor inliner) {
     /*
      * This should never happen because ``replaceAfterScopeChange`` is only called in the
-     * parsing stage, whereas the ``IncrementOperationNode`` superinstruction is only inserted
+     * parsing stage, whereas the ``AssignSubtractionResultNode`` superinstruction is only inserted
      * into the AST *after* parsing.
      */
     throw new RuntimeException("replaceAfterScopeChange: This should never happen!");

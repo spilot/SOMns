@@ -114,7 +114,7 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
   public void replaceAfterScopeChange(final InliningVisitor inliner) {
     /*
      * This should never happen because ``replaceAfterScopeChange`` is only called in the
-     * parsing stage, whereas the ``IncrementOperationNode`` superinstruction is only inserted
+     * parsing stage, whereas the ``AssignProductToVariableNode`` superinstruction is only inserted
      * into the AST *after* parsing.
      */
     throw new RuntimeException("replaceAfterScopeChange: This should never happen!");
@@ -125,6 +125,7 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
    */
   public static boolean isAssignProductOperation(ExpressionNode exp, VirtualFrame frame) {
     exp = SOMNode.unwrapIfNecessary(exp);
+    // Check that the expression is a multiplication of two local variables ...
     if (exp instanceof EagerBinaryPrimitiveNode) {
       EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
       if (SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode
@@ -132,8 +133,10 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
               eagerNode.getArgument()) instanceof LocalVariableReadNode
           && SOMNode.unwrapIfNecessary(
               eagerNode.getPrimitive()) instanceof MultiplicationPrim) {
+        // ... and extract the variables ...
         LocalVariableReadNode left = (LocalVariableReadNode)SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
         LocalVariableReadNode right = (LocalVariableReadNode)SOMNode.unwrapIfNecessary(eagerNode.getArgument());
+        // ... and check that they currently store Double values
         if(frame.isDouble(left.getVar().getSlot()) && frame.isDouble(right.getVar().getSlot())) {
           return true;
         }

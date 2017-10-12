@@ -52,7 +52,10 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
     return increment;
   }
 
-  @Specialization(guards = "isLongKind(frame)", rewriteOn = {FrameSlotTypeException.class})
+  @Specialization(guards = "isLongKind(frame)", rewriteOn = {
+          FrameSlotTypeException.class,
+          ArithmeticException.class
+  })
   public final long writeLong(final VirtualFrame frame) throws FrameSlotTypeException {
     long newValue = ExactMath.addExact(frame.getLong(slot), increment);
     frame.setLong(slot, newValue);
@@ -61,7 +64,8 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
 
   @Specialization(replaces = {"writeLong"})
   public final Object writeGeneric(final VirtualFrame frame) {
-    /* Replace myself with the stored original subtree */
+    // Replace myself with the stored original subtree.
+    // This could happen because the frame slot type has changed or because of an overflow.
     Object result = originalSubtree.executeGeneric(frame);
     replace(originalSubtree);
     return result;

@@ -144,9 +144,13 @@ LocalVariableWriteNode
     IntegerLiteralNode (of type Long)
 \end{verbatim}
 
-Please note that the example shows a simplified scenario, as the \textsf{LocalVariableWriteNode} node class only has one child slot. If $C_0$ references a node class with more than one child slot, the remaining child slots of the candidate are determined similarly to above. Please refer to the source code of \textsf{tools.dym.superinstructions.CandidateDetector} for more information.
+Please note that the example shows a simplified scenario, as the \textsf{LocalVariableWriteNode} node class only has one child slot. If $C_0$ references a node class with more than one child slot, the remaining child slots of the candidate are determined similarly to above.
+
+It might happen that a child slot could not be filled because it has never been activated during the execution (which means that no activation contexts of that slot exist). In that case, the slot is filled with a placeholder value \textsf{"?"}.
 
 After having constructed one candidate for each of the top 100 superinstruction contexts, the candidates are written to the file \textsf{metrics/superinstruction-candidates.txt}.
+
+Please refer to the source code of \textsf{tools.dym.superinstructions.CandidateDetector} for more information.
 
 \section{Superinstructions}\label{sec:superinst}
 

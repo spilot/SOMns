@@ -7,7 +7,7 @@ import java.util.*;
  * Representation of a superinstruction candidate. This is a tree
  * of nodes which denotes the AST subtree that would be replaced by the superinstruction.
  * The candidate is annotated with a numeric score (the higher, the better).
- * Each node is annotated with a Java type.
+ * Each node is annotated with a Java type (or "?" if it is unknown)
  */
 public class Candidate {
   private Node rootNode;
@@ -108,11 +108,14 @@ public class Candidate {
       for (int i = 0; i < level; i++) {
         builder.append("  ");
       }
-      builder.append(abbreviateClass(nodeClass))
-             .append('[')
-             .append(abbreviateClass(javaType))
-             .append(']')
-             .append('\n');
+      builder.append(abbreviateClass(nodeClass));
+      if(!javaType.equals("?")) {
+        builder.append('[')
+               .append(abbreviateClass(javaType))
+               .append(']');
+      }
+
+      builder.append('\n');
       // Find the maximum slot index
       int maxKey = children.keySet().stream()
                            .max(Comparator.comparingInt(e -> e))

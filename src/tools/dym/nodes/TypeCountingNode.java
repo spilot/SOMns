@@ -35,6 +35,7 @@ public class TypeCountingNode<T extends TypeCounter> extends ExecutionEventNode 
     } else if (e instanceof UnexpectedResultException) {
       counter.recordType(((UnexpectedResultException) e).getResult());
     } else if (e instanceof SomException) {
+      // If the SOMns code throws an exception, we should just ignore this.
       return;
     } else {
       throw new NotYetImplementedException();
