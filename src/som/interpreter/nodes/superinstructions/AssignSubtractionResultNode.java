@@ -114,7 +114,8 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
   public void replaceAfterScopeChange(final InliningVisitor inliner) {
     /*
      * This should never happen because ``replaceAfterScopeChange`` is only called in the
-     * parsing stage, whereas the ``AssignSubtractionResultNode`` superinstruction is only inserted
+     * parsing stage, whereas the ``AssignSubtractionResultNode`` superinstruction is only
+     * inserted
      * into the AST *after* parsing.
      */
     throw new RuntimeException("replaceAfterScopeChange: This should never happen!");
@@ -142,7 +143,8 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
   }
 
   /**
-   * Replace ``node`` with a superinstruction. This assumes that the subtree has the correct shape.
+   * Replace ``node`` with a superinstruction. This assumes that the subtree has the correct
+   * shape.
    */
   public static void replaceNode(LocalVariableWriteNode node) {
     EagerBinaryPrimitiveNode eagerNode =

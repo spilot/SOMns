@@ -91,7 +91,8 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
   }
 
   /**
-   * Replace ``node`` with a superinstruction. This assumes that the subtree has the correct shape.
+   * Replace ``node`` with a superinstruction. This assumes that the subtree has the correct
+   * shape.
    */
   public static IfSumGreaterNode replaceNode(final IfInlinedLiteralNode node) {
     // fetch the branching condition, which is a comparison (>)

@@ -15,6 +15,7 @@ import som.interpreter.nodes.superinstructions.IfSumGreaterNode;
 import som.vm.VmSettings;
 import som.vm.constants.Nil;
 
+
 @ImportStatic({IfSumGreaterNode.class, VmSettings.class})
 abstract public class IfInlinedLiteralNode extends ExprWithTagsNode {
   private final ConditionProfile condProf = ConditionProfile.createCountingProfile();

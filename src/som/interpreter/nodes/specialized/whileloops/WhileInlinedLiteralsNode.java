@@ -18,6 +18,7 @@ import som.vm.VmSettings;
 import som.vm.constants.Nil;
 import tools.dym.Tags.LoopNode;
 
+
 @ImportStatic({WhileSmallerEqualThanArgumentNode.class, VmSettings.class})
 abstract public class WhileInlinedLiteralsNode extends ExprWithTagsNode {
 

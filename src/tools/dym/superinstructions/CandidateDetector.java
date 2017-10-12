@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  * create a list of superinstruction candidates.
  */
 public class CandidateDetector {
-  static private int                    CONSIDER_TOP_CONTEXTS = 100;
+  static private int                   CONSIDER_TOP_CONTEXTS = 100;
   private Map<ActivationContext, Long> contexts;
 
   public CandidateDetector(Map<ActivationContext, Long> contexts) {

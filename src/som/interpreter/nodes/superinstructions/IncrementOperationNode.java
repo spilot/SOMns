@@ -53,8 +53,8 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
   }
 
   @Specialization(guards = "isLongKind(frame)", rewriteOn = {
-          FrameSlotTypeException.class,
-          ArithmeticException.class
+      FrameSlotTypeException.class,
+      ArithmeticException.class
   })
   public final long writeLong(final VirtualFrame frame) throws FrameSlotTypeException {
     long newValue = ExactMath.addExact(frame.getLong(slot), increment);
@@ -133,7 +133,8 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
   }
 
   /**
-   * Replace ``node`` with a superinstruction. Assumes that the AST subtree has the correct shape.
+   * Replace ``node`` with a superinstruction. Assumes that the AST subtree has the correct
+   * shape.
    */
   public static void replaceNode(LocalVariableWriteNode node) {
     EagerBinaryPrimitiveNode eagerNode =

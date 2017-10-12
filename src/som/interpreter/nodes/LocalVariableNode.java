@@ -20,6 +20,7 @@ import tools.debugger.Tags.LocalVariableTag;
 import tools.dym.Tags.LocalVarRead;
 import tools.dym.Tags.LocalVarWrite;
 
+
 public abstract class LocalVariableNode extends ExprWithTagsNode {
   protected final FrameSlot slot;
   protected final Local     var;
@@ -171,7 +172,8 @@ public abstract class LocalVariableNode extends ExprWithTagsNode {
      * Check for ``AssignProductToVariableNode`` superinstruction and replace where
      * applicable
      */
-    @Specialization(guards = {"SUPERINSTRUCTIONS", "isAssignProduct", "isDoubleKind(expValue)"})
+    @Specialization(
+        guards = {"SUPERINSTRUCTIONS", "isAssignProduct", "isDoubleKind(expValue)"})
     public final double writeDoubleAndReplaceWithAssignProduct(final VirtualFrame frame,
         final double expValue,
         final @Cached("isAssignProductOperation(getExp(), frame)") boolean isAssignProduct) {

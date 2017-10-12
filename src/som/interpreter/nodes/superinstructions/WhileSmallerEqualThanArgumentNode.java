@@ -145,7 +145,8 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
   }
 
   /**
-   * Replace ``node`` with a superinstruction. Assumes that the AST subtree has the correct shape.
+   * Replace ``node`` with a superinstruction. Assumes that the AST subtree has the correct
+   * shape.
    */
   static public WhileSmallerEqualThanArgumentNode replaceNode(WhileInlinedLiteralsNode node) {
     // Extract local variable slot and argument index
@@ -166,7 +167,7 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
     // account when running the dynamic metrics tool.
     // However, if we uncomment the following line, `./som -dm` fails because of
     // the instrumentation nodes are messed up. But why?
-    //VM.insertInstrumentationWrapper(newNode);
+    // VM.insertInstrumentationWrapper(newNode);
     return newNode;
   }
 
