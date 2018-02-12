@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 *)
-class All usingPlatform: platform = (
+class AllBenchmarks usingPlatform: platform = (
 | private platform = platform.
   private harness  = (platform system loadModule: 'Harness.ns' nextTo: self) usingPlatform: platform.
   private system   = platform system.
@@ -52,7 +52,7 @@ class All usingPlatform: platform = (
       (run: 'Richards'    numIter: 1),
       (run: 'GCBench'     numIter: 5),
       (run: 'Json'        numIter: 1),
-(*      (run: 'NBody'       numIter: 1), *)
+      (run: 'NBody'       numIter: 1),
 
       (run: 'Fibonacci'            in: 'LanguageFeatures' numIter: 10),
       (run: 'OuterConstLoop'       in: 'LanguageFeatures' numIter: 10),
@@ -74,10 +74,6 @@ class All usingPlatform: platform = (
       (run: 'ObjectLiterals'       in: 'LanguageFeatures' numIter: 1),
       (run: 'ObjectLiterals2'      in: 'LanguageFeatures' numIter: 1),
       (run: 'ObjectLiterals3'      in: 'LanguageFeatures' numIter: 1)
-(*
-      (run: 'PageRank'    numIter:  1),
-      (run: 'GraphSearch' numIter:  1)
-*)
   )
 
   loadModule: name = (

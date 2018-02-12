@@ -134,4 +134,16 @@ public final class EagerBinaryPrimitiveNode extends EagerPrimitiveNode {
       throw new NotYetImplementedException();
     }
   }
+
+  public ExpressionNode getReceiver() {
+    return receiver;
+  }
+
+  public ExpressionNode getArgument() {
+    return argument;
+  }
+
+  public BinaryExpressionNode getPrimitive() {
+    return primitive;
+  }
 }
