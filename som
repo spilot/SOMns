@@ -87,9 +87,10 @@ tools.add_argument('-TF', '--disable-trace-file', help='trace file wont be writt
                     dest='disable_trace_file', action='store_true', default=False)
 tools.add_argument('-r', '--replay', help='execution of the program is guided by an existing trace file',
                     dest='replay', action='store_true', default=False)
-tools.add_argument('--coverage', help='determine code coverage and store in given file',
+tools.add_argument('--coverage', help='determine SOMns code coverage and store in given file',
                    dest='coverage', default=None)
-
+tools.add_argument('--java-coverage', help='determine Java code coverage and store in given file',
+                   dest='java_coverage', default=None)
 
 parser.add_argument('-o', '--only', help='only compile give methods, comma separated list',
                     dest='only_compile', default=None)
@@ -252,6 +253,9 @@ if args.truffle_profile:
 if args.coverage:
     SOM_ARGS += ['--coverage', args.coverage]
 
+if args.java_coverage:
+    flags += ['-javaagent:libs/jacoco/lib/jacocoagent.jar=inclbootstrapclasses=true,destfile=' + args.java_coverage]
+
 if args.web_debugger:
     SOM_ARGS += ['--web-debug']
 if args.dynamic_metrics:
@@ -329,4 +333,7 @@ all_args = JAVA_ARGS + flags + SOM_ARGS + args.args
 if args.verbose:
     print "CMD: " + java_bin + ' ' + ' '.join(all_args)
 
-os.execvp(java_bin, all_args)
+env = dict(os.environ)
+env['JVMCI_VERSION_CHECK'] = 'ignore'
+
+os.execvpe(java_bin, all_args, env)
