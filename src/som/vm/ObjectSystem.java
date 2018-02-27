@@ -14,6 +14,7 @@ import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.source.Source;
 import com.oracle.truffle.api.source.SourceSection;
 
+import som.Output;
 import som.VM;
 import som.compiler.AccessModifier;
 import som.compiler.MixinBuilder.MixinDefinitionId;
@@ -195,9 +196,6 @@ public final class ObjectSystem {
     MixinDefinition falseDef = kernelModule.getNestedMixinDefinition("False");
 
     MixinDefinition blockDef = kernelModule.getNestedMixinDefinition("Block");
-    MixinDefinition block1Def = kernelModule.getNestedMixinDefinition("Block1");
-    MixinDefinition block2Def = kernelModule.getNestedMixinDefinition("Block2");
-    MixinDefinition block3Def = kernelModule.getNestedMixinDefinition("Block3");
 
     // some basic assumptions about
     assert topDef.getNumberOfSlots() == 0;
@@ -234,9 +232,6 @@ public final class ObjectSystem {
     falseDef.initializeClass(Classes.falseClass, Classes.booleanClass);
 
     blockDef.initializeClass(Classes.blockClass, Classes.objectClass);
-    block1Def.initializeClass(Classes.blockClass1, Classes.blockClass);
-    block2Def.initializeClass(Classes.blockClass2, Classes.blockClass1);
-    block3Def.initializeClass(Classes.blockClass3, Classes.blockClass2);
 
     Nil.nilObject.setClass(Classes.nilClass);
 
@@ -278,12 +273,6 @@ public final class ObjectSystem {
                       .setClassGroup(Classes.metaclassClass.getInstanceFactory());
     Classes.blockClass.getSOMClass()
                       .setClassGroup(Classes.metaclassClass.getInstanceFactory());
-    Classes.blockClass1.getSOMClass()
-                       .setClassGroup(Classes.metaclassClass.getInstanceFactory());
-    Classes.blockClass2.getSOMClass()
-                       .setClassGroup(Classes.metaclassClass.getInstanceFactory());
-    Classes.blockClass3.getSOMClass()
-                       .setClassGroup(Classes.metaclassClass.getInstanceFactory());
 
     SClass kernelClass = kernelModule.instantiateClass(Nil.nilObject, Classes.objectClass);
     KernelObj.kernel.setClass(kernelClass);
@@ -319,9 +308,6 @@ public final class ObjectSystem {
     setSlot(KernelObj.kernel, "ValueArray", Classes.valueArrayClass, kernelModule);
     setSlot(KernelObj.kernel, "TransferArray", Classes.transferArrayClass, kernelModule);
     setSlot(KernelObj.kernel, "Block", Classes.blockClass, kernelModule);
-    setSlot(KernelObj.kernel, "Block1", Classes.blockClass1, kernelModule);
-    setSlot(KernelObj.kernel, "Block2", Classes.blockClass2, kernelModule);
-    setSlot(KernelObj.kernel, "Block3", Classes.blockClass3, kernelModule);
 
     initialized = true;
 
@@ -374,8 +360,9 @@ public final class ObjectSystem {
 
     assert !vm.shouldExit();
     TracingActors.ReplayActor.printMissingMessages();
-    VM.errorPrintln("VM seems to have exited prematurely. The actor pool has been idle for "
-        + emptyFJPool + " checks in a row.");
+    Output.errorPrintln(
+        "VM seems to have exited prematurely. The actor pool has been idle for "
+            + emptyFJPool + " checks in a row.");
     vm.shutdownAndExit(1); // just in case it was disable for VM.errorExit
   }
 
@@ -424,7 +411,7 @@ public final class ObjectSystem {
         handlePromiseResult((SPromise) result);
         return;
       } else {
-        VM.errorPrintln("The application's #main: method returned a " + result.toString()
+        Output.errorPrintln("The application's #main: method returned a " + result.toString()
             + ", but it needs to return a Promise or Integer as return value.");
         vm.shutdownAndExit(1);
       }

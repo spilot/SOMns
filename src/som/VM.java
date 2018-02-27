@@ -180,6 +180,7 @@ public final class VM {
     }
   }
 
+  @SuppressWarnings("deprecation")
   private static void outputToIGV(final Method method) {
     GraphPrintVisitor graphPrinter = new GraphPrintVisitor();
 
@@ -311,54 +312,8 @@ public final class VM {
 
   public void errorExit(final String message) {
     TruffleCompiler.transferToInterpreter("errorExit");
-    errorPrintln("Run-time Error: " + message);
+    Output.errorPrintln("Run-time Error: " + message);
     requestExit(1);
-  }
-
-  @TruffleBoundary
-  public static void errorPrint(final String msg) {
-    // Checkstyle: stop
-    System.err.print(msg);
-    // Checkstyle: resume
-  }
-
-  @TruffleBoundary
-  public static void errorPrintln(final String msg) {
-    // Checkstyle: stop
-    System.err.println(msg);
-    // Checkstyle: resume
-  }
-
-  @TruffleBoundary
-  public static void errorPrintln() {
-    // Checkstyle: stop
-    System.err.println();
-    // Checkstyle: resume
-  }
-
-  @TruffleBoundary
-  public static void print(final String msg) {
-    // Checkstyle: stop
-    System.out.print(msg);
-    // Checkstyle: resume
-  }
-
-  @TruffleBoundary
-  public static void println(final String msg) {
-    // Checkstyle: stop
-    System.out.println(msg);
-    // Checkstyle: resume
-  }
-
-  @TruffleBoundary
-  /**
-   * This method is used to print reports about the number of created artifacts.
-   * For example actors, messages and promises.
-   */
-  public static void printConcurrencyEntitiesReport(final String msg) {
-    // Checkstyle: stop
-    System.out.println(msg);
-    // Checkstyle: resume
   }
 
   public boolean isAvoidingExit() {
@@ -418,7 +373,7 @@ public final class VM {
     if (options.profilingEnabled) {
       Instrument profiler = instruments.get(ProfilerInstrument.ID);
       if (profiler == null) {
-        VM.errorPrintln("Truffle profiler not available. Might be a class path issue");
+        Output.errorPrintln("Truffle profiler not available. Might be a class path issue");
       } else {
         profiler.setEnabled(options.profilingEnabled);
         truffleProfiler = Profiler.find(engine);
@@ -448,7 +403,7 @@ public final class VM {
       try {
         cov.setOutputFile(options.coverageFile);
       } catch (IOException e) {
-        VM.errorPrint("Failed to setup coverage tracking: " + e.getMessage());
+        Output.errorPrint("Failed to setup coverage tracking: " + e.getMessage());
       }
     }
 
