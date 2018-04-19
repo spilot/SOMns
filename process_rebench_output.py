@@ -15,7 +15,6 @@ from tabulate import tabulate
 import re
 import sys
 
-# some useful values
 confidence_level = 0.95
 one_minus_half_alpha = 1-(confidence_level/2)
 z = normal_distribution.ppf(one_minus_half_alpha)
@@ -67,8 +66,8 @@ sed = lambda text: re.sub("^.*\]\s*(\d*\.\d*)\s*ms\s*total\s*([A-Za-z]*)\s*([A-Z
 for tuple3 in (sed(line).split(',') for line in fileinput.input() if "rebench" not in line):
     benchmarks[tuple3[0]][tuple3[1]].append(float(tuple3[2]))
 
-from json import dumps as dump_as_json
-print(dump_as_json(benchmarks, indent=2))
+# from json import dumps as dump_as_json
+# print(dump_as_json(benchmarks, indent=2))
 
 all_VMs = set((item for sublist in (benchmarks[key].keys() for key in benchmarks.keys()) for item in sublist))
 vm_pairs = list(combinations(all_VMs, 2))
