@@ -25,9 +25,9 @@
 package som.vmobjects;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+
+import org.graalvm.collections.EconomicMap;
+import org.graalvm.collections.EconomicSet;
 
 import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
@@ -53,10 +53,10 @@ public final class SClass extends SObjectWithClass {
   @CompilationFinal private SClass  superclass;
   @CompilationFinal private SSymbol name;
 
-  @CompilationFinal private HashMap<SSymbol, Dispatchable> dispatchables;
-  @CompilationFinal private HashSet<SlotDefinition>        slots;        // includes slots of
-                                                                         // super classes and
-                                                                         // mixins
+  @CompilationFinal private EconomicMap<SSymbol, Dispatchable> dispatchables;
+
+  // includes slots of super classes and mixins
+  @CompilationFinal private EconomicSet<SlotDefinition> slots;
 
   @CompilationFinal private MixinDefinition mixinDef;
   @CompilationFinal private boolean         declaredAsValue;
@@ -115,11 +115,28 @@ public final class SClass extends SObjectWithClass {
     return instanceClassGroup;
   }
 
-  public ObjectLayout getLayoutForInstances() {
+  public ObjectLayout getLayoutForInstancesUnsafe() {
     return instanceClassGroup.getInstanceLayout();
   }
 
-  public HashSet<SlotDefinition> getInstanceSlots() {
+  public ObjectLayout getLayoutForInstancesToUpdateObject() {
+    ObjectLayout layout = instanceClassGroup.getInstanceLayout();
+
+    // layout might already be invalidated, let's busy wait here
+    //
+    // Some class loading might happen when initializing a new object layout
+    // (new ObjectLayout being called by another thread doing a layout transition).
+    // Class loading can take considerable time and might be problematic here.
+    // But seems better than running into a stack overflow in other places.
+    while (!layout.isValid()) {
+      // TODO(JDK9): add call to Thread.onSpinWait() once moving to JDK9 support
+      layout = instanceClassGroup.getInstanceLayout();
+    }
+
+    return layout;
+  }
+
+  public EconomicSet<SlotDefinition> getInstanceSlots() {
     return slots;
   }
 
@@ -156,8 +173,8 @@ public final class SClass extends SObjectWithClass {
   }
 
   public void initializeStructure(final MixinDefinition mixinDef,
-      final HashSet<SlotDefinition> slots,
-      final HashMap<SSymbol, Dispatchable> dispatchables,
+      final EconomicSet<SlotDefinition> slots,
+      final EconomicMap<SSymbol, Dispatchable> dispatchables,
       final boolean declaredAsValue, final boolean isTransferObject,
       final boolean isArray,
       final ClassFactory classFactory) {
@@ -250,7 +267,7 @@ public final class SClass extends SObjectWithClass {
   @TruffleBoundary
   public SInvokable[] getMethods() {
     ArrayList<SInvokable> methods = new ArrayList<SInvokable>();
-    for (Dispatchable disp : dispatchables.values()) {
+    for (Dispatchable disp : dispatchables.getValues()) {
       if (disp instanceof SInvokable) {
         methods.add((SInvokable) disp);
       }
@@ -262,7 +279,7 @@ public final class SClass extends SObjectWithClass {
   public SClass[] getNestedClasses(final SObjectWithClass instance) {
     VM.thisMethodNeedsToBeOptimized("Not optimized, we do unrecorded invokes here");
     ArrayList<SClass> classes = new ArrayList<SClass>();
-    for (Dispatchable disp : dispatchables.values()) {
+    for (Dispatchable disp : dispatchables.getValues()) {
       if (disp instanceof ClassSlotDefinition) {
         classes.add((SClass) disp.invoke(null, new Object[] {instance}));
       }
@@ -270,7 +287,7 @@ public final class SClass extends SObjectWithClass {
     return classes.toArray(new SClass[classes.size()]);
   }
 
-  public Map<SSymbol, Dispatchable> getDispatchables() {
+  public EconomicMap<SSymbol, Dispatchable> getDispatchables() {
     return dispatchables;
   }
 

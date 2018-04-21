@@ -1,58 +1,109 @@
 package som.interpreter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
+
+import org.graalvm.collections.EconomicMap;
 
 import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 import com.oracle.truffle.api.frame.FrameDescriptor;
 import com.oracle.truffle.api.source.SourceSection;
 
+import bd.inlining.Scope;
 import som.compiler.MixinBuilder.MixinDefinitionId;
 import som.compiler.MixinDefinition;
 import som.compiler.Variable;
-import som.interpreter.LexicalScope.MixinScope.MixinIdAndContextLevel;
 import som.interpreter.nodes.dispatch.Dispatchable;
 import som.vmobjects.SSymbol;
 
 
 public abstract class LexicalScope {
 
+  protected final LexicalScope outerScope;
+
+  protected LexicalScope(final LexicalScope outerScope) {
+    this.outerScope = outerScope;
+  }
+
+  public abstract MixinScope getMixinScope();
+
+  public abstract MethodScope getMethodScope();
+
+  public abstract MethodScope getOuterMethod();
+
+  public abstract MixinScope getOuterMixin();
+
+  /** Return list of mixins inside out. */
+  public final List<MixinDefinitionId> lookupSlotOrClass(final SSymbol selector) {
+    List<MixinDefinitionId> result = new ArrayList<>();
+    if (lookupSlotOrClass(selector, result)) {
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Determine list of mixins inside out.
+   *
+   * @return true, if lookup was successful, false otherwise
+   */
+  public abstract boolean lookupSlotOrClass(SSymbol selector, List<MixinDefinitionId> result);
+
+  // public abstract void propagateLoopCountThroughoutMethodScope(long count);
+
   // TODO: figure out whether we can use this lexical scope also for the
   // super sends. seems like we currently have two similar ways to solve
   // similar problems, instead of a single one
   public static final class MixinScope extends LexicalScope {
-    private final MixinScope               outerMixin;
-    private final MethodScope              nullOrOuterMethod;
-    private HashMap<SSymbol, Dispatchable> slotsClassesAndMethods;
+    private EconomicMap<SSymbol, Dispatchable> slotsClassesAndMethods;
 
     @CompilationFinal private MixinDefinition mixinDefinition;
 
     /**
      * Both Newspeak's class and the class's created anonymously for object literal's
      * need to be instantiated from the outer class. Regular classes do not have
-     * an enclosing activation, and so for regular classes the parameter corresponding to
-     * the outer method is null. In contrast, the class of an object literal has the outer
-     * method as its enclosing activation, and in this case the scope of the outer method
-     * is given.
+     * an enclosing activation. In that case the {@code outerScope} is a {@link MixinScope}.
+     * For object literals, it is a {@link MethodScope}.
      *
-     * @param outerMixin, the scope of the outer class
-     * @param nullOrOuterMethod, either null or the scope of the current activation
+     * @param outerScope, the scope enclosing the element
      */
-    public MixinScope(final MixinScope outerMixin, final MethodScope nullOrOuterMethod) {
-      this.outerMixin = outerMixin;
-      this.nullOrOuterMethod = nullOrOuterMethod;
+    public MixinScope(final LexicalScope outerScope) {
+      super(outerScope);
     }
 
-    public MethodScope getOuterMethod() {
-      return nullOrOuterMethod;
+    @Override
+    public MixinScope getMixinScope() {
+      return this;
     }
 
+    @Override
     public MixinScope getOuterMixin() {
-      return outerMixin;
+      if (outerScope == null) {
+        return null;
+      }
+      return outerScope.getMixinScope();
     }
 
-    public HashMap<SSymbol, Dispatchable> getDispatchables() {
+    @Override
+    public MethodScope getOuterMethod() {
+      if (outerScope == null) {
+        return null;
+      }
+      return outerScope.getMethodScope();
+    }
+
+    @Override
+    public MethodScope getMethodScope() {
+      if (outerScope == null) {
+        return null;
+      }
+      return outerScope.getMethodScope();
+    }
+
+    public EconomicMap<SSymbol, Dispatchable> getDispatchables() {
       return slotsClassesAndMethods;
     }
 
@@ -62,8 +113,9 @@ public abstract class LexicalScope {
       mixinDefinition = def;
 
       if (classSide) {
-        HashMap<SSymbol, ? extends Dispatchable> disps = mixinDefinition.getFactoryMethods();
-        slotsClassesAndMethods = (HashMap<SSymbol, Dispatchable>) disps;
+        EconomicMap<SSymbol, ? extends Dispatchable> disps =
+            mixinDefinition.getFactoryMethods();
+        slotsClassesAndMethods = (EconomicMap<SSymbol, Dispatchable>) disps;
       } else {
         slotsClassesAndMethods = mixinDefinition.getInstanceDispatchables();
       }
@@ -84,23 +136,27 @@ public abstract class LexicalScope {
       }
     }
 
-    public MixinIdAndContextLevel lookupSlotOrClass(final SSymbol selector,
-        final int contextLevel) {
-      assert mixinDefinition != null;
+    @Override
+    public boolean lookupSlotOrClass(final SSymbol selector,
+        final List<MixinDefinitionId> results) {
+      assert mixinDefinition != null : "Scope was not initialized completely.";
       if (slotsClassesAndMethods.containsKey(selector)) {
-        return new MixinIdAndContextLevel(mixinDefinition.getMixinId(), contextLevel);
+        results.add(mixinDefinition.getMixinId());
+        return true;
       }
 
-      if (outerMixin != null) {
-        return outerMixin.lookupSlotOrClass(selector, contextLevel + 1);
+      if (outerScope != null) {
+        results.add(mixinDefinition.getMixinId());
+        return outerScope.lookupSlotOrClass(selector, results);
       }
-      return null;
+      return false;
     }
 
     @Override
     public String toString() {
       String clsName = mixinDefinition != null
-          ? mixinDefinition.getName().getString() : "";
+          ? mixinDefinition.getName().getString()
+          : "";
       return "MixinScope(" + clsName + ")";
     }
 
@@ -115,28 +171,24 @@ public abstract class LexicalScope {
    * the other hand, after construction is finalized, it also represents
    * the variables in that scope and possibly embedded scopes.
    */
-  public static final class MethodScope extends LexicalScope {
-    private final MethodScope outerMethod;
-    private final MixinScope  outerMixin;
-
+  public static final class MethodScope extends LexicalScope
+      implements Scope<MethodScope, Method> {
     private final FrameDescriptor frameDescriptor;
 
-    @CompilationFinal private MethodScope[] embeddedScopes;
+    @CompilationFinal(dimensions = 1) private MethodScope[] embeddedScopes;
 
     /**
      * All arguments, local and internal variables used in a method.
      */
-    @CompilationFinal private Variable[] variables;
+    @CompilationFinal(dimensions = 1) private Variable[] variables;
 
     @CompilationFinal private boolean finalized;
 
     @CompilationFinal private Method method;
 
-    public MethodScope(final FrameDescriptor frameDescriptor,
-        final MethodScope outerMethod, final MixinScope outerMixin) {
+    public MethodScope(final FrameDescriptor frameDescriptor, final LexicalScope outerScope) {
+      super(outerScope);
       this.frameDescriptor = frameDescriptor;
-      this.outerMethod = outerMethod;
-      this.outerMixin = outerMixin;
     }
 
     public void setVariables(final Variable[] variables) {
@@ -161,7 +213,7 @@ public abstract class LexicalScope {
     }
 
     public void addEmbeddedScope(final MethodScope embeddedScope) {
-      assert embeddedScope.outerMethod == this;
+      assert embeddedScope.outerScope == this;
       int length;
       if (embeddedScopes == null) {
         length = 0;
@@ -191,6 +243,12 @@ public abstract class LexicalScope {
       embeddedScopes = remainingScopes;
     }
 
+    @Override
+    public MethodScope getOuterScopeOrNull() {
+      return outerScope.getMethodScope();
+    }
+
+    @Override
     public MethodScope getScope(final Method method) {
       if (method.equals(this.method)) {
         return this;
@@ -218,6 +276,8 @@ public abstract class LexicalScope {
       return finalized;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
     public Variable[] getVariables() {
       assert variables != null;
       return variables;
@@ -227,7 +287,7 @@ public abstract class LexicalScope {
       return embeddedScopes;
     }
 
-    private MethodScope constructSplitScope(final MethodScope newOuter) {
+    private MethodScope constructSplitScope(final LexicalScope newOuter) {
       FrameDescriptor desc = new FrameDescriptor(frameDescriptor.getDefaultValue());
 
       Variable[] newVars = new Variable[variables.length];
@@ -235,7 +295,7 @@ public abstract class LexicalScope {
         newVars[i] = variables[i].split(desc);
       }
 
-      MethodScope split = new MethodScope(desc, newOuter, outerMixin);
+      MethodScope split = new MethodScope(desc, newOuter);
 
       if (embeddedScopes != null) {
         for (MethodScope s : embeddedScopes) {
@@ -252,7 +312,7 @@ public abstract class LexicalScope {
     /** Split lexical scope. */
     public MethodScope split() {
       assert isFinalized();
-      return constructSplitScope(outerMethod);
+      return constructSplitScope(outerScope);
     }
 
     /**
@@ -260,7 +320,7 @@ public abstract class LexicalScope {
      * One of the outer scopes was inlined into its parent,
      * or simply split itself.
      */
-    public MethodScope split(final MethodScope newOuter) {
+    public MethodScope split(final LexicalScope newOuter) {
       assert isFinalized();
       return constructSplitScope(newOuter);
     }
@@ -269,22 +329,12 @@ public abstract class LexicalScope {
       return frameDescriptor;
     }
 
-    public MethodScope getOuterMethodScopeOrNull() {
-      if (outerMethod != null) {
-        return outerMethod;
-      }
-
-      if (outerMixin.getOuterMethod() != null) {
-        return outerMixin.getOuterMethod();
-      }
-
-      return null;
-
-    }
-
     public void propagateLoopCountThroughoutMethodScope(final long count) {
-      if (outerMethod != null) {
-        outerMethod.method.propagateLoopCountThroughoutMethodScope(count);
+      if (outerScope != null) {
+        MethodScope ms = outerScope.getMethodScope();
+        if (ms != null) {
+          ms.method.propagateLoopCountThroughoutMethodScope(count);
+        }
       }
     }
 
@@ -302,6 +352,11 @@ public abstract class LexicalScope {
     }
 
     @Override
+    public String getName() {
+      return method.getName();
+    }
+
+    @Override
     public String toString() {
       String result = "MethodScope";
       if (method != null) {
@@ -313,20 +368,36 @@ public abstract class LexicalScope {
       return result;
     }
 
-    public MixinIdAndContextLevel lookupSlotOrClass(final SSymbol selector) {
-      return getEnclosingMixin().lookupSlotOrClass(selector, 0);
+    @Override
+    public MixinScope getMixinScope() {
+      assert outerScope != null : "Should not be possible, because we do not support top-level methods";
+      return outerScope.getMixinScope();
     }
 
-    public MixinScope getEnclosingMixin() {
-      if (outerMethod == null) {
-        return outerMixin;
-      } else {
-        return outerMethod.getEnclosingMixin();
+    @Override
+    public MixinScope getOuterMixin() {
+      return getMixinScope();
+    }
+
+    @Override
+    public MethodScope getMethodScope() {
+      return this;
+    }
+
+    @Override
+    public MethodScope getOuterMethod() {
+      if (outerScope == null) {
+        return null;
       }
+      return outerScope.getMethodScope();
     }
 
-    public MixinScope getHolderScope() {
-      return outerMixin;
+    @Override
+    public boolean lookupSlotOrClass(final SSymbol selector,
+        final List<MixinDefinitionId> results) {
+      assert outerScope != null : "Should not be possible, because we do not support top-level methods";
+      // this traversal concerns only the enclosing objects, not the activations
+      return outerScope.lookupSlotOrClass(selector, results);
     }
 
     public MethodScope getEmbeddedScope(final SourceSection source) {

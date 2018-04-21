@@ -9,6 +9,9 @@ import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.UnexpectedResultException;
 
+import bd.inlining.Inline;
+import bd.inlining.Inline.False;
+import bd.inlining.Inline.True;
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
 import som.interpreter.nodes.specialized.SomLoop;
@@ -19,8 +22,9 @@ import som.vm.constants.Nil;
 import tools.dym.Tags.LoopNode;
 
 
-@ImportStatic({WhileSmallerEqualThanArgumentNode.class, VmSettings.class})
-abstract public class WhileInlinedLiteralsNode extends ExprWithTagsNode {
+@Inline(selector = "whileTrue:", inlineableArgIdx = {0, 1}, additionalArgs = {True.class})
+@Inline(selector = "whileFalse:", inlineableArgIdx = {0, 1}, additionalArgs = {False.class})
+public final class WhileInlinedLiteralsNode extends ExprWithTagsNode {
 
   @Child private ExpressionNode conditionNode;
   @Child private ExpressionNode bodyNode;
@@ -30,14 +34,17 @@ abstract public class WhileInlinedLiteralsNode extends ExprWithTagsNode {
   @SuppressWarnings("unused") private final ExpressionNode conditionActualNode;
   @SuppressWarnings("unused") private final ExpressionNode bodyActualNode;
 
-  public WhileInlinedLiteralsNode(final ExpressionNode inlinedConditionNode,
-      final ExpressionNode inlinedBodyNode, final boolean expectedBool,
-      final ExpressionNode originalConditionNode, final ExpressionNode originalBodyNode) {
+  public WhileInlinedLiteralsNode(final ExpressionNode originalConditionNode,
+      final ExpressionNode originalBodyNode, final ExpressionNode inlinedConditionNode,
+      final ExpressionNode inlinedBodyNode, final boolean expectedBool) {
     this.conditionNode = inlinedConditionNode;
     this.bodyNode = inlinedBodyNode;
     this.expectedBool = expectedBool;
     this.conditionActualNode = originalConditionNode;
     this.bodyActualNode = originalBodyNode;
+
+    inlinedConditionNode.markAsControlFlowCondition();
+    inlinedBodyNode.markAsLoopBody();
   }
 
   @Override

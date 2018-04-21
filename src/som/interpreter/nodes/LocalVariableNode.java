@@ -9,8 +9,8 @@ import com.oracle.truffle.api.frame.FrameSlotKind;
 import com.oracle.truffle.api.frame.FrameSlotTypeException;
 import com.oracle.truffle.api.frame.VirtualFrame;
 
+import bd.inlining.ScopeAdaptationVisitor;
 import som.compiler.Variable.Local;
-import som.interpreter.InliningVisitor;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
 import som.interpreter.nodes.superinstructions.AssignProductToVariableNode;
 import som.interpreter.nodes.superinstructions.AssignSubtractionResultNode;
@@ -123,7 +123,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
     }
 
     @Override
-    public void replaceAfterScopeChange(final InliningVisitor inliner) {
+    public void replaceAfterScopeChange(final ScopeAdaptationVisitor inliner) {
       inliner.updateRead(var, this, 0);
     }
   }
@@ -260,7 +260,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
     }
 
     @Override
-    public void replaceAfterScopeChange(final InliningVisitor inliner) {
+    public void replaceAfterScopeChange(final ScopeAdaptationVisitor inliner) {
       inliner.updateWrite(var, this, getExp(), 0);
     }
   }

@@ -1,11 +1,13 @@
 package som.vm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import org.graalvm.collections.EconomicMap;
 
 import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.dsl.NodeFactory;
+import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.source.Source;
 import com.oracle.truffle.api.source.SourceSection;
 
@@ -22,13 +24,21 @@ import som.interpreter.nodes.ArgumentReadNode.LocalArgumentReadNode;
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.dispatch.Dispatchable;
 import som.interpreter.nodes.specialized.AndMessageNodeFactory;
+import som.interpreter.nodes.specialized.BooleanInlinedLiteralNode.AndInlinedLiteralNode;
+import som.interpreter.nodes.specialized.BooleanInlinedLiteralNode.OrInlinedLiteralNode;
+import som.interpreter.nodes.specialized.IfInlinedLiteralNode;
 import som.interpreter.nodes.specialized.IfMessageNodeGen;
+import som.interpreter.nodes.specialized.IfTrueIfFalseInlinedLiteralsNode;
 import som.interpreter.nodes.specialized.IfTrueIfFalseMessageNodeFactory;
+import som.interpreter.nodes.specialized.IntDownToDoInlinedLiteralsNodeFactory;
 import som.interpreter.nodes.specialized.IntDownToDoMessageNodeFactory;
+import som.interpreter.nodes.specialized.IntTimesRepeatLiteralNodeFactory;
 import som.interpreter.nodes.specialized.IntToByDoMessageNodeFactory;
+import som.interpreter.nodes.specialized.IntToDoInlinedLiteralsNodeFactory;
 import som.interpreter.nodes.specialized.IntToDoMessageNodeFactory;
 import som.interpreter.nodes.specialized.NotMessageNodeFactory;
 import som.interpreter.nodes.specialized.OrMessageNodeFactory;
+import som.interpreter.nodes.specialized.whileloops.WhileInlinedLiteralsNode;
 import som.interpreter.nodes.specialized.whileloops.WhilePrimitiveNodeFactory;
 import som.interpreter.nodes.specialized.whileloops.WhileWithStaticBlocksNode.WhileWithStaticBlocksNodeFactory;
 import som.primitives.ActivityJoinFactory;
@@ -98,12 +108,12 @@ import som.vmobjects.SSymbol;
 
 public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
 
-  private HashMap<SSymbol, Dispatchable> vmMirrorPrimitives;
-  private final SomLanguage              lang;
+  private EconomicMap<SSymbol, Dispatchable> vmMirrorPrimitives;
+  private final SomLanguage                  lang;
 
   public Primitives(final SomLanguage lang) {
-    super(lang.getVM());
-    vmMirrorPrimitives = new HashMap<>();
+    super(Symbols.PROVIDER, lang.getVM());
+    vmMirrorPrimitives = EconomicMap.create();
     this.lang = lang;
     initialize();
   }
@@ -112,8 +122,7 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
       final Specializer<VM, ExpressionNode, SSymbol> specializer, final SomLanguage lang) {
     CompilerAsserts.neverPartOfCompilation("This is only executed during bootstrapping.");
     assert signature.getNumberOfSignatureArguments() > 1 : "Primitives should have the vmMirror as receiver, "
-        +
-        "and then at least one object they are applied to";
+        + "and then at least one object they are applied to";
 
     // ignore the implicit vmMirror argument
     final int numArgs = signature.getNumberOfSignatureArguments() - 1;
@@ -134,22 +143,17 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
     String name = "vmMirror>>" + signature.toString();
 
     Primitive primMethodNode = new Primitive(name, primNode,
-        prim.getCurrentMethodScope().getFrameDescriptor(),
+        prim.getScope().getFrameDescriptor(),
         (ExpressionNode) primNode.deepCopy(), false, lang);
     return new SInvokable(signature, AccessModifier.PUBLIC,
         primMethodNode, null);
   }
 
-  public HashMap<SSymbol, Dispatchable> takeVmMirrorPrimitives() {
+  public EconomicMap<SSymbol, Dispatchable> takeVmMirrorPrimitives() {
     assert vmMirrorPrimitives != null : "vmMirrorPrimitives can only be obtained once";
-    HashMap<SSymbol, Dispatchable> result = vmMirrorPrimitives;
+    EconomicMap<SSymbol, Dispatchable> result = vmMirrorPrimitives;
     vmMirrorPrimitives = null;
     return result;
-  }
-
-  @Override
-  protected SSymbol getId(final String id) {
-    return Symbols.symbolFor(id);
   }
 
   @Override
@@ -248,5 +252,26 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
     allFactories.add(ErrorPromiseNodeFactory.getInstance());
 
     return allFactories;
+  }
+
+  public static List<Class<? extends Node>> getInlinableNodes() {
+    List<Class<? extends Node>> nodes = new ArrayList<>();
+    nodes.add(AndInlinedLiteralNode.class);
+    nodes.add(OrInlinedLiteralNode.class);
+    nodes.add(IfInlinedLiteralNode.class);
+    nodes.add(IfTrueIfFalseInlinedLiteralsNode.class);
+
+    nodes.add(WhileInlinedLiteralsNode.class);
+    return nodes;
+  }
+
+  public static List<NodeFactory<? extends Node>> getInlinableFactories() {
+    List<NodeFactory<? extends Node>> factories = new ArrayList<>();
+
+    factories.add(IntDownToDoInlinedLiteralsNodeFactory.getInstance());
+    factories.add(IntTimesRepeatLiteralNodeFactory.getInstance());
+    factories.add(IntToDoInlinedLiteralsNodeFactory.getInstance());
+
+    return factories;
   }
 }
