@@ -57,7 +57,7 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
       ArithmeticException.class
   })
   public final long writeLong(final VirtualFrame frame) throws FrameSlotTypeException {
-    long newValue = ExactMath.addExact(frame.getLong(slot), increment);
+    long newValue = Math.addExact(frame.getLong(slot), increment);
     frame.setLong(slot, newValue);
     return newValue;
   }
