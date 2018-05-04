@@ -24,6 +24,7 @@ public class VmSettings implements Settings {
   public static final boolean PROMISE_RESOLUTION;
   public static final boolean PROMISE_RESOLVED_WITH;
   public static final boolean REPLAY;
+  public static final boolean SUPERINSTRUCTIONS;
 
   public static final boolean TRUFFLE_DEBUGGER_ENABLED;
 
@@ -71,6 +72,8 @@ public class VmSettings implements Settings {
     DNU_PRINT_STACK_TRACE = getBool("som.printStackTraceOnDNU", false);
 
     IGV_DUMP_AFTER_PARSING = getBool("som.igvDumpAfterParsing", false);
+
+    SUPERINSTRUCTIONS = getBool("som.superinstructions", true);
 
     ANSI_COLOR_IN_OUTPUT = getBool("som.useAnsiColoring", false);
   }

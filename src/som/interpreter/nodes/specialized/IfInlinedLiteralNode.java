@@ -1,5 +1,9 @@
 package som.interpreter.nodes.specialized;
 
+import com.oracle.truffle.api.dsl.Cached;
+import com.oracle.truffle.api.dsl.GenerateNodeFactory;
+import com.oracle.truffle.api.dsl.ImportStatic;
+import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.dsl.UnsupportedSpecializationException;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.nodes.Node;
@@ -11,18 +15,22 @@ import bd.inlining.Inline.False;
 import bd.inlining.Inline.True;
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
+import som.interpreter.nodes.superinstructions.IfSumGreaterNode;
+import som.vm.VmSettings;
 import som.vm.constants.Nil;
 
 
+@GenerateNodeFactory
 @Inline(selector = "ifTrue:", inlineableArgIdx = {1}, additionalArgs = {True.class})
 @Inline(selector = "ifFalse:", inlineableArgIdx = {1}, additionalArgs = {False.class})
-public final class IfInlinedLiteralNode extends ExprWithTagsNode {
+@ImportStatic({IfSumGreaterNode.class, VmSettings.class})
+abstract public class IfInlinedLiteralNode extends ExprWithTagsNode {
   private final ConditionProfile condProf = ConditionProfile.createCountingProfile();
 
   @Child private ExpressionNode conditionNode;
   @Child private ExpressionNode bodyNode;
 
-  private final boolean expectedBool;
+  protected final boolean expectedBool;
 
   // In case we need to revert from this optimistic optimization, keep the
   // original nodes around
@@ -48,8 +56,14 @@ public final class IfInlinedLiteralNode extends ExprWithTagsNode {
     }
   }
 
-  @Override
-  public Object executeGeneric(final VirtualFrame frame) {
+  @Specialization(guards = {"SUPERINSTRUCTIONS", "isApplicable"})
+  public Object executeAndReplace(final VirtualFrame frame,
+      @Cached("isIfSumGreaterNode(expectedBool, getConditionNode(), frame)") final boolean isApplicable) {
+    return IfSumGreaterNode.replaceNode(this).executeGeneric(frame);
+  }
+
+  @Specialization(replaces = {"executeAndReplace"})
+  public Object execute(final VirtualFrame frame) {
     if (evaluateCondition(frame) == expectedBool) {
       return bodyNode.executeGeneric(frame);
     } else {
@@ -64,5 +78,13 @@ public final class IfInlinedLiteralNode extends ExprWithTagsNode {
       return ((ExpressionNode) parent).isResultUsed(this);
     }
     return true;
+  }
+
+  public ExpressionNode getConditionNode() {
+    return conditionNode;
+  }
+
+  public ExpressionNode getBodyNode() {
+    return bodyNode;
   }
 }
