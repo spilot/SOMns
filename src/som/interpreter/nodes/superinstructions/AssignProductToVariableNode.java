@@ -9,7 +9,7 @@ import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
 import som.VM;
 import som.compiler.Variable;
-import som.interpreter.InliningVisitor;
+import bd.inlining.ScopeAdaptationVisitor;
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.LocalVariableNode;
 import som.interpreter.nodes.SOMNode;
@@ -111,7 +111,7 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
   }
 
   @Override
-  public void replaceAfterScopeChange(final InliningVisitor inliner) {
+  public void replaceAfterScopeChange(final ScopeAdaptationVisitor inliner) {
     /*
      * This should never happen because ``replaceAfterScopeChange`` is only called in the
      * parsing stage, whereas the ``AssignProductToVariableNode`` superinstruction is only

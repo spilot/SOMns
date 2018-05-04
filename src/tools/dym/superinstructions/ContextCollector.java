@@ -1,6 +1,6 @@
 package tools.dym.superinstructions;
 
-import bd.nodes.EagerPrimitive;
+import bd.primitives.nodes.EagerPrimitive;
 import com.oracle.truffle.api.instrumentation.InstrumentableFactory;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;

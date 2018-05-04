@@ -1,6 +1,7 @@
 package som.interpreter.nodes.specialized;
 
 import com.oracle.truffle.api.dsl.Cached;
+import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.ImportStatic;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.dsl.UnsupportedSpecializationException;
@@ -19,9 +20,11 @@ import som.vm.VmSettings;
 import som.vm.constants.Nil;
 
 
+@GenerateNodeFactory
 @Inline(selector = "ifTrue:", inlineableArgIdx = {1}, additionalArgs = {True.class})
 @Inline(selector = "ifFalse:", inlineableArgIdx = {1}, additionalArgs = {False.class})
-public final class IfInlinedLiteralNode extends ExprWithTagsNode {
+@ImportStatic({IfSumGreaterNode.class, VmSettings.class})
+abstract public class IfInlinedLiteralNode extends ExprWithTagsNode {
   private final ConditionProfile condProf = ConditionProfile.createCountingProfile();
 
   @Child private ExpressionNode conditionNode;
@@ -55,7 +58,7 @@ public final class IfInlinedLiteralNode extends ExprWithTagsNode {
 
   @Specialization(guards = {"SUPERINSTRUCTIONS", "isApplicable"})
   public Object executeAndReplace(final VirtualFrame frame,
-      @Cached("isIfSumGreaterNode(expectedBool, getConditionNode(), frame)") boolean isApplicable) {
+      @Cached("isIfSumGreaterNode(expectedBool, getConditionNode(), frame)") final boolean isApplicable) {
     return IfSumGreaterNode.replaceNode(this).executeGeneric(frame);
   }
 

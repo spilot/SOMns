@@ -1,13 +1,13 @@
 package som.interpreter.nodes.superinstructions;
 
-import com.oracle.truffle.api.ExactMath;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.frame.FrameSlotKind;
 import com.oracle.truffle.api.frame.FrameSlotTypeException;
 import com.oracle.truffle.api.frame.VirtualFrame;
+
+import bd.inlining.ScopeAdaptationVisitor;
 import som.VM;
 import som.compiler.Variable;
-import som.interpreter.InliningVisitor;
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.LocalVariableNode;
 import som.interpreter.nodes.SOMNode;
@@ -16,14 +16,15 @@ import som.interpreter.nodes.nary.EagerBinaryPrimitiveNode;
 import som.primitives.arithmetic.AdditionPrim;
 import tools.dym.Tags;
 
+
 /**
  * Matches the following AST:
  *
  * LocalVariableWriteNode
- *   EagerBinaryPrimitiveNode
- *     LocalVariableReadNode (with the same variable as LocalVariableWriteNode above)
- *     IntegerLiteralNode
- *     AdditionPrim
+ * EagerBinaryPrimitiveNode
+ * LocalVariableReadNode (with the same variable as LocalVariableWriteNode above)
+ * IntegerLiteralNode
+ * AdditionPrim
  *
  * and replaces it with
  *
@@ -99,7 +100,7 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
   }
 
   @Override
-  public void replaceAfterScopeChange(final InliningVisitor inliner) {
+  public void replaceAfterScopeChange(final ScopeAdaptationVisitor inliner) {
     /*
      * This should never happen because ``replaceAfterScopeChange`` is only called in the
      * parsing stage, whereas the ``IncrementOperationNode`` superinstruction is only inserted
@@ -115,7 +116,7 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
   /**
    * Check if the AST subtree has the shape of an increment operation.
    */
-  public static boolean isIncrementOperation(ExpressionNode exp, Variable.Local var) {
+  public static boolean isIncrementOperation(ExpressionNode exp, final Variable.Local var) {
     exp = SOMNode.unwrapIfNecessary(exp);
     if (exp instanceof EagerBinaryPrimitiveNode) {
       EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
@@ -136,7 +137,7 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
    * Replace ``node`` with a superinstruction. Assumes that the AST subtree has the correct
    * shape.
    */
-  public static void replaceNode(LocalVariableWriteNode node) {
+  public static void replaceNode(final LocalVariableWriteNode node) {
     EagerBinaryPrimitiveNode eagerNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getExp());
     long increment =

@@ -2,6 +2,7 @@ package som.interpreter.nodes.specialized.whileloops;
 
 import com.oracle.truffle.api.CompilerDirectives;
 import com.oracle.truffle.api.dsl.Cached;
+import com.oracle.truffle.api.dsl.GenerateNodeFactory;
 import com.oracle.truffle.api.dsl.ImportStatic;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.dsl.UnsupportedSpecializationException;
@@ -22,9 +23,11 @@ import som.vm.constants.Nil;
 import tools.dym.Tags.LoopNode;
 
 
+@GenerateNodeFactory
 @Inline(selector = "whileTrue:", inlineableArgIdx = {0, 1}, additionalArgs = {True.class})
 @Inline(selector = "whileFalse:", inlineableArgIdx = {0, 1}, additionalArgs = {False.class})
-public final class WhileInlinedLiteralsNode extends ExprWithTagsNode {
+@ImportStatic({WhileSmallerEqualThanArgumentNode.class, VmSettings.class})
+abstract public class WhileInlinedLiteralsNode extends ExprWithTagsNode {
 
   @Child private ExpressionNode conditionNode;
   @Child private ExpressionNode bodyNode;
@@ -69,7 +72,7 @@ public final class WhileInlinedLiteralsNode extends ExprWithTagsNode {
   /** Check for superinstruction ``WhileSmallerEqualThanArgumentNode`` */
   @Specialization(guards = {"SUPERINSTRUCTIONS", "isApplicable"})
   public Object executeAndReplace(final VirtualFrame frame,
-      @Cached("isWhileSmallerEqualThanArgumentNode(expectedBool, getConditionNode(), frame)") boolean isApplicable) {
+      @Cached("isWhileSmallerEqualThanArgumentNode(expectedBool, getConditionNode(), frame)") final boolean isApplicable) {
     return WhileSmallerEqualThanArgumentNode.replaceNode(this).executeGeneric(frame);
   }
 
