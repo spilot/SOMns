@@ -153,7 +153,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
     }
 
     /**
-     * Check for ``AssignSubtractionResultNode`` superinstruction and replcae where
+     * Check for ``AssignSubtractionResultNode`` superinstruction and replace where
      * applicable.
      */
     @Specialization(
@@ -166,7 +166,9 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
       return expValue;
     }
 
-    /** Check for ``IncrementOperationNode`` superinstruction and replcae where applicable */
+    /**
+     * Check for ``IncrementOperationNode`` superinstruction and replace where applicable.
+     */
     @Specialization(guards = {"SUPERINSTRUCTIONS", "isIncrement", "isLongKind(expValue)"})
     public final long writeLongAndReplaceWithIncrement(final VirtualFrame frame,
         final long expValue,
@@ -178,7 +180,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
 
     /**
      * Check for ``AssignProductToVariableNode`` superinstruction and replace where
-     * applicable
+     * applicable.
      */
     @Specialization(
         guards = {"SUPERINSTRUCTIONS", "isAssignProduct", "isDoubleKind(expValue)"})
