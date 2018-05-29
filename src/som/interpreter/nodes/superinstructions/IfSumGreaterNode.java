@@ -5,6 +5,7 @@ import com.oracle.truffle.api.frame.FrameSlot;
 import com.oracle.truffle.api.frame.FrameSlotTypeException;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.nodes.Node;
+
 import som.VM;
 import som.compiler.Variable;
 import som.interpreter.nodes.ExpressionNode;
@@ -17,6 +18,7 @@ import som.interpreter.nodes.specialized.IfInlinedLiteralNode;
 import som.primitives.arithmetic.AdditionPrim;
 import som.primitives.arithmetic.GreaterThanPrim;
 import som.vm.constants.Nil;
+import tools.dym.superinstructions.GuardEvaluationCounter;
 
 
 /**
@@ -76,14 +78,14 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
   @Specialization(replaces = {"executeSpecialized"})
   public Object executeAndDeoptimize(final VirtualFrame frame) {
     // Execute and replace myself with the original subtree
-    Object result = originalSubtree.executeGeneric(frame);
+    final Object result = originalSubtree.executeGeneric(frame);
     replace(originalSubtree);
     return result;
   }
 
   @Override
   public boolean isResultUsed(final ExpressionNode child) {
-    Node parent = getParent();
+    final Node parent = getParent();
     if (parent instanceof ExpressionNode) {
       return ((ExpressionNode) parent).isResultUsed(this);
     }
@@ -96,17 +98,19 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
    */
   public static IfSumGreaterNode replaceNode(final IfInlinedLiteralNode node) {
     // fetch the branching condition, which is a comparison (>)
-    EagerBinaryPrimitiveNode condition =
+    final EagerBinaryPrimitiveNode condition =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getConditionNode());
     // fetch left-hand side of comparison ...
-    EagerBinaryPrimitiveNode conditionLeft =
+    final EagerBinaryPrimitiveNode conditionLeft =
         (EagerBinaryPrimitiveNode) unwrapReceiver(condition);
     // ... which is an addition of two local variables
-    LocalVariableReadNode leftOperand = (LocalVariableReadNode) unwrapReceiver(conditionLeft);
-    LocalVariableReadNode rightOperand = (LocalVariableReadNode) unwrapArgument(conditionLeft);
+    final LocalVariableReadNode leftOperand =
+        (LocalVariableReadNode) unwrapReceiver(conditionLeft);
+    final LocalVariableReadNode rightOperand =
+        (LocalVariableReadNode) unwrapArgument(conditionLeft);
     // right-hand side of comparison is a double literal
-    DoubleLiteralNode thanNode = (DoubleLiteralNode) unwrapArgument(condition);
-    IfSumGreaterNode newNode = IfSumGreaterNodeGen.create(leftOperand.getLocal(),
+    final DoubleLiteralNode thanNode = (DoubleLiteralNode) unwrapArgument(condition);
+    final IfSumGreaterNode newNode = IfSumGreaterNodeGen.create(leftOperand.getLocal(),
         rightOperand.getLocal(),
         thanNode.getValue(),
         node.getBodyNode(),
@@ -120,41 +124,43 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
   /**
    * Helper functions to increase readability.
    */
-  private static ExpressionNode unwrapReceiver(EagerBinaryPrimitiveNode eagerNode) {
+  private static ExpressionNode unwrapReceiver(final EagerBinaryPrimitiveNode eagerNode) {
     return SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
   }
 
-  private static ExpressionNode unwrapArgument(EagerBinaryPrimitiveNode eagerNode) {
+  private static ExpressionNode unwrapArgument(final EagerBinaryPrimitiveNode eagerNode) {
     return SOMNode.unwrapIfNecessary(eagerNode.getArgument());
   }
 
   /**
    * Check if the AST subtree has the correct shape.
    */
-  public static boolean isIfSumGreaterNode(boolean expectedBool,
-      ExpressionNode conditionNode,
-      VirtualFrame frame) {
+  public static boolean isIfSumGreaterNode(final boolean expectedBool,
+      final ExpressionNode conditionNode,
+      final VirtualFrame frame) {
+    GuardEvaluationCounter.recordActivation(IfSumGreaterNode.class, conditionNode);
     // is this even ifTrue?
-    if (!expectedBool)
+    if (!expectedBool) {
       return false;
+    }
     // is the branching condition a greater-than comparison?
     if (SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode) {
-      EagerBinaryPrimitiveNode condition =
+      final EagerBinaryPrimitiveNode condition =
           (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(conditionNode);
       if (condition.getPrimitive() instanceof GreaterThanPrim) {
         // yes! is the left-hand side a binary operation and the right-hand side a double
         // literal?
         if (unwrapReceiver(condition) instanceof EagerBinaryPrimitiveNode
             && unwrapArgument(condition) instanceof DoubleLiteralNode) {
-          EagerBinaryPrimitiveNode conditionLeft =
+          final EagerBinaryPrimitiveNode conditionLeft =
               (EagerBinaryPrimitiveNode) unwrapReceiver(condition);
           // yes! is the left-hand side an addition of two variables?
           if (conditionLeft.getPrimitive() instanceof AdditionPrim) {
             if (unwrapReceiver(conditionLeft) instanceof LocalVariableReadNode
                 && unwrapArgument(conditionLeft) instanceof LocalVariableReadNode) {
-              LocalVariableReadNode leftOperand =
+              final LocalVariableReadNode leftOperand =
                   (LocalVariableReadNode) unwrapReceiver(conditionLeft);
-              LocalVariableReadNode rightOperand =
+              final LocalVariableReadNode rightOperand =
                   (LocalVariableReadNode) unwrapArgument(conditionLeft);
               // yes! are the two variables of type double?
               if (frame.isDouble(leftOperand.getLocal().getSlot())

@@ -5,7 +5,7 @@ import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.frame.FrameSlot;
 import com.oracle.truffle.api.frame.FrameSlotTypeException;
 import com.oracle.truffle.api.frame.VirtualFrame;
-import som.VM;
+
 import som.compiler.Variable;
 import som.interpreter.SArguments;
 import som.interpreter.nodes.ArgumentReadNode.LocalArgumentReadNode;
@@ -20,6 +20,7 @@ import som.interpreter.objectstorage.ObjectTransitionSafepoint;
 import som.primitives.arithmetic.LessThanOrEqualPrim;
 import som.vm.constants.Nil;
 import tools.dym.Tags;
+import tools.dym.superinstructions.GuardEvaluationCounter;
 
 
 /**
@@ -65,10 +66,11 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
   }
 
   private boolean evaluateCondition(final VirtualFrame frame) throws FrameSlotTypeException {
-    Object argumentValue = SArguments.arg(frame, argumentIndex);
-    if (!(argumentValue instanceof Long))
+    final Object argumentValue = SArguments.arg(frame, argumentIndex);
+    if (!(argumentValue instanceof Long)) {
       throw new FrameSlotTypeException(); // Argument is not of type Long! (should never
                                           // happen)
+    }
     // Frame.getLong might throw FrameSlotTypeException
     return frame.getLong(variableSlot) <= (Long) argumentValue;
   }
@@ -101,7 +103,7 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
   @Specialization(replaces = {"executeSpecialized"})
   public Object executeAndDeoptimize(final VirtualFrame frame) {
     // Execute the original subtree and replace myself with it
-    Object result = originalSubtree.executeGeneric(frame);
+    final Object result = originalSubtree.executeGeneric(frame);
     replace(originalSubtree);
     return result;
   }
@@ -114,25 +116,28 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
   /**
    * Check if the AST subtree has the correct shape.
    */
-  static public boolean isWhileSmallerEqualThanArgumentNode(boolean expectedBool,
+  static public boolean isWhileSmallerEqualThanArgumentNode(final boolean expectedBool,
       ExpressionNode conditionNode,
-      VirtualFrame frame) {
+      final VirtualFrame frame) {
+    GuardEvaluationCounter.recordActivation(WhileSmallerEqualThanArgumentNode.class,
+        conditionNode);
     // whileFalse: does not match
-    if (!expectedBool)
+    if (!expectedBool) {
       return false;
+    }
     conditionNode = SOMNode.unwrapIfNecessary(conditionNode);
     // ... is the condition a binary operation?
     if (conditionNode instanceof EagerBinaryPrimitiveNode) {
-      EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) conditionNode;
+      final EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) conditionNode;
       // is the operation ``LocalVariable <= LocalArgument``?
       if (SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode
           && SOMNode.unwrapIfNecessary(
               eagerNode.getArgument()) instanceof LocalArgumentReadNode
           && SOMNode.unwrapIfNecessary(
               eagerNode.getPrimitive()) instanceof LessThanOrEqualPrim) {
-        LocalArgumentReadNode arg =
+        final LocalArgumentReadNode arg =
             (LocalArgumentReadNode) SOMNode.unwrapIfNecessary(eagerNode.getArgument());
-        LocalVariableReadNode variable =
+        final LocalVariableReadNode variable =
             (LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
         // Are variable and argument both of type Long?
         if (SArguments.arg(frame, arg.getArgumentIndex()) instanceof Long
@@ -148,19 +153,21 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
    * Replace ``node`` with a superinstruction. Assumes that the AST subtree has the correct
    * shape.
    */
-  static public WhileSmallerEqualThanArgumentNode replaceNode(WhileInlinedLiteralsNode node) {
+  static public WhileSmallerEqualThanArgumentNode replaceNode(
+      final WhileInlinedLiteralsNode node) {
     // Extract local variable slot and argument index
-    EagerBinaryPrimitiveNode conditionNode =
+    final EagerBinaryPrimitiveNode conditionNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getConditionNode());
-    LocalVariableReadNode variableRead =
+    final LocalVariableReadNode variableRead =
         (LocalVariableReadNode) SOMNode.unwrapIfNecessary(conditionNode.getReceiver());
-    LocalArgumentReadNode argumentRead =
+    final LocalArgumentReadNode argumentRead =
         (LocalArgumentReadNode) SOMNode.unwrapIfNecessary(conditionNode.getArgument());
     // replace node with superinstruction
-    WhileSmallerEqualThanArgumentNode newNode = WhileSmallerEqualThanArgumentNodeGen.create(
-        variableRead.getLocal(), argumentRead.getArgumentIndex(), node.getBodyNode(), node)
-                                                                                    .initialize(
-                                                                                        node.getSourceSection());
+    final WhileSmallerEqualThanArgumentNode newNode =
+        WhileSmallerEqualThanArgumentNodeGen.create(
+            variableRead.getLocal(), argumentRead.getArgumentIndex(), node.getBodyNode(), node)
+                                            .initialize(
+                                                node.getSourceSection());
     node.replace(newNode);
     newNode.adoptChildren();
     // Without the following line, WhileSmallerEqualThanArgumentNode is not taken into

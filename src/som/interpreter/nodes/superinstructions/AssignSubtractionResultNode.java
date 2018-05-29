@@ -5,18 +5,19 @@ import com.oracle.truffle.api.dsl.NodeChildren;
 import com.oracle.truffle.api.dsl.Specialization;
 import com.oracle.truffle.api.frame.FrameSlotKind;
 import com.oracle.truffle.api.frame.VirtualFrame;
+
+import bd.inlining.ScopeAdaptationVisitor;
 import som.VM;
 import som.compiler.Variable;
-import bd.inlining.ScopeAdaptationVisitor;
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.LocalVariableNode;
-import som.interpreter.nodes.MessageSendNode;
-import som.interpreter.nodes.MessageSendNode.GenericMessageSendNode;
 import som.interpreter.nodes.MessageSendNode.AbstractMessageSendNode;
+import som.interpreter.nodes.MessageSendNode.GenericMessageSendNode;
 import som.interpreter.nodes.SOMNode;
 import som.interpreter.nodes.nary.EagerBinaryPrimitiveNode;
 import som.primitives.arithmetic.SubtractionPrim;
 import tools.dym.Tags;
+import tools.dym.superinstructions.GuardEvaluationCounter;
 
 
 /**
@@ -58,7 +59,7 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
       final double leftValue,
       final double rightValue) {
     // Use Truffle DSL to retrieve the left and right values, set slot, return value
-    double result = leftValue - rightValue;
+    final double result = leftValue - rightValue;
     frame.setDouble(slot, result);
     return result;
   }
@@ -75,9 +76,9 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
     // ``writeGeneric`` method to write the result to a slot.
     assert SOMNode.unwrapIfNecessary(
         originalSubtree.getExp()) instanceof EagerBinaryPrimitiveNode;
-    EagerBinaryPrimitiveNode eagerNode =
+    final EagerBinaryPrimitiveNode eagerNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(originalSubtree.getExp());
-    Object result = eagerNode.executeEvaluated(frame, leftValue, rightValue);
+    final Object result = eagerNode.executeEvaluated(frame, leftValue, rightValue);
     originalSubtree.writeGeneric(frame, result);
     // Then, we replace ourselves.
     replace(originalSubtree);
@@ -129,9 +130,10 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
    * Check if the subtree has the correct shape.
    */
   public static boolean isAssignSubtractionResultOperation(ExpressionNode exp) {
+    GuardEvaluationCounter.recordActivation(AssignSubtractionResultNode.class, exp);
     exp = SOMNode.unwrapIfNecessary(exp);
     if (exp instanceof EagerBinaryPrimitiveNode) {
-      EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
+      final EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
       if (SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode
           && SOMNode.unwrapIfNecessary(
               eagerNode.getArgument()) instanceof GenericMessageSendNode
@@ -146,10 +148,10 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
    * Replace ``node`` with a superinstruction. This assumes that the subtree has the correct
    * shape.
    */
-  public static void replaceNode(LocalVariableWriteNode node) {
-    EagerBinaryPrimitiveNode eagerNode =
+  public static void replaceNode(final LocalVariableWriteNode node) {
+    final EagerBinaryPrimitiveNode eagerNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getExp());
-    AssignSubtractionResultNode newNode = AssignSubtractionResultNodeGen.create(
+    final AssignSubtractionResultNode newNode = AssignSubtractionResultNodeGen.create(
         node.getLocal(),
         node,
         (AbstractMessageSendNode) eagerNode.getReceiver(),

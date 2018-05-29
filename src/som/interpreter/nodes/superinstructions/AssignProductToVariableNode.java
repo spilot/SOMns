@@ -5,19 +5,17 @@ import com.oracle.truffle.api.frame.FrameSlot;
 import com.oracle.truffle.api.frame.FrameSlotKind;
 import com.oracle.truffle.api.frame.FrameSlotTypeException;
 import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.nodes.NodeUtil;
+
+import bd.inlining.ScopeAdaptationVisitor;
 import som.VM;
 import som.compiler.Variable;
-import bd.inlining.ScopeAdaptationVisitor;
 import som.interpreter.nodes.ExpressionNode;
 import som.interpreter.nodes.LocalVariableNode;
 import som.interpreter.nodes.SOMNode;
 import som.interpreter.nodes.nary.EagerBinaryPrimitiveNode;
 import som.primitives.arithmetic.MultiplicationPrim;
 import tools.dym.Tags;
-
-import java.util.List;
+import tools.dym.superinstructions.GuardEvaluationCounter;
 
 
 /**
@@ -71,7 +69,7 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
     // Read the two slots, multiply their contents, set the variable
     // This might throw a FrameSlotTypeException, in which case the
     // original subtree is restored
-    double newValue = frame.getDouble(leftSlot) * frame.getDouble(rightSlot);
+    final double newValue = frame.getDouble(leftSlot) * frame.getDouble(rightSlot);
     frame.setDouble(slot, newValue);
     return newValue;
   }
@@ -79,7 +77,7 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
   @Specialization(replaces = {"writeDouble"})
   public final Object writeGeneric(final VirtualFrame frame) {
     // Replace myself with the stored original subtree
-    Object result = originalSubtree.executeGeneric(frame);
+    final Object result = originalSubtree.executeGeneric(frame);
     replace(originalSubtree);
     return result;
   }
@@ -124,20 +122,22 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
   /**
    * Check if the AST subtree has the correct shape.
    */
-  public static boolean isAssignProductOperation(ExpressionNode exp, VirtualFrame frame) {
+  public static boolean isAssignProductOperation(ExpressionNode exp,
+      final VirtualFrame frame) {
+    GuardEvaluationCounter.recordActivation(AssignProductToVariableNode.class, exp);
     exp = SOMNode.unwrapIfNecessary(exp);
     // Check that the expression is a multiplication of two local variables ...
     if (exp instanceof EagerBinaryPrimitiveNode) {
-      EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
+      final EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
       if (SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode
           && SOMNode.unwrapIfNecessary(
               eagerNode.getArgument()) instanceof LocalVariableReadNode
           && SOMNode.unwrapIfNecessary(
               eagerNode.getPrimitive()) instanceof MultiplicationPrim) {
         // ... and extract the variables ...
-        LocalVariableReadNode left =
+        final LocalVariableReadNode left =
             (LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
-        LocalVariableReadNode right =
+        final LocalVariableReadNode right =
             (LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getArgument());
         // ... and check that they currently store Double values
         if (frame.isDouble(left.getLocal().getSlot())
@@ -154,15 +154,15 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
    * shape.
    */
   public static void replaceNode(final LocalVariableWriteNode node) {
-    EagerBinaryPrimitiveNode eagerNode =
+    final EagerBinaryPrimitiveNode eagerNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getExp());
-    Variable.Local left =
+    final Variable.Local left =
         ((LocalVariableReadNode) SOMNode.unwrapIfNecessary(
             eagerNode.getReceiver())).getLocal();
-    Variable.Local right =
+    final Variable.Local right =
         ((LocalVariableReadNode) SOMNode.unwrapIfNecessary(
             eagerNode.getArgument())).getLocal();
-    AssignProductToVariableNode newNode =
+    final AssignProductToVariableNode newNode =
         AssignProductToVariableNodeGen.create(node.getLocal(),
             left,
             right,

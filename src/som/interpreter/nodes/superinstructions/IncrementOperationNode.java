@@ -15,6 +15,7 @@ import som.interpreter.nodes.literals.IntegerLiteralNode;
 import som.interpreter.nodes.nary.EagerBinaryPrimitiveNode;
 import som.primitives.arithmetic.AdditionPrim;
 import tools.dym.Tags;
+import tools.dym.superinstructions.GuardEvaluationCounter;
 
 
 /**
@@ -58,7 +59,7 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
       ArithmeticException.class
   })
   public final long writeLong(final VirtualFrame frame) throws FrameSlotTypeException {
-    long newValue = Math.addExact(frame.getLong(slot), increment);
+    final long newValue = Math.addExact(frame.getLong(slot), increment);
     frame.setLong(slot, newValue);
     return newValue;
   }
@@ -67,7 +68,7 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
   public final Object writeGeneric(final VirtualFrame frame) {
     // Replace myself with the stored original subtree.
     // This could happen because the frame slot type has changed or because of an overflow.
-    Object result = originalSubtree.executeGeneric(frame);
+    final Object result = originalSubtree.executeGeneric(frame);
     replace(originalSubtree);
     return result;
   }
@@ -117,13 +118,14 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
    * Check if the AST subtree has the shape of an increment operation.
    */
   public static boolean isIncrementOperation(ExpressionNode exp, final Variable.Local var) {
+    GuardEvaluationCounter.recordActivation(IncrementOperationNode.class, exp);
     exp = SOMNode.unwrapIfNecessary(exp);
     if (exp instanceof EagerBinaryPrimitiveNode) {
-      EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
+      final EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
       if (SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode
           && SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode
           && SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof AdditionPrim) {
-        LocalVariableReadNode read =
+        final LocalVariableReadNode read =
             (LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
         if (read.getLocal().equals(var)) {
           return true;
@@ -138,11 +140,11 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
    * shape.
    */
   public static void replaceNode(final LocalVariableWriteNode node) {
-    EagerBinaryPrimitiveNode eagerNode =
+    final EagerBinaryPrimitiveNode eagerNode =
         (EagerBinaryPrimitiveNode) SOMNode.unwrapIfNecessary(node.getExp());
-    long increment =
+    final long increment =
         ((IntegerLiteralNode) SOMNode.unwrapIfNecessary(eagerNode.getArgument())).getValue();
-    IncrementOperationNode newNode = IncrementOperationNodeGen.create(node.getLocal(),
+    final IncrementOperationNode newNode = IncrementOperationNodeGen.create(node.getLocal(),
         increment,
         node).initialize(node.getSourceSection());
     node.replace(newNode);
