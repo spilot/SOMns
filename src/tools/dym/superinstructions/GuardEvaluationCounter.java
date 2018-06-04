@@ -29,7 +29,6 @@ public class GuardEvaluationCounter {
         final long mean =
             thisTypesValues.stream().reduce(0L, Long::sum) / thisTypesValues.size();
         System.out.format("%34s%7s%2d%2s", key.getSimpleName(), " mean: ", mean, ". ");
-        // System.out.print(key.getSimpleName() + " -- mean: " + mean + ". ");
 
         // print histogram
         final HashMap<Long, Long> histogram = new HashMap<>();
@@ -38,7 +37,6 @@ public class GuardEvaluationCounter {
                        (bucket, oldvalue) -> oldvalue == null ? 1 : oldvalue + 1));
         System.out.println(histogram.toString());
       });
-      //
     }));
   }
 
