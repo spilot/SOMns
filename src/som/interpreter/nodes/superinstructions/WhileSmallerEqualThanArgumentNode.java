@@ -27,16 +27,16 @@ import tools.dym.superinstructions.GuardEvaluationCounter;
  * Matches the following AST:
  *
  * WhileInlinedLiteralsNode (expectedBool == true)
- *   EagerBinaryPrimitiveNode
- *     LocalVariableReadNode (of type Long)
- *     LocalArgumentReadNode (of type Long)
- *     LessThanOrEqualPrim
- *   ExpressionNode
+ * EagerBinaryPrimitiveNode
+ * LocalVariableReadNode (of type Long)
+ * LocalArgumentReadNode (of type Long)
+ * LessThanOrEqualPrim
+ * ExpressionNode
  *
  * and replaces it with
  *
  * WhileSmallerEqualThanArgumentNode
- *   ExpressionNode
+ * ExpressionNode
  *
  */
 abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode {
@@ -116,7 +116,7 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
   /**
    * Check if the AST subtree has the correct shape.
    */
-  static public boolean isWhileSmallerEqualThanArgumentNode(final boolean expectedBool,
+  public static boolean isWhileSmallerEqualThanArgumentNode(final boolean expectedBool,
       ExpressionNode conditionNode,
       final VirtualFrame frame) {
     GuardEvaluationCounter.recordActivation(WhileSmallerEqualThanArgumentNode.class,
@@ -124,28 +124,65 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
     // whileFalse: does not match
     if (!expectedBool) {
       return false;
+    } else {
+      System.err.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
+          + ": expectedBool was false.");
     }
     conditionNode = SOMNode.unwrapIfNecessary(conditionNode);
+
     // ... is the condition a binary operation?
     if (conditionNode instanceof EagerBinaryPrimitiveNode) {
       final EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) conditionNode;
       // is the operation ``LocalVariable <= LocalArgument``?
-      if (SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode
-          && SOMNode.unwrapIfNecessary(
-              eagerNode.getArgument()) instanceof LocalArgumentReadNode
-          && SOMNode.unwrapIfNecessary(
+      if (SOMNode.unwrapIfNecessary(
+          eagerNode.getReceiver()) instanceof LocalVariableReadNode) {
+        if (SOMNode.unwrapIfNecessary(
+            eagerNode.getArgument()) instanceof LocalArgumentReadNode) {
+          if (SOMNode.unwrapIfNecessary(
               eagerNode.getPrimitive()) instanceof LessThanOrEqualPrim) {
-        final LocalArgumentReadNode arg =
-            (LocalArgumentReadNode) SOMNode.unwrapIfNecessary(eagerNode.getArgument());
-        final LocalVariableReadNode variable =
-            (LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
-        // Are variable and argument both of type Long?
-        if (SArguments.arg(frame, arg.getArgumentIndex()) instanceof Long
-            && frame.isLong(variable.getLocal().getSlot())) {
-          return true;
+            final LocalArgumentReadNode arg =
+                (LocalArgumentReadNode) SOMNode.unwrapIfNecessary(eagerNode.getArgument());
+            final LocalVariableReadNode variable =
+                (LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
+            // Are variable and argument both of type Long?
+            if (SArguments.arg(frame, arg.getArgumentIndex()) instanceof Long) {
+              if (frame.isLong(variable.getLocal().getSlot())) {
+                return true;
+              } else {
+                System.err.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
+                    + ": frame.isLong(variable.getLocal().getSlot()) should have been long, but was: "
+                    + variable.getLocal().getSlot().getKind().toString());
+              }
+            } else {
+              System.err.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
+                  + ": SArguments.arg(frame, arg.getArgumentIndex()) should have type long, but was: "
+                  + SArguments.arg(frame, arg.getArgumentIndex()).getClass()
+                              .getSimpleName());
+            }
+          } else {
+            System.err.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
+                + ": SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()); expected LessThanOrEqualPrim, actual "
+                + SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()).getClass()
+                         .getSimpleName());
+          }
+        } else {
+          System.err.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
+              + ": SOMNode.unwrapIfNecessary(eagerNode.getArgument()); expected LocalArgumentReadNode, actual "
+              + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass()
+                       .getSimpleName());
         }
+      } else {
+        System.err.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
+            + ": SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual "
+            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName());
       }
+    } else {
+      System.err.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
+          + " conditionNode should have been EagerBinaryPrimitiveNode, but was: "
+          + conditionNode.getClass().getSimpleName());
+      return false;
     }
+
     return false;
   }
 
