@@ -9,7 +9,7 @@
     Description: none
 -->
 <module name="Checker">
-  <property name="severity" value="error"/>
+  <property name="severity" value="warning"/>
   <module name="TreeWalker">
     <property name="tabWidth" value="4"/>
     <module name="JavadocStyle">
@@ -149,11 +149,13 @@
       <property name="format" value="System\.(out|err)\.print"/>
       <property name="message" value="System\.(out|err)\.print should be avoided. Use a logging method instead."/>
     </module>
+    <!--
     <module name="SuppressionCommentFilter">
       <property name="offCommentFormat" value="Checkstyle: stop"/>
       <property name="onCommentFormat" value="Checkstyle: resume"/>
       <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Disable all checks"/>
     </module>
+  -->
   </module>
   <module name="SuppressionFilter">
     <property name="file" value="${basedir}/.checkstyle_suppressions.xml"/>
