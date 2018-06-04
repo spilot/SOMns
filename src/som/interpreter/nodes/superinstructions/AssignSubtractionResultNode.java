@@ -134,12 +134,32 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
     exp = SOMNode.unwrapIfNecessary(exp);
     if (exp instanceof EagerBinaryPrimitiveNode) {
       final EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
-      if (SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode
-          && SOMNode.unwrapIfNecessary(
-              eagerNode.getArgument()) instanceof GenericMessageSendNode
-          && SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof SubtractionPrim) {
-        return true;
+      if (SOMNode.unwrapIfNecessary(
+          eagerNode.getReceiver()) instanceof GenericMessageSendNode) {
+        if (SOMNode.unwrapIfNecessary(
+            eagerNode.getArgument()) instanceof GenericMessageSendNode) {
+          if (SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof SubtractionPrim) {
+            return true;
+          } else {
+            System.err.println(AssignSubtractionResultNode.class.getSimpleName()
+                + "SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof SubtractionPrim, actual: "
+                + SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()).getClass()
+                         .getSimpleName());
+          }
+        } else {
+          System.err.println(AssignSubtractionResultNode.class.getSimpleName()
+              + "SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: "
+              + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName());
+        }
+      } else {
+        System.err.println(AssignSubtractionResultNode.class.getSimpleName()
+            + "SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: "
+            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName());
       }
+    } else {
+      System.err.println(AssignSubtractionResultNode.class.getSimpleName()
+          + "exp instanceof EagerBinaryPrimitiveNode, actual: "
+          + exp.getClass().getSimpleName());
     }
     return false;
   }
