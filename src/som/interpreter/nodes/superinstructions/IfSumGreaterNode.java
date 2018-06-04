@@ -142,6 +142,8 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
     // is this even ifTrue?
     if (!expectedBool) {
       return false;
+    } else {
+      System.err.println(IfSumGreaterNode.class.getSimpleName() + ": expectedBool was false.");
     }
     // is the branching condition a greater-than comparison?
     if (SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode) {
@@ -150,27 +152,66 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
       if (condition.getPrimitive() instanceof GreaterThanPrim) {
         // yes! is the left-hand side a binary operation and the right-hand side a double
         // literal?
-        if (unwrapReceiver(condition) instanceof EagerBinaryPrimitiveNode
-            && unwrapArgument(condition) instanceof DoubleLiteralNode) {
-          final EagerBinaryPrimitiveNode conditionLeft =
-              (EagerBinaryPrimitiveNode) unwrapReceiver(condition);
-          // yes! is the left-hand side an addition of two variables?
-          if (conditionLeft.getPrimitive() instanceof AdditionPrim) {
-            if (unwrapReceiver(conditionLeft) instanceof LocalVariableReadNode
-                && unwrapArgument(conditionLeft) instanceof LocalVariableReadNode) {
-              final LocalVariableReadNode leftOperand =
-                  (LocalVariableReadNode) unwrapReceiver(conditionLeft);
-              final LocalVariableReadNode rightOperand =
-                  (LocalVariableReadNode) unwrapArgument(conditionLeft);
-              // yes! are the two variables of type double?
-              if (frame.isDouble(leftOperand.getLocal().getSlot())
-                  && frame.isDouble(rightOperand.getLocal().getSlot())) {
-                return true;
+        if (unwrapReceiver(condition) instanceof EagerBinaryPrimitiveNode) {
+          if (unwrapArgument(condition) instanceof DoubleLiteralNode) {
+            final EagerBinaryPrimitiveNode conditionLeft =
+                (EagerBinaryPrimitiveNode) unwrapReceiver(condition);
+            // yes! is the left-hand side an addition of two variables?
+            if (conditionLeft.getPrimitive() instanceof AdditionPrim) {
+              if (unwrapReceiver(conditionLeft) instanceof LocalVariableReadNode) {
+                if (unwrapArgument(conditionLeft) instanceof LocalVariableReadNode) {
+                  final LocalVariableReadNode leftOperand =
+                      (LocalVariableReadNode) unwrapReceiver(conditionLeft);
+                  final LocalVariableReadNode rightOperand =
+                      (LocalVariableReadNode) unwrapArgument(conditionLeft);
+                  // yes! are the two variables of type double?
+                  if (frame.isDouble(leftOperand.getLocal().getSlot())) {
+                    if (frame.isDouble(rightOperand.getLocal().getSlot())) {
+                      return true;
+                    } else {
+                      System.err.println(IfSumGreaterNode.class.getSimpleName()
+                          + ": rightOperand.getLocal() expected double, was: "
+                          + rightOperand.getLocal().getSlot().getKind());
+                    }
+                  } else {
+                    System.err.println(IfSumGreaterNode.class.getSimpleName()
+                        + ": leftOperand.getLocal() expected double, was: "
+                        + leftOperand.getLocal().getSlot().getKind());
+                  }
+                } else {
+                  System.err.println(IfSumGreaterNode.class.getSimpleName()
+                      + ": unwrapArgument(conditionLeft) instanceof LocalVariableReadNode, actual: "
+                      + unwrapArgument(conditionLeft).getClass().getSimpleName());
+                }
+              } else {
+                System.err.println(IfSumGreaterNode.class.getSimpleName()
+                    + ": unwrapReceiver(conditionLeft) instanceof LocalVariableReadNode, actual: "
+                    + unwrapReceiver(conditionLeft).getClass().getSimpleName());
               }
+            } else {
+              System.err.println(IfSumGreaterNode.class.getSimpleName()
+                  + ": conditionLeft.getPrimitive() instanceof AdditionPrim, actual: "
+                  + conditionLeft.getPrimitive().getClass().getSimpleName());
             }
+          } else {
+            System.err.println(IfSumGreaterNode.class.getSimpleName()
+                + ": unwrapArgument(condition) instanceof DoubleLiteralNode, actual: "
+                + unwrapArgument(condition).getClass().getSimpleName());
           }
+        } else {
+          System.err.println(IfSumGreaterNode.class.getSimpleName()
+              + ": unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: "
+              + unwrapReceiver(condition).getClass().getSimpleName());
         }
+      } else {
+        System.err.println(IfSumGreaterNode.class.getSimpleName()
+            + ": condition.getPrimitive() instanceof GreaterThanPrim, actual: "
+            + condition.getPrimitive().getClass().getSimpleName());
       }
+    } else {
+      System.err.println(IfSumGreaterNode.class.getSimpleName()
+          + ": SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: "
+          + SOMNode.unwrapIfNecessary(conditionNode).getClass().getSimpleName());
     }
     return false;
   }
