@@ -118,19 +118,42 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
    * Check if the AST subtree has the shape of an increment operation.
    */
   public static boolean isIncrementOperation(ExpressionNode exp, final Variable.Local var) {
-    GuardEvaluationCounter.recordActivation(IncrementOperationNode.class, exp);
     exp = SOMNode.unwrapIfNecessary(exp);
+    GuardEvaluationCounter.recordActivation(IncrementOperationNode.class, exp);
     if (exp instanceof EagerBinaryPrimitiveNode) {
       final EagerBinaryPrimitiveNode eagerNode = (EagerBinaryPrimitiveNode) exp;
-      if (SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode
-          && SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode
-          && SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof AdditionPrim) {
-        final LocalVariableReadNode read =
-            (LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
-        if (read.getLocal().equals(var)) {
-          return true;
+      if (SOMNode.unwrapIfNecessary(
+          eagerNode.getReceiver()) instanceof LocalVariableReadNode) {
+        if (SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode) {
+          if (SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof AdditionPrim) {
+            final LocalVariableReadNode read =
+                (LocalVariableReadNode) SOMNode.unwrapIfNecessary(eagerNode.getReceiver());
+            if (read.getLocal().equals(var)) {
+              return true;
+            } else {
+              System.err.println(IncrementOperationNode.class.getSimpleName()
+                  + ": read.getLocal().equals(var), actual: " + var);
+            }
+          } else {
+            System.err.println(IncrementOperationNode.class.getSimpleName()
+                + ": SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof AdditionPrim, actual: "
+                + SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()).getClass()
+                         .getSimpleName());
+          }
+        } else {
+          System.err.println(IncrementOperationNode.class.getSimpleName()
+              + ": SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: "
+              + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName());
         }
+      } else {
+        System.err.println(IncrementOperationNode.class.getSimpleName()
+            + ": SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: "
+            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName());
       }
+    } else {
+      System.err.println(IncrementOperationNode.class.getSimpleName()
+          + ": exp instanceof EagerBinaryPrimitiveNode, actual: "
+          + exp.getClass().getSimpleName());
     }
     return false;
   }
