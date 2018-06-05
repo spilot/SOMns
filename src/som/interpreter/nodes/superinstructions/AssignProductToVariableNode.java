@@ -145,34 +145,34 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
               if (frame.isDouble(right.getLocal().getSlot())) {
                 return true;
               } else {
-                System.err.println(AssignProductToVariableNode.class.getSimpleName()
+                System.out.println(AssignProductToVariableNode.class.getSimpleName()
                     + "right.getLocal().getSlot() expected Double, actual: "
                     + right.getLocal().getSlot().getKind());
               }
             } else {
-              System.err.println(AssignProductToVariableNode.class.getSimpleName()
+              System.out.println(AssignProductToVariableNode.class.getSimpleName()
                   + "left.getLocal().getSlot() expected Double, actual: "
                   + left.getLocal().getSlot().getKind());
             }
           } else {
-            System.err.println(
+            System.out.println(
                 AssignProductToVariableNode.class.getSimpleName()
                     + ": SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof MultiplicationPrim, actual: "
                     + SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()).getClass()
                              .getSimpleName());
           }
         } else {
-          System.err.println(AssignProductToVariableNode.class.getSimpleName()
+          System.out.println(AssignProductToVariableNode.class.getSimpleName()
               + ": SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: "
               + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName());
         }
       } else {
-        System.err.println(AssignProductToVariableNode.class.getSimpleName()
+        System.out.println(AssignProductToVariableNode.class.getSimpleName()
             + ": SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: "
             + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName());
       }
     } else {
-      System.err.println(AssignProductToVariableNode.class.getSimpleName()
+      System.out.println(AssignProductToVariableNode.class.getSimpleName()
           + ": exp instanceof EagerBinaryPrimitiveNode, actual: "
           + exp.getClass().getSimpleName());
     }

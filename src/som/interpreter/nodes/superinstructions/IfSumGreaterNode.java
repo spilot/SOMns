@@ -141,9 +141,8 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
     GuardEvaluationCounter.recordActivation(IfSumGreaterNode.class, conditionNode);
     // is this even ifTrue?
     if (!expectedBool) {
+      System.out.println(IfSumGreaterNode.class.getSimpleName() + ": expectedBool was false.");
       return false;
-    } else {
-      System.err.println(IfSumGreaterNode.class.getSimpleName() + ": expectedBool was false.");
     }
     // is the branching condition a greater-than comparison?
     if (SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode) {
@@ -169,47 +168,47 @@ abstract public class IfSumGreaterNode extends ExprWithTagsNode {
                     if (frame.isDouble(rightOperand.getLocal().getSlot())) {
                       return true;
                     } else {
-                      System.err.println(IfSumGreaterNode.class.getSimpleName()
+                      System.out.println(IfSumGreaterNode.class.getSimpleName()
                           + ": rightOperand.getLocal() expected double, was: "
                           + rightOperand.getLocal().getSlot().getKind());
                     }
                   } else {
-                    System.err.println(IfSumGreaterNode.class.getSimpleName()
+                    System.out.println(IfSumGreaterNode.class.getSimpleName()
                         + ": leftOperand.getLocal() expected double, was: "
                         + leftOperand.getLocal().getSlot().getKind());
                   }
                 } else {
-                  System.err.println(IfSumGreaterNode.class.getSimpleName()
+                  System.out.println(IfSumGreaterNode.class.getSimpleName()
                       + ": unwrapArgument(conditionLeft) instanceof LocalVariableReadNode, actual: "
                       + unwrapArgument(conditionLeft).getClass().getSimpleName());
                 }
               } else {
-                System.err.println(IfSumGreaterNode.class.getSimpleName()
+                System.out.println(IfSumGreaterNode.class.getSimpleName()
                     + ": unwrapReceiver(conditionLeft) instanceof LocalVariableReadNode, actual: "
                     + unwrapReceiver(conditionLeft).getClass().getSimpleName());
               }
             } else {
-              System.err.println(IfSumGreaterNode.class.getSimpleName()
+              System.out.println(IfSumGreaterNode.class.getSimpleName()
                   + ": conditionLeft.getPrimitive() instanceof AdditionPrim, actual: "
                   + conditionLeft.getPrimitive().getClass().getSimpleName());
             }
           } else {
-            System.err.println(IfSumGreaterNode.class.getSimpleName()
+            System.out.println(IfSumGreaterNode.class.getSimpleName()
                 + ": unwrapArgument(condition) instanceof DoubleLiteralNode, actual: "
                 + unwrapArgument(condition).getClass().getSimpleName());
           }
         } else {
-          System.err.println(IfSumGreaterNode.class.getSimpleName()
+          System.out.println(IfSumGreaterNode.class.getSimpleName()
               + ": unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: "
               + unwrapReceiver(condition).getClass().getSimpleName());
         }
       } else {
-        System.err.println(IfSumGreaterNode.class.getSimpleName()
+        System.out.println(IfSumGreaterNode.class.getSimpleName()
             + ": condition.getPrimitive() instanceof GreaterThanPrim, actual: "
             + condition.getPrimitive().getClass().getSimpleName());
       }
     } else {
-      System.err.println(IfSumGreaterNode.class.getSimpleName()
+      System.out.println(IfSumGreaterNode.class.getSimpleName()
           + ": SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: "
           + SOMNode.unwrapIfNecessary(conditionNode).getClass().getSimpleName());
     }

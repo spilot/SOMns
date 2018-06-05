@@ -131,27 +131,27 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
             if (read.getLocal().equals(var)) {
               return true;
             } else {
-              System.err.println(IncrementOperationNode.class.getSimpleName()
+              System.out.println(IncrementOperationNode.class.getSimpleName()
                   + ": read.getLocal().equals(var), actual: " + var);
             }
           } else {
-            System.err.println(IncrementOperationNode.class.getSimpleName()
+            System.out.println(IncrementOperationNode.class.getSimpleName()
                 + ": SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof AdditionPrim, actual: "
                 + SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()).getClass()
                          .getSimpleName());
           }
         } else {
-          System.err.println(IncrementOperationNode.class.getSimpleName()
+          System.out.println(IncrementOperationNode.class.getSimpleName()
               + ": SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: "
               + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName());
         }
       } else {
-        System.err.println(IncrementOperationNode.class.getSimpleName()
+        System.out.println(IncrementOperationNode.class.getSimpleName()
             + ": SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: "
             + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName());
       }
     } else {
-      System.err.println(IncrementOperationNode.class.getSimpleName()
+      System.out.println(IncrementOperationNode.class.getSimpleName()
           + ": exp instanceof EagerBinaryPrimitiveNode, actual: "
           + exp.getClass().getSimpleName());
     }
