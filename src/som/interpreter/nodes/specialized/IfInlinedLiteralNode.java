@@ -24,7 +24,7 @@ import som.vm.constants.Nil;
 @Inline(selector = "ifTrue:", inlineableArgIdx = {1}, additionalArgs = {True.class})
 @Inline(selector = "ifFalse:", inlineableArgIdx = {1}, additionalArgs = {False.class})
 @ImportStatic({IfSumGreaterNode.class, VmSettings.class})
-abstract public class IfInlinedLiteralNode extends ExprWithTagsNode {
+public abstract class IfInlinedLiteralNode extends ExprWithTagsNode {
   private final ConditionProfile condProf = ConditionProfile.createCountingProfile();
 
   @Child private ExpressionNode conditionNode;
@@ -49,7 +49,7 @@ abstract public class IfInlinedLiteralNode extends ExprWithTagsNode {
   private boolean evaluateCondition(final VirtualFrame frame) {
     try {
       return condProf.profile(conditionNode.executeBoolean(frame));
-    } catch (UnexpectedResultException e) {
+    } catch (final UnexpectedResultException e) {
       // TODO: should rewrite to a node that does a proper message send...
       throw new UnsupportedSpecializationException(this,
           new Node[] {conditionNode}, e.getResult());
@@ -73,7 +73,7 @@ abstract public class IfInlinedLiteralNode extends ExprWithTagsNode {
 
   @Override
   public boolean isResultUsed(final ExpressionNode child) {
-    Node parent = getParent();
+    final Node parent = getParent();
     if (parent instanceof ExpressionNode) {
       return ((ExpressionNode) parent).isResultUsed(this);
     }
