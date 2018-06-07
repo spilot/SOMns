@@ -1,0 +1,138 @@
+Starting CD benchmark ...
+CD: iterations=1 runtime: 452793us
+CD: iterations=1 average: 452793us total: 452793us
+Total Runtime: 452793us
+Superinstruction guards were activated 130 times.
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=6}
+       AssignProductToVariableNode mean:  1. {1=27}
+            IncrementOperationNode mean:  1. {1=14}
+                  IfSumGreaterNode mean:  1. {1=54}
+       AssignSubtractionResultNode mean:  1. {1=29}
+
+
+Starting DeltaBlue benchmark ...
+DeltaBlue: iterations=1 runtime: 410874us
+DeltaBlue: iterations=1 average: 410874us total: 410874us
+Total Runtime: 410874us
+Superinstruction guards were activated 72 times.
+            IncrementOperationNode mean:  1. {1=14}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=7}
+                  IfSumGreaterNode mean:  1. {1=51}
+
+
+Starting Havlak benchmark ...
+Havlak: iterations=1 runtime: 462747us
+Havlak: iterations=1 average: 462747us total: 462747us
+Total Runtime: 462747us
+Superinstruction guards were activated 94 times.
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=5}
+            IncrementOperationNode mean:  1. {1=28, 8=1}
+                  IfSumGreaterNode mean:  1. {1=53}
+
+
+Starting Json benchmark ...
+Json: iterations=1 runtime: 657744us
+Json: iterations=1 average: 657744us total: 657744us
+Total Runtime: 657744us
+Superinstruction guards were activated 85 times.
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=5}
+            IncrementOperationNode mean:  1. {1=10}
+                  IfSumGreaterNode mean:  1. {1=70}
+
+
+Starting Richards benchmark ...
+Richards: iterations=1 runtime: 656780us
+Richards: iterations=1 average: 656780us total: 656780us
+Total Runtime: 656780us
+Superinstruction guards were activated 36 times.
+                  IfSumGreaterNode mean:  1. {1=27}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=2}
+            IncrementOperationNode mean:  1. {1=7}
+
+
+Starting Bounce benchmark ...
+Bounce: iterations=1 runtime: 435944us
+Bounce: iterations=1 average: 435944us total: 435944us
+Total Runtime: 435944us
+Superinstruction guards were activated 34 times.
+                  IfSumGreaterNode mean:  1. {1=24}
+            IncrementOperationNode mean:  1. {1=10}
+
+
+Starting List benchmark ...
+List: iterations=1 runtime: 570994us
+List: iterations=1 average: 570994us total: 570994us
+Total Runtime: 570994us
+Superinstruction guards were activated 27 times.
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=20}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=1}
+
+
+Starting Mandelbrot benchmark ...
+Mandelbrot: iterations=1 runtime: 244958us
+Mandelbrot: iterations=1 average: 244958us total: 244958us
+Total Runtime: 244958us
+Superinstruction guards were activated 70 times.
+       AssignProductToVariableNode mean:  1. {1=10}
+       AssignSubtractionResultNode mean:  1. {1=10}
+            IncrementOperationNode mean:  1. {1=26}
+                  IfSumGreaterNode mean:  1. {1=21}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=3}
+
+
+Starting NBody benchmark ...
+NBody: iterations=1 runtime: 552720us
+NBody: iterations=1 average: 552720us total: 552720us
+Total Runtime: 552720us
+Superinstruction guards were activated 51 times.
+       AssignSubtractionResultNode mean:  1. {1=16}
+                  IfSumGreaterNode mean:  1. {1=19}
+            IncrementOperationNode mean:  1. {1=6}
+       AssignProductToVariableNode mean:  1. {1=10}
+
+
+Starting Permute benchmark ...
+Permute: iterations=1 runtime: 326025us
+Permute: iterations=1 average: 326025us total: 326025us
+Total Runtime: 326025us
+Superinstruction guards were activated 26 times.
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=20}
+
+
+Starting Queens benchmark ...
+Queens: iterations=1 runtime: 402418us
+Queens: iterations=1 average: 402418us total: 402418us
+Total Runtime: 402418us
+Superinstruction guards were activated 27 times.
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=21}
+
+
+Starting Storage benchmark ...
+Storage: iterations=1 runtime: 434678us
+Storage: iterations=1 average: 434678us total: 434678us
+Total Runtime: 434678us
+Superinstruction guards were activated 25 times.
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=19}
+
+
+Starting Sieve benchmark ...
+Sieve: iterations=1 runtime: 444369us
+Sieve: iterations=1 average: 444369us total: 444369us
+Total Runtime: 444369us
+Superinstruction guards were activated 31 times.
+            IncrementOperationNode mean:  1. {1=10}
+                  IfSumGreaterNode mean:  1. {1=20}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=1}
+
+
+Starting Towers benchmark ...
+Towers: iterations=1 runtime: 518208us
+Towers: iterations=1 average: 518208us total: 518208us
+Total Runtime: 518208us
+Superinstruction guards were activated 28 times.
+            IncrementOperationNode mean:  1. {1=7}
+                  IfSumGreaterNode mean:  1. {1=21}

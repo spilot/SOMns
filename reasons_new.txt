@@ -1,0 +1,2579 @@
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting CD benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: DoubleLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: AndInlinedLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: AndInlinedLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: OrInlinedLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalArgumentReadNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanOrEqualPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+CD: iterations=1 runtime: 6246799us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+CD: iterations=1 runtime: 5471175us
+CD: iterations=1 runtime: 5387604us
+CD: iterations=1 runtime: 5427198us
+CD: iterations=1 runtime: 5616256us
+CD: iterations=1 runtime: 5487981us
+CD: iterations=1 runtime: 5495695us
+CD: iterations=1 runtime: 5691086us
+CD: iterations=1 runtime: 5463162us
+CD: iterations=1 runtime: 5468943us
+CD: iterations=1 runtime: 5479069us
+CD: iterations=1 runtime: 5452036us
+CD: iterations=1 runtime: 5800191us
+CD: iterations=1 runtime: 5542673us
+CD: iterations=1 runtime: 5463049us
+CD: iterations=1 runtime: 5564540us
+CD: iterations=1 runtime: 5479076us
+CD: iterations=1 runtime: 5530707us
+CD: iterations=1 runtime: 5866295us
+CD: iterations=1 runtime: 6511528us
+CD: iterations=1 runtime: 6380316us
+CD: iterations=1 runtime: 6245412us
+CD: iterations=1 runtime: 5554324us
+CD: iterations=1 runtime: 5450955us
+CD: iterations=1 runtime: 5452882us
+CD: iterations=1 runtime: 5459646us
+CD: iterations=1 runtime: 5471320us
+CD: iterations=1 runtime: 5493058us
+CD: iterations=1 runtime: 5504249us
+CD: iterations=1 runtime: 5488988us
+CD: iterations=1 runtime: 5476822us
+CD: iterations=1 runtime: 5447129us
+CD: iterations=1 runtime: 5443160us
+CD: iterations=1 runtime: 5484785us
+CD: iterations=1 runtime: 5453671us
+CD: iterations=1 runtime: 5434191us
+CD: iterations=1 runtime: 5449260us
+CD: iterations=1 runtime: 5459803us
+CD: iterations=1 runtime: 5461185us
+CD: iterations=1 runtime: 5521216us
+CD: iterations=1 runtime: 5460877us
+CD: iterations=1 runtime: 5438940us
+CD: iterations=1 runtime: 5435161us
+CD: iterations=1 runtime: 5436037us
+CD: iterations=1 runtime: 5482269us
+CD: iterations=1 runtime: 5447557us
+CD: iterations=1 runtime: 5490270us
+CD: iterations=1 runtime: 5462396us
+CD: iterations=1 runtime: 5446928us
+CD: iterations=1 runtime: 5481479us
+CD: iterations=1 runtime: 5567624us
+CD: iterations=1 runtime: 5450385us
+CD: iterations=1 runtime: 5461429us
+CD: iterations=1 runtime: 5457530us
+CD: iterations=1 runtime: 5441546us
+CD: iterations=1 runtime: 5517043us
+CD: iterations=1 runtime: 5424170us
+CD: iterations=1 runtime: 5429955us
+CD: iterations=1 runtime: 5485140us
+CD: iterations=1 runtime: 5448651us
+CD: iterations=1 runtime: 5453047us
+CD: iterations=1 runtime: 5504782us
+CD: iterations=1 runtime: 5466288us
+CD: iterations=1 runtime: 5458089us
+CD: iterations=1 runtime: 5463493us
+CD: iterations=1 runtime: 5469863us
+CD: iterations=1 runtime: 5514889us
+CD: iterations=1 runtime: 5475491us
+CD: iterations=1 runtime: 5498958us
+CD: iterations=1 runtime: 5536652us
+CD: iterations=1 runtime: 5489291us
+CD: iterations=1 runtime: 5517607us
+CD: iterations=1 runtime: 5649911us
+CD: iterations=1 runtime: 6360752us
+CD: iterations=1 runtime: 6377262us
+CD: iterations=1 runtime: 6349572us
+CD: iterations=1 runtime: 5457539us
+CD: iterations=1 runtime: 5526066us
+CD: iterations=1 runtime: 5445438us
+CD: iterations=1 runtime: 5466860us
+CD: iterations=1 runtime: 5483308us
+CD: iterations=1 runtime: 5450779us
+CD: iterations=1 runtime: 5503227us
+CD: iterations=1 runtime: 5423908us
+CD: iterations=1 runtime: 5466624us
+CD: iterations=1 runtime: 5460793us
+CD: iterations=1 runtime: 5455520us
+CD: iterations=1 runtime: 5435246us
+CD: iterations=1 runtime: 5504261us
+CD: iterations=1 runtime: 5462968us
+CD: iterations=1 runtime: 5441515us
+CD: iterations=1 runtime: 5469683us
+CD: iterations=1 runtime: 5467177us
+CD: iterations=1 runtime: 5525126us
+CD: iterations=1 runtime: 5474981us
+CD: iterations=1 runtime: 5432043us
+CD: iterations=1 runtime: 5450260us
+CD: iterations=1 runtime: 5453762us
+CD: iterations=1 runtime: 5486511us
+CD: iterations=1 runtime: 5537110us
+CD: iterations=1 runtime: 5471289us
+CD: iterations=1 runtime: 5456524us
+CD: iterations=1 runtime: 5475783us
+CD: iterations=1 runtime: 5442774us
+CD: iterations=1 runtime: 5512730us
+CD: iterations=1 runtime: 5455143us
+CD: iterations=1 runtime: 5444356us
+CD: iterations=1 runtime: 5456262us
+CD: iterations=1 runtime: 5444678us
+CD: iterations=1 runtime: 5461302us
+CD: iterations=1 runtime: 5547675us
+CD: iterations=1 runtime: 5471238us
+CD: iterations=1 runtime: 5433006us
+CD: iterations=1 runtime: 5479061us
+CD: iterations=1 runtime: 5475405us
+CD: iterations=1 runtime: 5496256us
+CD: iterations=1 runtime: 5465238us
+CD: iterations=1 runtime: 5567976us
+CD: iterations=1 runtime: 5462695us
+CD: iterations=1 runtime: 5481047us
+CD: iterations=1 runtime: 5477652us
+CD: iterations=1 runtime: 5705283us
+CD: iterations=1 runtime: 5447193us
+CD: iterations=1 runtime: 5470388us
+CD: iterations=1 runtime: 5534366us
+CD: iterations=1 runtime: 5451064us
+CD: iterations=1 runtime: 5597475us
+CD: iterations=1 runtime: 6527461us
+CD: iterations=1 runtime: 6307869us
+CD: iterations=1 runtime: 6371604us
+CD: iterations=130 average: 5554617us total: 722100267us
+
+
+Total Runtime: 722100267us
+Superinstruction guards were activated 128 times.
+       AssignSubtractionResultNode mean:  1. {1=29}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=6}
+       AssignProductToVariableNode mean:  1. {1=27}
+                  IfSumGreaterNode mean:  1. {1=52}
+            IncrementOperationNode mean:  1. {1=14}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: TrueLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting DeltaBlue benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanOrEqualPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+DeltaBlue: iterations=1 runtime: 783056us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+DeltaBlue: iterations=1 runtime: 250508us
+DeltaBlue: iterations=1 runtime: 202415us
+DeltaBlue: iterations=1 runtime: 214270us
+DeltaBlue: iterations=1 runtime: 203078us
+DeltaBlue: iterations=1 runtime: 213703us
+DeltaBlue: iterations=1 runtime: 194528us
+DeltaBlue: iterations=1 runtime: 204724us
+DeltaBlue: iterations=1 runtime: 197818us
+DeltaBlue: iterations=1 runtime: 197063us
+DeltaBlue: iterations=1 runtime: 196014us
+DeltaBlue: iterations=1 runtime: 205095us
+DeltaBlue: iterations=1 runtime: 196875us
+DeltaBlue: iterations=1 runtime: 207669us
+DeltaBlue: iterations=1 runtime: 194456us
+DeltaBlue: iterations=1 runtime: 196587us
+DeltaBlue: iterations=1 runtime: 197448us
+DeltaBlue: iterations=1 runtime: 197826us
+DeltaBlue: iterations=1 runtime: 205614us
+DeltaBlue: iterations=1 runtime: 210273us
+DeltaBlue: iterations=1 runtime: 212459us
+DeltaBlue: iterations=1 runtime: 201167us
+DeltaBlue: iterations=1 runtime: 194609us
+DeltaBlue: iterations=1 runtime: 197195us
+DeltaBlue: iterations=1 runtime: 197325us
+DeltaBlue: iterations=1 runtime: 199875us
+DeltaBlue: iterations=1 runtime: 214896us
+DeltaBlue: iterations=1 runtime: 224211us
+DeltaBlue: iterations=1 runtime: 228806us
+DeltaBlue: iterations=1 runtime: 201188us
+DeltaBlue: iterations=1 runtime: 199275us
+DeltaBlue: iterations=1 runtime: 200938us
+DeltaBlue: iterations=1 runtime: 203220us
+DeltaBlue: iterations=1 runtime: 202855us
+DeltaBlue: iterations=1 runtime: 198514us
+DeltaBlue: iterations=1 runtime: 204538us
+DeltaBlue: iterations=1 runtime: 200611us
+DeltaBlue: iterations=1 runtime: 207649us
+DeltaBlue: iterations=1 runtime: 194053us
+DeltaBlue: iterations=1 runtime: 196008us
+DeltaBlue: iterations=1 runtime: 198016us
+DeltaBlue: iterations=1 runtime: 197435us
+DeltaBlue: iterations=1 runtime: 205984us
+DeltaBlue: iterations=1 runtime: 201762us
+DeltaBlue: iterations=1 runtime: 198889us
+DeltaBlue: iterations=1 runtime: 197366us
+DeltaBlue: iterations=1 runtime: 196730us
+DeltaBlue: iterations=1 runtime: 197666us
+DeltaBlue: iterations=1 runtime: 197631us
+DeltaBlue: iterations=1 runtime: 198191us
+DeltaBlue: iterations=1 runtime: 209433us
+DeltaBlue: iterations=1 runtime: 202890us
+DeltaBlue: iterations=1 runtime: 198027us
+DeltaBlue: iterations=1 runtime: 196247us
+DeltaBlue: iterations=1 runtime: 195627us
+DeltaBlue: iterations=1 runtime: 195950us
+DeltaBlue: iterations=1 runtime: 197741us
+DeltaBlue: iterations=1 runtime: 197701us
+DeltaBlue: iterations=1 runtime: 198590us
+DeltaBlue: iterations=1 runtime: 194960us
+DeltaBlue: iterations=1 runtime: 202721us
+DeltaBlue: iterations=1 runtime: 197806us
+DeltaBlue: iterations=1 runtime: 197817us
+DeltaBlue: iterations=1 runtime: 198189us
+DeltaBlue: iterations=1 runtime: 211494us
+DeltaBlue: iterations=1 runtime: 199305us
+DeltaBlue: iterations=1 runtime: 195826us
+DeltaBlue: iterations=1 runtime: 201600us
+DeltaBlue: iterations=1 runtime: 200349us
+DeltaBlue: iterations=1 runtime: 204998us
+DeltaBlue: iterations=1 runtime: 198823us
+DeltaBlue: iterations=1 runtime: 195727us
+DeltaBlue: iterations=1 runtime: 196690us
+DeltaBlue: iterations=1 runtime: 201872us
+DeltaBlue: iterations=1 runtime: 197072us
+DeltaBlue: iterations=1 runtime: 194516us
+DeltaBlue: iterations=1 runtime: 196124us
+DeltaBlue: iterations=1 runtime: 206299us
+DeltaBlue: iterations=1 runtime: 197848us
+DeltaBlue: iterations=1 runtime: 196743us
+DeltaBlue: iterations=1 runtime: 197632us
+DeltaBlue: iterations=1 runtime: 203775us
+DeltaBlue: iterations=1 runtime: 204112us
+DeltaBlue: iterations=1 runtime: 200903us
+DeltaBlue: iterations=1 runtime: 207456us
+DeltaBlue: iterations=1 runtime: 205163us
+DeltaBlue: iterations=1 runtime: 198205us
+DeltaBlue: iterations=1 runtime: 199269us
+DeltaBlue: iterations=1 runtime: 197041us
+DeltaBlue: iterations=1 runtime: 196986us
+DeltaBlue: iterations=1 runtime: 197798us
+DeltaBlue: iterations=1 runtime: 194440us
+DeltaBlue: iterations=1 runtime: 196363us
+DeltaBlue: iterations=1 runtime: 197624us
+DeltaBlue: iterations=1 runtime: 197037us
+DeltaBlue: iterations=1 runtime: 195279us
+DeltaBlue: iterations=1 runtime: 197946us
+DeltaBlue: iterations=1 runtime: 197878us
+DeltaBlue: iterations=1 runtime: 197789us
+DeltaBlue: iterations=1 runtime: 193891us
+DeltaBlue: iterations=1 runtime: 195798us
+DeltaBlue: iterations=1 runtime: 201569us
+DeltaBlue: iterations=1 runtime: 196934us
+DeltaBlue: iterations=1 runtime: 198362us
+DeltaBlue: iterations=1 runtime: 197049us
+DeltaBlue: iterations=1 runtime: 199290us
+DeltaBlue: iterations=1 runtime: 196675us
+DeltaBlue: iterations=1 runtime: 206312us
+DeltaBlue: iterations=1 runtime: 197787us
+DeltaBlue: iterations=1 runtime: 201822us
+DeltaBlue: iterations=1 runtime: 203624us
+DeltaBlue: iterations=1 runtime: 197942us
+DeltaBlue: iterations=1 runtime: 195370us
+DeltaBlue: iterations=1 runtime: 201384us
+DeltaBlue: iterations=1 runtime: 196038us
+DeltaBlue: iterations=1 runtime: 197101us
+DeltaBlue: iterations=1 runtime: 194246us
+DeltaBlue: iterations=1 runtime: 197191us
+DeltaBlue: iterations=1 runtime: 196550us
+DeltaBlue: iterations=1 runtime: 197671us
+DeltaBlue: iterations=1 runtime: 195400us
+DeltaBlue: iterations=1 runtime: 198517us
+DeltaBlue: iterations=1 runtime: 196205us
+DeltaBlue: iterations=1 runtime: 200126us
+DeltaBlue: iterations=1 runtime: 197069us
+DeltaBlue: iterations=1 runtime: 197194us
+DeltaBlue: iterations=1 runtime: 197595us
+DeltaBlue: iterations=1 runtime: 197769us
+DeltaBlue: iterations=1 runtime: 195008us
+DeltaBlue: iterations=1 runtime: 196270us
+DeltaBlue: iterations=1 runtime: 196282us
+DeltaBlue: iterations=1 runtime: 197698us
+DeltaBlue: iterations=1 runtime: 196670us
+DeltaBlue: iterations=1 runtime: 198565us
+DeltaBlue: iterations=1 runtime: 198066us
+DeltaBlue: iterations=1 runtime: 200023us
+DeltaBlue: iterations=1 runtime: 203420us
+DeltaBlue: iterations=1 runtime: 197946us
+DeltaBlue: iterations=1 runtime: 199072us
+DeltaBlue: iterations=1 runtime: 197702us
+DeltaBlue: iterations=1 runtime: 193949us
+DeltaBlue: iterations=1 runtime: 197848us
+DeltaBlue: iterations=1 runtime: 200574us
+DeltaBlue: iterations=1 runtime: 204633us
+DeltaBlue: iterations=1 runtime: 213243us
+DeltaBlue: iterations=1 runtime: 196866us
+DeltaBlue: iterations=1 runtime: 200633us
+DeltaBlue: iterations=1 runtime: 222328us
+DeltaBlue: iterations=1 runtime: 200100us
+DeltaBlue: iterations=1 runtime: 206299us
+DeltaBlue: iterations=1 runtime: 198291us
+DeltaBlue: iterations=1 runtime: 195376us
+DeltaBlue: iterations=1 runtime: 195723us
+DeltaBlue: iterations=1 runtime: 194540us
+DeltaBlue: iterations=1 runtime: 195772us
+DeltaBlue: iterations=1 runtime: 196300us
+DeltaBlue: iterations=1 runtime: 201937us
+DeltaBlue: iterations=1 runtime: 200840us
+DeltaBlue: iterations=1 runtime: 197202us
+DeltaBlue: iterations=1 runtime: 196358us
+DeltaBlue: iterations=1 runtime: 196159us
+DeltaBlue: iterations=1 runtime: 210972us
+DeltaBlue: iterations=1 runtime: 200737us
+DeltaBlue: iterations=1 runtime: 197872us
+DeltaBlue: iterations=1 runtime: 195002us
+DeltaBlue: iterations=1 runtime: 197018us
+DeltaBlue: iterations=1 runtime: 195334us
+DeltaBlue: iterations=1 runtime: 197554us
+DeltaBlue: iterations=1 runtime: 196699us
+DeltaBlue: iterations=1 runtime: 197013us
+DeltaBlue: iterations=1 runtime: 196443us
+DeltaBlue: iterations=1 runtime: 196880us
+DeltaBlue: iterations=1 runtime: 200390us
+DeltaBlue: iterations=1 runtime: 195259us
+DeltaBlue: iterations=1 runtime: 196014us
+DeltaBlue: iterations=1 runtime: 194951us
+DeltaBlue: iterations=1 runtime: 214393us
+DeltaBlue: iterations=1 runtime: 226603us
+DeltaBlue: iterations=1 runtime: 227208us
+DeltaBlue: iterations=1 runtime: 202995us
+DeltaBlue: iterations=1 runtime: 200179us
+DeltaBlue: iterations=1 runtime: 197135us
+DeltaBlue: iterations=1 runtime: 194871us
+DeltaBlue: iterations=1 runtime: 198116us
+DeltaBlue: iterations=1 runtime: 195209us
+DeltaBlue: iterations=1 runtime: 196282us
+DeltaBlue: iterations=1 runtime: 199400us
+DeltaBlue: iterations=1 runtime: 205188us
+DeltaBlue: iterations=1 runtime: 194758us
+DeltaBlue: iterations=1 runtime: 196224us
+DeltaBlue: iterations=1 runtime: 195057us
+DeltaBlue: iterations=1 runtime: 200714us
+DeltaBlue: iterations=1 runtime: 196342us
+DeltaBlue: iterations=1 runtime: 197495us
+DeltaBlue: iterations=1 runtime: 197584us
+DeltaBlue: iterations=1 runtime: 198742us
+DeltaBlue: iterations=1 runtime: 197184us
+DeltaBlue: iterations=1 runtime: 196763us
+DeltaBlue: iterations=1 runtime: 197187us
+DeltaBlue: iterations=1 runtime: 197967us
+DeltaBlue: iterations=1 runtime: 197065us
+DeltaBlue: iterations=1 runtime: 195936us
+DeltaBlue: iterations=1 runtime: 197105us
+DeltaBlue: iterations=1 runtime: 199856us
+DeltaBlue: iterations=1 runtime: 199930us
+DeltaBlue: iterations=1 runtime: 199074us
+DeltaBlue: iterations=1 runtime: 196242us
+DeltaBlue: iterations=1 runtime: 195548us
+DeltaBlue: iterations=1 runtime: 195442us
+DeltaBlue: iterations=1 runtime: 197034us
+DeltaBlue: iterations=1 runtime: 196097us
+DeltaBlue: iterations=1 runtime: 199658us
+DeltaBlue: iterations=1 runtime: 203931us
+DeltaBlue: iterations=1 runtime: 197257us
+DeltaBlue: iterations=1 runtime: 196848us
+DeltaBlue: iterations=1 runtime: 196243us
+DeltaBlue: iterations=1 runtime: 198718us
+DeltaBlue: iterations=1 runtime: 195452us
+DeltaBlue: iterations=1 runtime: 209682us
+DeltaBlue: iterations=1 runtime: 196498us
+DeltaBlue: iterations=1 runtime: 198797us
+DeltaBlue: iterations=1 runtime: 195566us
+DeltaBlue: iterations=1 runtime: 196762us
+DeltaBlue: iterations=1 runtime: 195507us
+DeltaBlue: iterations=1 runtime: 199729us
+DeltaBlue: iterations=1 runtime: 196308us
+DeltaBlue: iterations=1 runtime: 206245us
+DeltaBlue: iterations=1 runtime: 198900us
+DeltaBlue: iterations=1 runtime: 197571us
+DeltaBlue: iterations=1 runtime: 196638us
+DeltaBlue: iterations=1 runtime: 193706us
+DeltaBlue: iterations=1 runtime: 195799us
+DeltaBlue: iterations=1 runtime: 194649us
+DeltaBlue: iterations=1 runtime: 202969us
+DeltaBlue: iterations=1 runtime: 196751us
+DeltaBlue: iterations=1 runtime: 197616us
+DeltaBlue: iterations=1 runtime: 199281us
+DeltaBlue: iterations=1 runtime: 196296us
+DeltaBlue: iterations=1 runtime: 197284us
+DeltaBlue: iterations=1 runtime: 197170us
+DeltaBlue: iterations=1 runtime: 196619us
+DeltaBlue: iterations=1 runtime: 197273us
+DeltaBlue: iterations=1 runtime: 198328us
+DeltaBlue: iterations=1 runtime: 194836us
+DeltaBlue: iterations=1 runtime: 197152us
+DeltaBlue: iterations=1 runtime: 194626us
+DeltaBlue: iterations=1 runtime: 197747us
+DeltaBlue: iterations=1 runtime: 198101us
+DeltaBlue: iterations=1 runtime: 200770us
+DeltaBlue: iterations=1 runtime: 202223us
+DeltaBlue: iterations=250 average: 202042us total: 50510506us
+
+
+Total Runtime: 50510506us
+Superinstruction guards were activated 72 times.
+            IncrementOperationNode mean:  1. {1=14}
+                  IfSumGreaterNode mean:  1. {1=51}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=7}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Havlak benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalArgumentReadNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: TrueLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalArgumentReadNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: OrInlinedLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Havlak: iterations=1 runtime: 2418951us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Havlak: iterations=1 runtime: 1654106us
+Havlak: iterations=1 runtime: 1565077us
+Havlak: iterations=1 runtime: 1582949us
+Havlak: iterations=1 runtime: 1584095us
+Havlak: iterations=1 runtime: 1574286us
+Havlak: iterations=1 runtime: 1573685us
+Havlak: iterations=1 runtime: 1579895us
+Havlak: iterations=1 runtime: 1639390us
+Havlak: iterations=1 runtime: 1574966us
+Havlak: iterations=1 runtime: 1572275us
+Havlak: iterations=1 runtime: 1583051us
+Havlak: iterations=1 runtime: 1595956us
+Havlak: iterations=1 runtime: 1567511us
+Havlak: iterations=1 runtime: 1580155us
+Havlak: iterations=1 runtime: 1572170us
+Havlak: iterations=1 runtime: 1572696us
+Havlak: iterations=1 runtime: 1581947us
+Havlak: iterations=1 runtime: 1595108us
+Havlak: iterations=1 runtime: 1581392us
+Havlak: iterations=1 runtime: 1574907us
+Havlak: iterations=1 runtime: 1599448us
+Havlak: iterations=1 runtime: 1583920us
+Havlak: iterations=1 runtime: 1575554us
+Havlak: iterations=1 runtime: 1566560us
+Havlak: iterations=1 runtime: 1572952us
+Havlak: iterations=1 runtime: 1570401us
+Havlak: iterations=1 runtime: 1640718us
+Havlak: iterations=1 runtime: 1585010us
+Havlak: iterations=1 runtime: 1575212us
+Havlak: iterations=1 runtime: 1578636us
+Havlak: iterations=1 runtime: 1591398us
+Havlak: iterations=1 runtime: 1583418us
+Havlak: iterations=1 runtime: 1576118us
+Havlak: iterations=1 runtime: 1577682us
+Havlak: iterations=1 runtime: 1568658us
+Havlak: iterations=1 runtime: 1580617us
+Havlak: iterations=1 runtime: 1576771us
+Havlak: iterations=1 runtime: 1577210us
+Havlak: iterations=1 runtime: 1578990us
+Havlak: iterations=1 runtime: 1581801us
+Havlak: iterations=1 runtime: 1577719us
+Havlak: iterations=1 runtime: 1574101us
+Havlak: iterations=1 runtime: 1568920us
+Havlak: iterations=1 runtime: 1563996us
+Havlak: iterations=1 runtime: 1584888us
+Havlak: iterations=1 runtime: 1665393us
+Havlak: iterations=1 runtime: 1605139us
+Havlak: iterations=1 runtime: 1572517us
+Havlak: iterations=1 runtime: 1559682us
+Havlak: iterations=1 runtime: 1584228us
+Havlak: iterations=1 runtime: 1587698us
+Havlak: iterations=1 runtime: 1599599us
+Havlak: iterations=1 runtime: 1565089us
+Havlak: iterations=1 runtime: 1581917us
+Havlak: iterations=1 runtime: 1561159us
+Havlak: iterations=1 runtime: 1592278us
+Havlak: iterations=1 runtime: 1563801us
+Havlak: iterations=1 runtime: 1600759us
+Havlak: iterations=1 runtime: 1567487us
+Havlak: iterations=1 runtime: 1578003us
+Havlak: iterations=1 runtime: 1581383us
+Havlak: iterations=1 runtime: 1586763us
+Havlak: iterations=1 runtime: 1575100us
+Havlak: iterations=1 runtime: 1569973us
+Havlak: iterations=1 runtime: 1660652us
+Havlak: iterations=1 runtime: 1598720us
+Havlak: iterations=1 runtime: 1570747us
+Havlak: iterations=1 runtime: 1565975us
+Havlak: iterations=1 runtime: 1573457us
+Havlak: iterations=1 runtime: 1565155us
+Havlak: iterations=1 runtime: 1580452us
+Havlak: iterations=1 runtime: 1564564us
+Havlak: iterations=1 runtime: 1591334us
+Havlak: iterations=1 runtime: 1568852us
+Havlak: iterations=1 runtime: 1592782us
+Havlak: iterations=1 runtime: 1579689us
+Havlak: iterations=1 runtime: 1573944us
+Havlak: iterations=1 runtime: 1561817us
+Havlak: iterations=1 runtime: 1584826us
+Havlak: iterations=1 runtime: 1575467us
+Havlak: iterations=1 runtime: 1580271us
+Havlak: iterations=1 runtime: 1575750us
+Havlak: iterations=1 runtime: 1583323us
+Havlak: iterations=1 runtime: 1667240us
+Havlak: iterations=1 runtime: 1598635us
+Havlak: iterations=1 runtime: 1570451us
+Havlak: iterations=1 runtime: 1569950us
+Havlak: iterations=1 runtime: 1572743us
+Havlak: iterations=1 runtime: 1561644us
+Havlak: iterations=1 runtime: 1567074us
+Havlak: iterations=1 runtime: 1575228us
+Havlak: iterations=1 runtime: 1571077us
+Havlak: iterations=1 runtime: 1587800us
+Havlak: iterations=1 runtime: 1578382us
+Havlak: iterations=1 runtime: 1585354us
+Havlak: iterations=1 runtime: 1584922us
+Havlak: iterations=1 runtime: 1568756us
+Havlak: iterations=1 runtime: 1569051us
+Havlak: iterations=1 runtime: 1583951us
+Havlak: iterations=1 runtime: 1561001us
+Havlak: iterations=1 runtime: 1573660us
+Havlak: iterations=1 runtime: 1566235us
+Havlak: iterations=1 runtime: 1627541us
+Havlak: iterations=1 runtime: 1567673us
+Havlak: iterations=1 runtime: 1563556us
+Havlak: iterations=1 runtime: 1580802us
+Havlak: iterations=1 runtime: 1578271us
+Havlak: iterations=1 runtime: 1574132us
+Havlak: iterations=1 runtime: 1579043us
+Havlak: iterations=1 runtime: 1569074us
+Havlak: iterations=1 runtime: 1564698us
+Havlak: iterations=1 runtime: 1581280us
+Havlak: iterations=1 runtime: 1566705us
+Havlak: iterations=1 runtime: 1565343us
+Havlak: iterations=1 runtime: 1579724us
+Havlak: iterations=1 runtime: 1579954us
+Havlak: iterations=1 runtime: 1566655us
+Havlak: iterations=1 runtime: 1586861us
+Havlak: iterations=1 runtime: 1576149us
+Havlak: iterations=1 runtime: 1594193us
+Havlak: iterations=1 runtime: 1559762us
+Havlak: iterations=1 runtime: 1635087us
+Havlak: iterations=1 runtime: 1569832us
+Havlak: iterations=1 runtime: 1590232us
+Havlak: iterations=1 runtime: 1565423us
+Havlak: iterations=1 runtime: 1587987us
+Havlak: iterations=1 runtime: 1568711us
+Havlak: iterations=1 runtime: 1590726us
+Havlak: iterations=1 runtime: 1580413us
+Havlak: iterations=130 average: 1588030us total: 206443992us
+
+
+Total Runtime: 206443992us
+Superinstruction guards were activated 93 times.
+            IncrementOperationNode mean:  1. {1=28, 8=1}
+                  IfSumGreaterNode mean:  1. {1=52}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=5}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Json benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndBoolMessageNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Json: iterations=1 runtime: 2810853us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Json: iterations=1 runtime: 2249042us
+Json: iterations=1 runtime: 2143654us
+Json: iterations=1 runtime: 2132182us
+Json: iterations=1 runtime: 2154255us
+Json: iterations=1 runtime: 2160050us
+Json: iterations=1 runtime: 2188030us
+Json: iterations=1 runtime: 2204547us
+Json: iterations=1 runtime: 2165707us
+Json: iterations=1 runtime: 2571494us
+Json: iterations=1 runtime: 2464393us
+Json: iterations=1 runtime: 2542405us
+Json: iterations=1 runtime: 2413770us
+Json: iterations=1 runtime: 2576367us
+Json: iterations=1 runtime: 2781189us
+Json: iterations=1 runtime: 2771440us
+Json: iterations=1 runtime: 2541212us
+Json: iterations=1 runtime: 2192148us
+Json: iterations=1 runtime: 2145065us
+Json: iterations=1 runtime: 2146734us
+Json: iterations=1 runtime: 2120932us
+Json: iterations=1 runtime: 2105741us
+Json: iterations=1 runtime: 2120134us
+Json: iterations=1 runtime: 2108475us
+Json: iterations=1 runtime: 2125796us
+Json: iterations=1 runtime: 2112307us
+Json: iterations=1 runtime: 2100963us
+Json: iterations=1 runtime: 2127650us
+Json: iterations=1 runtime: 2109437us
+Json: iterations=1 runtime: 2109393us
+Json: iterations=1 runtime: 2134923us
+Json: iterations=1 runtime: 2119540us
+Json: iterations=1 runtime: 2122980us
+Json: iterations=1 runtime: 2121091us
+Json: iterations=1 runtime: 2116058us
+Json: iterations=1 runtime: 2130926us
+Json: iterations=1 runtime: 2118461us
+Json: iterations=1 runtime: 2112731us
+Json: iterations=1 runtime: 2112351us
+Json: iterations=1 runtime: 2110398us
+Json: iterations=1 runtime: 2120317us
+Json: iterations=1 runtime: 2153444us
+Json: iterations=1 runtime: 2116197us
+Json: iterations=1 runtime: 2108965us
+Json: iterations=1 runtime: 2113355us
+Json: iterations=1 runtime: 2117782us
+Json: iterations=1 runtime: 2118261us
+Json: iterations=1 runtime: 2108057us
+Json: iterations=1 runtime: 2118157us
+Json: iterations=1 runtime: 2126665us
+Json: iterations=1 runtime: 2122627us
+Json: iterations=1 runtime: 2121153us
+Json: iterations=1 runtime: 2115545us
+Json: iterations=1 runtime: 2110542us
+Json: iterations=1 runtime: 2105873us
+Json: iterations=1 runtime: 2141020us
+Json: iterations=1 runtime: 2108592us
+Json: iterations=1 runtime: 2124620us
+Json: iterations=1 runtime: 2148359us
+Json: iterations=1 runtime: 2138110us
+Json: iterations=1 runtime: 2132833us
+Json: iterations=1 runtime: 2122813us
+Json: iterations=1 runtime: 2133171us
+Json: iterations=1 runtime: 2119853us
+Json: iterations=1 runtime: 2141808us
+Json: iterations=1 runtime: 2117089us
+Json: iterations=1 runtime: 2121058us
+Json: iterations=1 runtime: 2125166us
+Json: iterations=1 runtime: 2113579us
+Json: iterations=1 runtime: 2116317us
+Json: iterations=1 runtime: 2107147us
+Json: iterations=1 runtime: 2113244us
+Json: iterations=1 runtime: 2117733us
+Json: iterations=1 runtime: 2135895us
+Json: iterations=1 runtime: 2112276us
+Json: iterations=1 runtime: 2115596us
+Json: iterations=1 runtime: 2109553us
+Json: iterations=1 runtime: 2111546us
+Json: iterations=1 runtime: 2113227us
+Json: iterations=1 runtime: 2138953us
+Json: iterations=1 runtime: 2107557us
+Json: iterations=1 runtime: 2138583us
+Json: iterations=1 runtime: 2175394us
+Json: iterations=1 runtime: 2141564us
+Json: iterations=1 runtime: 2121965us
+Json: iterations=1 runtime: 2124088us
+Json: iterations=1 runtime: 2111829us
+Json: iterations=1 runtime: 2121784us
+Json: iterations=1 runtime: 2115434us
+Json: iterations=1 runtime: 2126719us
+Json: iterations=1 runtime: 2116064us
+Json: iterations=1 runtime: 2113268us
+Json: iterations=1 runtime: 2125883us
+Json: iterations=1 runtime: 2123435us
+Json: iterations=1 runtime: 2107057us
+Json: iterations=1 runtime: 2112562us
+Json: iterations=1 runtime: 2122801us
+Json: iterations=1 runtime: 2107529us
+Json: iterations=1 runtime: 2114716us
+Json: iterations=1 runtime: 2118744us
+Json: iterations=1 runtime: 2120625us
+Json: iterations=1 runtime: 2107361us
+Json: iterations=1 runtime: 2136932us
+Json: iterations=1 runtime: 2104333us
+Json: iterations=1 runtime: 2104127us
+Json: iterations=1 runtime: 2118820us
+Json: iterations=1 runtime: 2110970us
+Json: iterations=1 runtime: 2109446us
+Json: iterations=1 runtime: 2119068us
+Json: iterations=1 runtime: 2147661us
+Json: iterations=1 runtime: 2123095us
+Json: iterations=1 runtime: 2128424us
+Json: iterations=1 runtime: 2125159us
+Json: iterations=1 runtime: 2108716us
+Json: iterations=1 runtime: 2109028us
+Json: iterations=1 runtime: 2121170us
+Json: iterations=1 runtime: 2110814us
+Json: iterations=1 runtime: 2123622us
+Json: iterations=1 runtime: 2119436us
+Json: iterations=1 runtime: 2131890us
+Json: iterations=120 average: 2161491us total: 259378995us
+
+
+Total Runtime: 259378995us
+Superinstruction guards were activated 85 times.
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=5}
+                  IfSumGreaterNode mean:  1. {1=70}
+            IncrementOperationNode mean:  1. {1=10}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Richards benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Richards: iterations=1 runtime: 13357576us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Richards: iterations=1 runtime: 13216142us
+Richards: iterations=1 runtime: 12780997us
+Richards: iterations=1 runtime: 12871157us
+Richards: iterations=1 runtime: 14939216us
+Richards: iterations=1 runtime: 14920516us
+Richards: iterations=1 runtime: 13210416us
+Richards: iterations=1 runtime: 13308112us
+Richards: iterations=1 runtime: 13227887us
+Richards: iterations=1 runtime: 13204135us
+Richards: iterations=1 runtime: 13215346us
+Richards: iterations=1 runtime: 13179186us
+Richards: iterations=1 runtime: 13217832us
+Richards: iterations=1 runtime: 13217150us
+Richards: iterations=1 runtime: 13246496us
+Richards: iterations=1 runtime: 13253851us
+Richards: iterations=1 runtime: 13270051us
+Richards: iterations=1 runtime: 13250401us
+Richards: iterations=1 runtime: 13203001us
+Richards: iterations=1 runtime: 13460266us
+Richards: iterations=1 runtime: 13334506us
+Richards: iterations=1 runtime: 18213007us
+Richards: iterations=1 runtime: 19245856us
+Richards: iterations=1 runtime: 17271832us
+Richards: iterations=1 runtime: 13383819us
+Richards: iterations=1 runtime: 14258909us
+Richards: iterations=1 runtime: 18150171us
+Richards: iterations=1 runtime: 13983431us
+Richards: iterations=1 runtime: 13455764us
+Richards: iterations=1 runtime: 13188602us
+Richards: iterations=1 runtime: 13199809us
+Richards: iterations=1 runtime: 13227457us
+Richards: iterations=1 runtime: 13263341us
+Richards: iterations=1 runtime: 13308747us
+Richards: iterations=1 runtime: 13191829us
+Richards: iterations=1 runtime: 13218396us
+Richards: iterations=1 runtime: 13181740us
+Richards: iterations=1 runtime: 13168790us
+Richards: iterations=1 runtime: 13328138us
+Richards: iterations=1 runtime: 13253985us
+Richards: iterations=1 runtime: 13284948us
+Richards: iterations=1 runtime: 13225525us
+Richards: iterations=1 runtime: 13627573us
+Richards: iterations=1 runtime: 14388528us
+Richards: iterations=1 runtime: 15150631us
+Richards: iterations=1 runtime: 13545662us
+Richards: iterations=1 runtime: 14869714us
+Richards: iterations=1 runtime: 15232328us
+Richards: iterations=1 runtime: 15521940us
+Richards: iterations=1 runtime: 13452646us
+Richards: iterations=1 runtime: 13523147us
+Richards: iterations=1 runtime: 13553435us
+Richards: iterations=1 runtime: 14161031us
+Richards: iterations=1 runtime: 13276949us
+Richards: iterations=1 runtime: 13175290us
+Richards: iterations=1 runtime: 13298780us
+Richards: iterations=1 runtime: 13538236us
+Richards: iterations=1 runtime: 14487741us
+Richards: iterations=1 runtime: 16904225us
+Richards: iterations=1 runtime: 16158532us
+Richards: iterations=1 runtime: 14894210us
+Richards: iterations=1 runtime: 13668175us
+Richards: iterations=1 runtime: 13619627us
+Richards: iterations=1 runtime: 13197437us
+Richards: iterations=1 runtime: 13169323us
+Richards: iterations=1 runtime: 13557190us
+Richards: iterations=1 runtime: 16873536us
+Richards: iterations=1 runtime: 19478752us
+Richards: iterations=1 runtime: 26678696us
+Richards: iterations=1 runtime: 22443544us
+Richards: iterations=1 runtime: 19417544us
+Richards: iterations=1 runtime: 14482719us
+Richards: iterations=1 runtime: 15197324us
+Richards: iterations=1 runtime: 15484088us
+Richards: iterations=1 runtime: 14516568us
+Richards: iterations=1 runtime: 15755819us
+Richards: iterations=1 runtime: 15537395us
+Richards: iterations=1 runtime: 13552132us
+Richards: iterations=1 runtime: 13373298us
+Richards: iterations=1 runtime: 13412737us
+Richards: iterations=1 runtime: 13558678us
+Richards: iterations=1 runtime: 15228085us
+Richards: iterations=1 runtime: 14511420us
+Richards: iterations=1 runtime: 13894501us
+Richards: iterations=1 runtime: 13148369us
+Richards: iterations=1 runtime: 15009553us
+Richards: iterations=1 runtime: 14099454us
+Richards: iterations=1 runtime: 19632434us
+Richards: iterations=1 runtime: 17799448us
+Richards: iterations=1 runtime: 15863362us
+Richards: iterations=1 runtime: 17090903us
+Richards: iterations=1 runtime: 18459554us
+Richards: iterations=1 runtime: 13585515us
+Richards: iterations=1 runtime: 13625206us
+Richards: iterations=1 runtime: 15804572us
+Richards: iterations=1 runtime: 15779161us
+Richards: iterations=1 runtime: 15232267us
+Richards: iterations=1 runtime: 16833237us
+Richards: iterations=1 runtime: 15931918us
+Richards: iterations=1 runtime: 15855287us
+Richards: iterations=1 runtime: 17378575us
+Richards: iterations=1 runtime: 16242795us
+Richards: iterations=1 runtime: 15586538us
+Richards: iterations=1 runtime: 15941038us
+Richards: iterations=1 runtime: 19066436us
+Richards: iterations=1 runtime: 23175178us
+Richards: iterations=1 runtime: 18583879us
+Richards: iterations=1 runtime: 15691423us
+Richards: iterations=1 runtime: 14458721us
+Richards: iterations=1 runtime: 14374598us
+Richards: iterations=1 runtime: 17280255us
+Richards: iterations=1 runtime: 18770648us
+Richards: iterations=1 runtime: 17050790us
+Richards: iterations=1 runtime: 19099302us
+Richards: iterations=1 runtime: 18654578us
+Richards: iterations=1 runtime: 15622443us
+Richards: iterations=1 runtime: 15721386us
+Richards: iterations=1 runtime: 14167379us
+Richards: iterations=1 runtime: 18356363us
+Richards: iterations=1 runtime: 16973401us
+Richards: iterations=1 runtime: 20675265us
+Richards: iterations=1 runtime: 14103024us
+Richards: iterations=1 runtime: 14252660us
+Richards: iterations=1 runtime: 19436381us
+Richards: iterations=1 runtime: 14283936us
+Richards: iterations=1 runtime: 13714823us
+Richards: iterations=1 runtime: 13713477us
+Richards: iterations=1 runtime: 13118880us
+Richards: iterations=1 runtime: 13625047us
+Richards: iterations=1 runtime: 13080246us
+Richards: iterations=130 average: 15078517us total: 1960207227us
+
+
+Total Runtime: 1960207227us
+Superinstruction guards were activated 36 times.
+            IncrementOperationNode mean:  1. {1=7}
+                  IfSumGreaterNode mean:  1. {1=27}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=2}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Bounce benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Bounce: iterations=1 runtime: 5278832us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Bounce: iterations=1 runtime: 4503091us
+Bounce: iterations=1 runtime: 3758835us
+Bounce: iterations=1 runtime: 3683510us
+Bounce: iterations=1 runtime: 3799926us
+Bounce: iterations=1 runtime: 3922662us
+Bounce: iterations=1 runtime: 3841886us
+Bounce: iterations=1 runtime: 3907647us
+Bounce: iterations=1 runtime: 4298682us
+Bounce: iterations=1 runtime: 3970784us
+Bounce: iterations=1 runtime: 4108332us
+Bounce: iterations=1 runtime: 3921179us
+Bounce: iterations=1 runtime: 4860842us
+Bounce: iterations=1 runtime: 4161859us
+Bounce: iterations=1 runtime: 3842916us
+Bounce: iterations=1 runtime: 3836414us
+Bounce: iterations=1 runtime: 4031267us
+Bounce: iterations=1 runtime: 3943920us
+Bounce: iterations=1 runtime: 4039617us
+Bounce: iterations=1 runtime: 3918591us
+Bounce: iterations=1 runtime: 3864281us
+Bounce: iterations=1 runtime: 3909864us
+Bounce: iterations=1 runtime: 3896502us
+Bounce: iterations=1 runtime: 3842506us
+Bounce: iterations=1 runtime: 3926715us
+Bounce: iterations=1 runtime: 3815193us
+Bounce: iterations=1 runtime: 3876807us
+Bounce: iterations=1 runtime: 3896991us
+Bounce: iterations=1 runtime: 3821010us
+Bounce: iterations=1 runtime: 3831479us
+Bounce: iterations=1 runtime: 3824133us
+Bounce: iterations=1 runtime: 3817688us
+Bounce: iterations=1 runtime: 3808996us
+Bounce: iterations=1 runtime: 3803551us
+Bounce: iterations=1 runtime: 3799360us
+Bounce: iterations=1 runtime: 4219334us
+Bounce: iterations=1 runtime: 4616146us
+Bounce: iterations=1 runtime: 5252955us
+Bounce: iterations=1 runtime: 3878009us
+Bounce: iterations=1 runtime: 4051382us
+Bounce: iterations=1 runtime: 4007254us
+Bounce: iterations=1 runtime: 3832470us
+Bounce: iterations=1 runtime: 3892374us
+Bounce: iterations=1 runtime: 3954632us
+Bounce: iterations=1 runtime: 3986340us
+Bounce: iterations=1 runtime: 4013379us
+Bounce: iterations=1 runtime: 4196714us
+Bounce: iterations=1 runtime: 4330049us
+Bounce: iterations=1 runtime: 4369640us
+Bounce: iterations=1 runtime: 4753674us
+Bounce: iterations=1 runtime: 4750725us
+Bounce: iterations=1 runtime: 4595341us
+Bounce: iterations=1 runtime: 4912220us
+Bounce: iterations=1 runtime: 4374566us
+Bounce: iterations=1 runtime: 4203562us
+Bounce: iterations=1 runtime: 3781115us
+Bounce: iterations=1 runtime: 3951533us
+Bounce: iterations=1 runtime: 3847638us
+Bounce: iterations=1 runtime: 3854567us
+Bounce: iterations=1 runtime: 3821973us
+Bounce: iterations=60 average: 4080224us total: 244813460us
+
+
+Total Runtime: 244813460us
+Superinstruction guards were activated 34 times.
+            IncrementOperationNode mean:  1. {1=10}
+                  IfSumGreaterNode mean:  1. {1=24}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting List benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+List: iterations=1 runtime: 4137683us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+List: iterations=1 runtime: 3711357us
+List: iterations=1 runtime: 3805817us
+List: iterations=1 runtime: 3776835us
+List: iterations=1 runtime: 3816379us
+List: iterations=1 runtime: 3821643us
+List: iterations=1 runtime: 3836831us
+List: iterations=1 runtime: 3837972us
+List: iterations=1 runtime: 3797396us
+List: iterations=1 runtime: 3790600us
+List: iterations=1 runtime: 3802677us
+List: iterations=1 runtime: 3860104us
+List: iterations=1 runtime: 3806717us
+List: iterations=1 runtime: 3832332us
+List: iterations=1 runtime: 3822715us
+List: iterations=1 runtime: 3780232us
+List: iterations=1 runtime: 3865222us
+List: iterations=1 runtime: 3850438us
+List: iterations=1 runtime: 3776156us
+List: iterations=1 runtime: 3803722us
+List: iterations=1 runtime: 3863283us
+List: iterations=1 runtime: 3976296us
+List: iterations=1 runtime: 4089279us
+List: iterations=1 runtime: 5099209us
+List: iterations=1 runtime: 3825445us
+List: iterations=1 runtime: 3816873us
+List: iterations=1 runtime: 3818923us
+List: iterations=1 runtime: 3800269us
+List: iterations=1 runtime: 3834930us
+List: iterations=1 runtime: 3848919us
+List: iterations=1 runtime: 4377697us
+List: iterations=1 runtime: 3830303us
+List: iterations=1 runtime: 3826057us
+List: iterations=1 runtime: 3844179us
+List: iterations=1 runtime: 3845823us
+List: iterations=1 runtime: 3819700us
+List: iterations=1 runtime: 3857530us
+List: iterations=1 runtime: 3816819us
+List: iterations=1 runtime: 3817909us
+List: iterations=1 runtime: 3820379us
+List: iterations=1 runtime: 3881894us
+List: iterations=1 runtime: 3830067us
+List: iterations=1 runtime: 4034529us
+List: iterations=1 runtime: 4019066us
+List: iterations=1 runtime: 3862101us
+List: iterations=1 runtime: 3822173us
+List: iterations=1 runtime: 3845776us
+List: iterations=1 runtime: 3845480us
+List: iterations=1 runtime: 3852263us
+List: iterations=1 runtime: 3844015us
+List: iterations=1 runtime: 3886618us
+List: iterations=1 runtime: 4269393us
+List: iterations=1 runtime: 3828191us
+List: iterations=1 runtime: 3936871us
+List: iterations=1 runtime: 3825663us
+List: iterations=1 runtime: 3826048us
+List: iterations=1 runtime: 3806336us
+List: iterations=1 runtime: 3822665us
+List: iterations=1 runtime: 3821026us
+List: iterations=1 runtime: 4027102us
+List: iterations=1 runtime: 3889278us
+List: iterations=1 runtime: 3844499us
+List: iterations=1 runtime: 3838183us
+List: iterations=1 runtime: 4162851us
+List: iterations=1 runtime: 4340939us
+List: iterations=1 runtime: 4441175us
+List: iterations=1 runtime: 4415971us
+List: iterations=1 runtime: 4506036us
+List: iterations=1 runtime: 4451159us
+List: iterations=1 runtime: 4335174us
+List: iterations=70 average: 3935359us total: 275475192us
+
+
+Total Runtime: 275475192us
+Superinstruction guards were activated 27 times.
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=20}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=1}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Mandelbrot benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode: SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()); expected LessThanOrEqualPrim, actual LessThanPrimNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode: SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()); expected LessThanOrEqualPrim, actual LessThanPrimNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: AndInlinedLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Mandelbrot: iterations=1 runtime: 1655349us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Mandelbrot: iterations=1 runtime: 1163622us
+Mandelbrot: iterations=1 runtime: 1163603us
+Mandelbrot: iterations=1 runtime: 1199772us
+Mandelbrot: iterations=1 runtime: 1183626us
+Mandelbrot: iterations=1 runtime: 1188545us
+Mandelbrot: iterations=1 runtime: 1204693us
+Mandelbrot: iterations=1 runtime: 1189081us
+Mandelbrot: iterations=1 runtime: 1184383us
+Mandelbrot: iterations=1 runtime: 1206140us
+Mandelbrot: iterations=1 runtime: 1193134us
+Mandelbrot: iterations=1 runtime: 1192826us
+Mandelbrot: iterations=1 runtime: 1186840us
+Mandelbrot: iterations=1 runtime: 1185020us
+Mandelbrot: iterations=1 runtime: 1193347us
+Mandelbrot: iterations=1 runtime: 1196989us
+Mandelbrot: iterations=1 runtime: 1178774us
+Mandelbrot: iterations=1 runtime: 1190481us
+Mandelbrot: iterations=1 runtime: 1193243us
+Mandelbrot: iterations=1 runtime: 2012686us
+Mandelbrot: iterations=1 runtime: 1812489us
+Mandelbrot: iterations=1 runtime: 1203143us
+Mandelbrot: iterations=1 runtime: 1204756us
+Mandelbrot: iterations=1 runtime: 1198544us
+Mandelbrot: iterations=1 runtime: 1730452us
+Mandelbrot: iterations=1 runtime: 1858764us
+Mandelbrot: iterations=1 runtime: 1285971us
+Mandelbrot: iterations=1 runtime: 1192461us
+Mandelbrot: iterations=1 runtime: 1185600us
+Mandelbrot: iterations=1 runtime: 1200812us
+Mandelbrot: iterations=1 runtime: 1251678us
+Mandelbrot: iterations=1 runtime: 1262387us
+Mandelbrot: iterations=1 runtime: 1320181us
+Mandelbrot: iterations=1 runtime: 1303266us
+Mandelbrot: iterations=1 runtime: 1268278us
+Mandelbrot: iterations=1 runtime: 1288697us
+Mandelbrot: iterations=1 runtime: 1254499us
+Mandelbrot: iterations=1 runtime: 1249574us
+Mandelbrot: iterations=1 runtime: 1407480us
+Mandelbrot: iterations=1 runtime: 1696291us
+Mandelbrot: iterations=1 runtime: 1265933us
+Mandelbrot: iterations=1 runtime: 1600555us
+Mandelbrot: iterations=1 runtime: 1499106us
+Mandelbrot: iterations=1 runtime: 1179273us
+Mandelbrot: iterations=1 runtime: 1200251us
+Mandelbrot: iterations=1 runtime: 1196867us
+Mandelbrot: iterations=1 runtime: 1206076us
+Mandelbrot: iterations=1 runtime: 1189448us
+Mandelbrot: iterations=1 runtime: 1188602us
+Mandelbrot: iterations=1 runtime: 1181936us
+Mandelbrot: iterations=1 runtime: 1180949us
+Mandelbrot: iterations=1 runtime: 1192453us
+Mandelbrot: iterations=1 runtime: 1187742us
+Mandelbrot: iterations=1 runtime: 1199292us
+Mandelbrot: iterations=1 runtime: 1188887us
+Mandelbrot: iterations=1 runtime: 1197748us
+Mandelbrot: iterations=1 runtime: 1188390us
+Mandelbrot: iterations=1 runtime: 1201401us
+Mandelbrot: iterations=1 runtime: 1182901us
+Mandelbrot: iterations=1 runtime: 1183946us
+Mandelbrot: iterations=1 runtime: 1189434us
+Mandelbrot: iterations=1 runtime: 1188889us
+Mandelbrot: iterations=1 runtime: 1201492us
+Mandelbrot: iterations=1 runtime: 1189551us
+Mandelbrot: iterations=1 runtime: 1183201us
+Mandelbrot: iterations=1 runtime: 1206435us
+Mandelbrot: iterations=1 runtime: 1182367us
+Mandelbrot: iterations=1 runtime: 1188587us
+Mandelbrot: iterations=1 runtime: 1185343us
+Mandelbrot: iterations=1 runtime: 1186714us
+Mandelbrot: iterations=1 runtime: 1182457us
+Mandelbrot: iterations=1 runtime: 1178632us
+Mandelbrot: iterations=1 runtime: 1181739us
+Mandelbrot: iterations=1 runtime: 1190193us
+Mandelbrot: iterations=1 runtime: 1309125us
+Mandelbrot: iterations=1 runtime: 1218183us
+Mandelbrot: iterations=1 runtime: 1673762us
+Mandelbrot: iterations=1 runtime: 1193849us
+Mandelbrot: iterations=1 runtime: 1186106us
+Mandelbrot: iterations=1 runtime: 1183760us
+Mandelbrot: iterations=1 runtime: 1196134us
+Mandelbrot: iterations=1 runtime: 1205121us
+Mandelbrot: iterations=1 runtime: 1197612us
+Mandelbrot: iterations=1 runtime: 1186616us
+Mandelbrot: iterations=1 runtime: 1182607us
+Mandelbrot: iterations=1 runtime: 1192440us
+Mandelbrot: iterations=1 runtime: 1200148us
+Mandelbrot: iterations=1 runtime: 1180512us
+Mandelbrot: iterations=1 runtime: 1190109us
+Mandelbrot: iterations=1 runtime: 1187938us
+Mandelbrot: iterations=1 runtime: 1189780us
+Mandelbrot: iterations=1 runtime: 1187102us
+Mandelbrot: iterations=1 runtime: 1186763us
+Mandelbrot: iterations=1 runtime: 1185609us
+Mandelbrot: iterations=1 runtime: 1207492us
+Mandelbrot: iterations=1 runtime: 1193188us
+Mandelbrot: iterations=1 runtime: 1180217us
+Mandelbrot: iterations=1 runtime: 1198936us
+Mandelbrot: iterations=1 runtime: 1210996us
+Mandelbrot: iterations=1 runtime: 1182556us
+Mandelbrot: iterations=1 runtime: 1184234us
+Mandelbrot: iterations=1 runtime: 1182124us
+Mandelbrot: iterations=1 runtime: 1196409us
+Mandelbrot: iterations=1 runtime: 1201924us
+Mandelbrot: iterations=1 runtime: 1277317us
+Mandelbrot: iterations=1 runtime: 1795601us
+Mandelbrot: iterations=1 runtime: 1208171us
+Mandelbrot: iterations=1 runtime: 1190698us
+Mandelbrot: iterations=1 runtime: 1197057us
+Mandelbrot: iterations=1 runtime: 1186902us
+Mandelbrot: iterations=110 average: 1251921us total: 137711365us
+
+
+Total Runtime: 137711365us
+Superinstruction guards were activated 66 times.
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=3}
+       AssignSubtractionResultNode mean:  1. {1=10}
+            IncrementOperationNode mean:  1. {1=22}
+                  IfSumGreaterNode mean:  1. {1=21}
+       AssignProductToVariableNode mean:  1. {1=10}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting NBody benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalArgumentReadNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: LocalArgumentReadNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+NBody: iterations=1 runtime: 3099771us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+NBody: iterations=1 runtime: 2716027us
+NBody: iterations=1 runtime: 2622282us
+NBody: iterations=1 runtime: 2615501us
+NBody: iterations=1 runtime: 2563037us
+NBody: iterations=1 runtime: 2567442us
+NBody: iterations=1 runtime: 2557201us
+NBody: iterations=1 runtime: 2562396us
+NBody: iterations=1 runtime: 2599482us
+NBody: iterations=1 runtime: 2569451us
+NBody: iterations=1 runtime: 2565457us
+NBody: iterations=1 runtime: 2583739us
+NBody: iterations=1 runtime: 2575569us
+NBody: iterations=1 runtime: 2581471us
+NBody: iterations=1 runtime: 2573373us
+NBody: iterations=1 runtime: 2560684us
+NBody: iterations=1 runtime: 2568412us
+NBody: iterations=1 runtime: 2561275us
+NBody: iterations=1 runtime: 2600491us
+NBody: iterations=1 runtime: 2581447us
+NBody: iterations=1 runtime: 2606045us
+NBody: iterations=1 runtime: 2580592us
+NBody: iterations=1 runtime: 2579617us
+NBody: iterations=1 runtime: 2564136us
+NBody: iterations=1 runtime: 2577919us
+NBody: iterations=1 runtime: 2579937us
+NBody: iterations=1 runtime: 2581794us
+NBody: iterations=1 runtime: 2576271us
+NBody: iterations=1 runtime: 2577059us
+NBody: iterations=1 runtime: 2558990us
+NBody: iterations=1 runtime: 2573475us
+NBody: iterations=1 runtime: 2556612us
+NBody: iterations=1 runtime: 2815703us
+NBody: iterations=1 runtime: 2562997us
+NBody: iterations=1 runtime: 2587110us
+NBody: iterations=1 runtime: 2565716us
+NBody: iterations=1 runtime: 2570597us
+NBody: iterations=1 runtime: 3308731us
+NBody: iterations=1 runtime: 2997140us
+NBody: iterations=1 runtime: 2571038us
+NBody: iterations=1 runtime: 2582693us
+NBody: iterations=1 runtime: 2577687us
+NBody: iterations=1 runtime: 3194077us
+NBody: iterations=1 runtime: 3264344us
+NBody: iterations=1 runtime: 2581746us
+NBody: iterations=1 runtime: 2982926us
+NBody: iterations=1 runtime: 3631844us
+NBody: iterations=1 runtime: 2627717us
+NBody: iterations=1 runtime: 2625363us
+NBody: iterations=1 runtime: 2583893us
+NBody: iterations=1 runtime: 2672414us
+NBody: iterations=1 runtime: 3049561us
+NBody: iterations=1 runtime: 3008963us
+NBody: iterations=1 runtime: 3035788us
+NBody: iterations=1 runtime: 3702540us
+NBody: iterations=1 runtime: 3072240us
+NBody: iterations=1 runtime: 3012313us
+NBody: iterations=1 runtime: 2966126us
+NBody: iterations=1 runtime: 2570821us
+NBody: iterations=1 runtime: 2701253us
+NBody: iterations=1 runtime: 3173814us
+NBody: iterations=1 runtime: 3248883us
+NBody: iterations=1 runtime: 3195749us
+NBody: iterations=1 runtime: 2617321us
+NBody: iterations=1 runtime: 2872421us
+NBody: iterations=1 runtime: 3531938us
+NBody: iterations=1 runtime: 2828805us
+NBody: iterations=1 runtime: 2576852us
+NBody: iterations=1 runtime: 2613435us
+NBody: iterations=1 runtime: 2956056us
+NBody: iterations=1 runtime: 3154407us
+NBody: iterations=1 runtime: 3023319us
+NBody: iterations=1 runtime: 2991396us
+NBody: iterations=1 runtime: 3298731us
+NBody: iterations=1 runtime: 2862304us
+NBody: iterations=1 runtime: 3428981us
+NBody: iterations=1 runtime: 3445213us
+NBody: iterations=1 runtime: 2699263us
+NBody: iterations=1 runtime: 3289950us
+NBody: iterations=1 runtime: 2840451us
+NBody: iterations=1 runtime: 2800994us
+NBody: iterations=1 runtime: 2875374us
+NBody: iterations=1 runtime: 2596229us
+NBody: iterations=1 runtime: 2598764us
+NBody: iterations=1 runtime: 2566228us
+NBody: iterations=1 runtime: 2580400us
+NBody: iterations=1 runtime: 2571641us
+NBody: iterations=1 runtime: 2590618us
+NBody: iterations=1 runtime: 2623700us
+NBody: iterations=1 runtime: 2575296us
+NBody: iterations=1 runtime: 2800655us
+NBody: iterations=1 runtime: 3051552us
+NBody: iterations=1 runtime: 3041037us
+NBody: iterations=1 runtime: 3143049us
+NBody: iterations=1 runtime: 2834687us
+NBody: iterations=1 runtime: 3382245us
+NBody: iterations=1 runtime: 3688335us
+NBody: iterations=1 runtime: 3605893us
+NBody: iterations=1 runtime: 3060855us
+NBody: iterations=1 runtime: 3160440us
+NBody: iterations=1 runtime: 2962239us
+NBody: iterations=1 runtime: 4537740us
+NBody: iterations=1 runtime: 4929254us
+NBody: iterations=1 runtime: 3497724us
+NBody: iterations=1 runtime: 2658202us
+NBody: iterations=1 runtime: 2744586us
+NBody: iterations=1 runtime: 2702516us
+NBody: iterations=1 runtime: 3760272us
+NBody: iterations=1 runtime: 4324789us
+NBody: iterations=1 runtime: 3894617us
+NBody: iterations=1 runtime: 3633690us
+NBody: iterations=1 runtime: 3107118us
+NBody: iterations=1 runtime: 3178063us
+NBody: iterations=1 runtime: 3476851us
+NBody: iterations=1 runtime: 3592246us
+NBody: iterations=1 runtime: 3097512us
+NBody: iterations=1 runtime: 3091168us
+NBody: iterations=1 runtime: 3146634us
+NBody: iterations=1 runtime: 3175305us
+NBody: iterations=1 runtime: 3098674us
+NBody: iterations=120 average: 2924723us total: 350966777us
+
+
+Total Runtime: 350966777us
+Superinstruction guards were activated 51 times.
+       AssignSubtractionResultNode mean:  1. {1=16}
+                  IfSumGreaterNode mean:  1. {1=19}
+            IncrementOperationNode mean:  1. {1=6}
+       AssignProductToVariableNode mean:  1. {1=10}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Permute benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Permute: iterations=1 runtime: 3527066us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Permute: iterations=1 runtime: 3122206us
+Permute: iterations=1 runtime: 3098322us
+Permute: iterations=1 runtime: 3021598us
+Permute: iterations=1 runtime: 3103505us
+Permute: iterations=1 runtime: 3065543us
+Permute: iterations=1 runtime: 3073629us
+Permute: iterations=1 runtime: 3070006us
+Permute: iterations=1 runtime: 3121157us
+Permute: iterations=1 runtime: 3065190us
+Permute: iterations=1 runtime: 3103040us
+Permute: iterations=1 runtime: 3106722us
+Permute: iterations=1 runtime: 3102252us
+Permute: iterations=1 runtime: 3048067us
+Permute: iterations=1 runtime: 3062198us
+Permute: iterations=1 runtime: 3090077us
+Permute: iterations=1 runtime: 3275629us
+Permute: iterations=1 runtime: 3169877us
+Permute: iterations=1 runtime: 3077095us
+Permute: iterations=1 runtime: 3157650us
+Permute: iterations=1 runtime: 3228759us
+Permute: iterations=1 runtime: 3278861us
+Permute: iterations=1 runtime: 3128257us
+Permute: iterations=1 runtime: 3112108us
+Permute: iterations=1 runtime: 3096317us
+Permute: iterations=1 runtime: 3118815us
+Permute: iterations=1 runtime: 3226770us
+Permute: iterations=1 runtime: 3722137us
+Permute: iterations=1 runtime: 3754051us
+Permute: iterations=1 runtime: 3695088us
+Permute: iterations=1 runtime: 3766368us
+Permute: iterations=1 runtime: 3943370us
+Permute: iterations=1 runtime: 4009190us
+Permute: iterations=1 runtime: 3661373us
+Permute: iterations=1 runtime: 3007865us
+Permute: iterations=1 runtime: 3091228us
+Permute: iterations=1 runtime: 3083727us
+Permute: iterations=1 runtime: 3072748us
+Permute: iterations=1 runtime: 3108354us
+Permute: iterations=1 runtime: 3079111us
+Permute: iterations=1 runtime: 3066629us
+Permute: iterations=1 runtime: 3153950us
+Permute: iterations=1 runtime: 3070338us
+Permute: iterations=1 runtime: 3073197us
+Permute: iterations=1 runtime: 3350816us
+Permute: iterations=1 runtime: 3088343us
+Permute: iterations=1 runtime: 3045439us
+Permute: iterations=1 runtime: 3093961us
+Permute: iterations=1 runtime: 3099930us
+Permute: iterations=1 runtime: 3093632us
+Permute: iterations=1 runtime: 3067677us
+Permute: iterations=1 runtime: 3053877us
+Permute: iterations=1 runtime: 3060505us
+Permute: iterations=1 runtime: 3078955us
+Permute: iterations=1 runtime: 3043958us
+Permute: iterations=1 runtime: 3050034us
+Permute: iterations=1 runtime: 3107154us
+Permute: iterations=1 runtime: 3028272us
+Permute: iterations=1 runtime: 3066153us
+Permute: iterations=1 runtime: 3030787us
+Permute: iterations=60 average: 3189482us total: 191368933us
+
+
+Total Runtime: 191368933us
+Superinstruction guards were activated 26 times.
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=20}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Queens benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Queens: iterations=1 runtime: 2214019us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Queens: iterations=1 runtime: 1782946us
+Queens: iterations=1 runtime: 1806008us
+Queens: iterations=1 runtime: 1717465us
+Queens: iterations=1 runtime: 1792212us
+Queens: iterations=1 runtime: 1782209us
+Queens: iterations=1 runtime: 1758386us
+Queens: iterations=1 runtime: 1810092us
+Queens: iterations=1 runtime: 1760527us
+Queens: iterations=1 runtime: 1752096us
+Queens: iterations=1 runtime: 1762365us
+Queens: iterations=1 runtime: 1828743us
+Queens: iterations=1 runtime: 1920791us
+Queens: iterations=1 runtime: 1788578us
+Queens: iterations=1 runtime: 2063717us
+Queens: iterations=1 runtime: 1697922us
+Queens: iterations=1 runtime: 1657365us
+Queens: iterations=1 runtime: 1690240us
+Queens: iterations=1 runtime: 1862561us
+Queens: iterations=1 runtime: 1702618us
+Queens: iterations=1 runtime: 1664537us
+Queens: iterations=1 runtime: 1778338us
+Queens: iterations=1 runtime: 1929155us
+Queens: iterations=1 runtime: 1764836us
+Queens: iterations=1 runtime: 1769457us
+Queens: iterations=1 runtime: 1801855us
+Queens: iterations=1 runtime: 1759398us
+Queens: iterations=1 runtime: 1757109us
+Queens: iterations=1 runtime: 1758355us
+Queens: iterations=1 runtime: 1782766us
+Queens: iterations=1 runtime: 1750387us
+Queens: iterations=1 runtime: 1755807us
+Queens: iterations=1 runtime: 1774703us
+Queens: iterations=1 runtime: 1757875us
+Queens: iterations=1 runtime: 1805238us
+Queens: iterations=1 runtime: 1764098us
+Queens: iterations=1 runtime: 1750055us
+Queens: iterations=1 runtime: 1743772us
+Queens: iterations=1 runtime: 1798609us
+Queens: iterations=1 runtime: 1739921us
+Queens: iterations=1 runtime: 1776265us
+Queens: iterations=1 runtime: 1792526us
+Queens: iterations=1 runtime: 2200866us
+Queens: iterations=1 runtime: 2666905us
+Queens: iterations=1 runtime: 2252027us
+Queens: iterations=1 runtime: 1712312us
+Queens: iterations=1 runtime: 1911447us
+Queens: iterations=1 runtime: 2097480us
+Queens: iterations=1 runtime: 2601004us
+Queens: iterations=1 runtime: 2279358us
+Queens: iterations=1 runtime: 1721313us
+Queens: iterations=1 runtime: 1653516us
+Queens: iterations=1 runtime: 1796031us
+Queens: iterations=1 runtime: 1820089us
+Queens: iterations=1 runtime: 1734904us
+Queens: iterations=1 runtime: 1864660us
+Queens: iterations=1 runtime: 1997860us
+Queens: iterations=1 runtime: 2441469us
+Queens: iterations=1 runtime: 2753712us
+Queens: iterations=1 runtime: 2531365us
+Queens: iterations=1 runtime: 2197655us
+Queens: iterations=1 runtime: 1755383us
+Queens: iterations=1 runtime: 1773972us
+Queens: iterations=1 runtime: 2767298us
+Queens: iterations=1 runtime: 2718903us
+Queens: iterations=1 runtime: 1906785us
+Queens: iterations=1 runtime: 1987504us
+Queens: iterations=1 runtime: 2073302us
+Queens: iterations=1 runtime: 1992593us
+Queens: iterations=1 runtime: 1912544us
+Queens: iterations=1 runtime: 1816846us
+Queens: iterations=1 runtime: 2099323us
+Queens: iterations=1 runtime: 1865547us
+Queens: iterations=1 runtime: 1762576us
+Queens: iterations=1 runtime: 1849221us
+Queens: iterations=1 runtime: 1851020us
+Queens: iterations=1 runtime: 1747360us
+Queens: iterations=1 runtime: 2351822us
+Queens: iterations=1 runtime: 1969120us
+Queens: iterations=1 runtime: 2435543us
+Queens: iterations=1 runtime: 2173199us
+Queens: iterations=1 runtime: 3080728us
+Queens: iterations=1 runtime: 1665523us
+Queens: iterations=1 runtime: 1711346us
+Queens: iterations=1 runtime: 1962234us
+Queens: iterations=1 runtime: 1480398us
+Queens: iterations=1 runtime: 1521303us
+Queens: iterations=1 runtime: 1494553us
+Queens: iterations=1 runtime: 1478084us
+Queens: iterations=1 runtime: 1654522us
+Queens: iterations=1 runtime: 1712884us
+Queens: iterations=1 runtime: 1529832us
+Queens: iterations=1 runtime: 1760524us
+Queens: iterations=1 runtime: 2489861us
+Queens: iterations=1 runtime: 1832398us
+Queens: iterations=1 runtime: 1485240us
+Queens: iterations=1 runtime: 1519479us
+Queens: iterations=1 runtime: 1847077us
+Queens: iterations=1 runtime: 1528578us
+Queens: iterations=1 runtime: 1547005us
+Queens: iterations=1 runtime: 1572149us
+Queens: iterations=1 runtime: 2437220us
+Queens: iterations=1 runtime: 3070668us
+Queens: iterations=1 runtime: 2810032us
+Queens: iterations=1 runtime: 2196955us
+Queens: iterations=1 runtime: 2388386us
+Queens: iterations=1 runtime: 1845864us
+Queens: iterations=1 runtime: 2584840us
+Queens: iterations=1 runtime: 2565817us
+Queens: iterations=1 runtime: 2406219us
+Queens: iterations=1 runtime: 2133072us
+Queens: iterations=1 runtime: 2214813us
+Queens: iterations=1 runtime: 1976018us
+Queens: iterations=1 runtime: 2383395us
+Queens: iterations=1 runtime: 2066853us
+Queens: iterations=1 runtime: 1700481us
+Queens: iterations=1 runtime: 1539707us
+Queens: iterations=1 runtime: 1556363us
+Queens: iterations=1 runtime: 1570613us
+Queens: iterations=1 runtime: 1485527us
+Queens: iterations=120 average: 1933135us total: 231976317us
+
+
+Total Runtime: 231976317us
+Superinstruction guards were activated 27 times.
+                  IfSumGreaterNode mean:  1. {1=21}
+            IncrementOperationNode mean:  1. {1=6}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Storage benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Storage: iterations=1 runtime: 4217504us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Storage: iterations=1 runtime: 3529174us
+Storage: iterations=1 runtime: 3740941us
+Storage: iterations=1 runtime: 3560312us
+Storage: iterations=1 runtime: 4020432us
+Storage: iterations=1 runtime: 4193573us
+Storage: iterations=1 runtime: 4058462us
+Storage: iterations=1 runtime: 3741301us
+Storage: iterations=1 runtime: 3726975us
+Storage: iterations=1 runtime: 3720098us
+Storage: iterations=1 runtime: 3745725us
+Storage: iterations=1 runtime: 3897045us
+Storage: iterations=1 runtime: 3845874us
+Storage: iterations=1 runtime: 4335977us
+Storage: iterations=1 runtime: 4035616us
+Storage: iterations=1 runtime: 3823608us
+Storage: iterations=1 runtime: 3917480us
+Storage: iterations=1 runtime: 3755541us
+Storage: iterations=1 runtime: 4207000us
+Storage: iterations=1 runtime: 3728227us
+Storage: iterations=1 runtime: 4527549us
+Storage: iterations=1 runtime: 4179287us
+Storage: iterations=1 runtime: 4294036us
+Storage: iterations=1 runtime: 4310215us
+Storage: iterations=1 runtime: 4889685us
+Storage: iterations=1 runtime: 3887533us
+Storage: iterations=1 runtime: 4658487us
+Storage: iterations=1 runtime: 4551967us
+Storage: iterations=1 runtime: 3722333us
+Storage: iterations=1 runtime: 3691120us
+Storage: iterations=1 runtime: 3666752us
+Storage: iterations=1 runtime: 3667654us
+Storage: iterations=1 runtime: 3815206us
+Storage: iterations=1 runtime: 4512591us
+Storage: iterations=1 runtime: 3668035us
+Storage: iterations=1 runtime: 3968944us
+Storage: iterations=1 runtime: 4750879us
+Storage: iterations=1 runtime: 4352085us
+Storage: iterations=1 runtime: 4860806us
+Storage: iterations=1 runtime: 3697076us
+Storage: iterations=1 runtime: 3710191us
+Storage: iterations=1 runtime: 3723120us
+Storage: iterations=1 runtime: 3687958us
+Storage: iterations=1 runtime: 3700077us
+Storage: iterations=1 runtime: 4267874us
+Storage: iterations=1 runtime: 3995303us
+Storage: iterations=1 runtime: 5623732us
+Storage: iterations=1 runtime: 6525356us
+Storage: iterations=1 runtime: 4469408us
+Storage: iterations=1 runtime: 4382019us
+Storage: iterations=1 runtime: 4253238us
+Storage: iterations=1 runtime: 3841310us
+Storage: iterations=1 runtime: 3717625us
+Storage: iterations=1 runtime: 3878305us
+Storage: iterations=1 runtime: 4098494us
+Storage: iterations=1 runtime: 3748380us
+Storage: iterations=1 runtime: 3997612us
+Storage: iterations=1 runtime: 4078528us
+Storage: iterations=1 runtime: 4539138us
+Storage: iterations=1 runtime: 4697707us
+Storage: iterations=1 runtime: 4771830us
+Storage: iterations=1 runtime: 4781914us
+Storage: iterations=1 runtime: 4153413us
+Storage: iterations=1 runtime: 4660239us
+Storage: iterations=1 runtime: 4507791us
+Storage: iterations=1 runtime: 4868154us
+Storage: iterations=1 runtime: 4765969us
+Storage: iterations=1 runtime: 4136183us
+Storage: iterations=1 runtime: 3964290us
+Storage: iterations=1 runtime: 3957184us
+Storage: iterations=1 runtime: 4498929us
+Storage: iterations=1 runtime: 4479314us
+Storage: iterations=1 runtime: 4543392us
+Storage: iterations=1 runtime: 4510193us
+Storage: iterations=1 runtime: 4681482us
+Storage: iterations=75 average: 4182516us total: 313688757us
+
+
+Total Runtime: 313688757us
+Superinstruction guards were activated 25 times.
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=19}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Sieve benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Sieve: iterations=1 runtime: 934015us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Sieve: iterations=1 runtime: 632232us
+Sieve: iterations=1 runtime: 698432us
+Sieve: iterations=1 runtime: 718769us
+Sieve: iterations=1 runtime: 548589us
+Sieve: iterations=1 runtime: 573189us
+Sieve: iterations=1 runtime: 658173us
+Sieve: iterations=1 runtime: 530133us
+Sieve: iterations=1 runtime: 547808us
+Sieve: iterations=1 runtime: 528199us
+Sieve: iterations=1 runtime: 527234us
+Sieve: iterations=1 runtime: 550945us
+Sieve: iterations=1 runtime: 533907us
+Sieve: iterations=1 runtime: 560848us
+Sieve: iterations=1 runtime: 578711us
+Sieve: iterations=1 runtime: 864165us
+Sieve: iterations=1 runtime: 613994us
+Sieve: iterations=1 runtime: 553764us
+Sieve: iterations=1 runtime: 655334us
+Sieve: iterations=1 runtime: 651539us
+Sieve: iterations=1 runtime: 870012us
+Sieve: iterations=1 runtime: 624187us
+Sieve: iterations=1 runtime: 686206us
+Sieve: iterations=1 runtime: 1104626us
+Sieve: iterations=1 runtime: 813638us
+Sieve: iterations=1 runtime: 559395us
+Sieve: iterations=1 runtime: 534714us
+Sieve: iterations=1 runtime: 532474us
+Sieve: iterations=1 runtime: 530835us
+Sieve: iterations=1 runtime: 613349us
+Sieve: iterations=1 runtime: 538412us
+Sieve: iterations=1 runtime: 541673us
+Sieve: iterations=1 runtime: 538484us
+Sieve: iterations=1 runtime: 524988us
+Sieve: iterations=1 runtime: 538344us
+Sieve: iterations=1 runtime: 534362us
+Sieve: iterations=1 runtime: 527465us
+Sieve: iterations=1 runtime: 525152us
+Sieve: iterations=1 runtime: 531956us
+Sieve: iterations=1 runtime: 530641us
+Sieve: iterations=1 runtime: 535368us
+Sieve: iterations=1 runtime: 550922us
+Sieve: iterations=1 runtime: 541090us
+Sieve: iterations=1 runtime: 691208us
+Sieve: iterations=1 runtime: 623276us
+Sieve: iterations=1 runtime: 689264us
+Sieve: iterations=1 runtime: 637176us
+Sieve: iterations=1 runtime: 525888us
+Sieve: iterations=1 runtime: 533197us
+Sieve: iterations=1 runtime: 529449us
+Sieve: iterations=1 runtime: 533652us
+Sieve: iterations=1 runtime: 555075us
+Sieve: iterations=1 runtime: 540677us
+Sieve: iterations=1 runtime: 686674us
+Sieve: iterations=1 runtime: 608645us
+Sieve: iterations=1 runtime: 607558us
+Sieve: iterations=1 runtime: 906061us
+Sieve: iterations=1 runtime: 749103us
+Sieve: iterations=1 runtime: 815309us
+Sieve: iterations=1 runtime: 565893us
+Sieve: iterations=60 average: 618106us total: 37086378us
+
+
+Total Runtime: 37086378us
+Superinstruction guards were activated 31 times.
+                  IfSumGreaterNode mean:  1. {1=20}
+            IncrementOperationNode mean:  1. {1=10}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=1}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Towers benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Towers: iterations=1 runtime: 3484948us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Towers: iterations=1 runtime: 2810061us
+Towers: iterations=1 runtime: 3205836us
+Towers: iterations=1 runtime: 2700615us
+Towers: iterations=1 runtime: 3773333us
+Towers: iterations=1 runtime: 2589651us
+Towers: iterations=1 runtime: 2613599us
+Towers: iterations=1 runtime: 2973844us
+Towers: iterations=1 runtime: 3125920us
+Towers: iterations=1 runtime: 2767395us
+Towers: iterations=1 runtime: 2563898us
+Towers: iterations=1 runtime: 2593675us
+Towers: iterations=1 runtime: 3042526us
+Towers: iterations=1 runtime: 2694354us
+Towers: iterations=1 runtime: 2746922us
+Towers: iterations=1 runtime: 2863094us
+Towers: iterations=1 runtime: 2846566us
+Towers: iterations=1 runtime: 2641843us
+Towers: iterations=1 runtime: 2863740us
+Towers: iterations=1 runtime: 2711222us
+Towers: iterations=1 runtime: 3792856us
+Towers: iterations=1 runtime: 2596858us
+Towers: iterations=1 runtime: 2869185us
+Towers: iterations=1 runtime: 3677929us
+Towers: iterations=1 runtime: 2836746us
+Towers: iterations=1 runtime: 2587249us
+Towers: iterations=1 runtime: 2552330us
+Towers: iterations=1 runtime: 2577443us
+Towers: iterations=1 runtime: 2779831us
+Towers: iterations=1 runtime: 2573727us
+Towers: iterations=1 runtime: 2826836us
+Towers: iterations=1 runtime: 2542487us
+Towers: iterations=1 runtime: 2774124us
+Towers: iterations=1 runtime: 2944824us
+Towers: iterations=1 runtime: 4162981us
+Towers: iterations=1 runtime: 2730033us
+Towers: iterations=1 runtime: 2603246us
+Towers: iterations=1 runtime: 2596201us
+Towers: iterations=1 runtime: 2604948us
+Towers: iterations=1 runtime: 2767949us
+Towers: iterations=1 runtime: 2702162us
+Towers: iterations=1 runtime: 2964873us
+Towers: iterations=1 runtime: 2885263us
+Towers: iterations=1 runtime: 3627466us
+Towers: iterations=1 runtime: 2567800us
+Towers: iterations=1 runtime: 3527586us
+Towers: iterations=1 runtime: 2615156us
+Towers: iterations=1 runtime: 2659896us
+Towers: iterations=1 runtime: 4449041us
+Towers: iterations=1 runtime: 2662434us
+Towers: iterations=1 runtime: 2712313us
+Towers: iterations=1 runtime: 2562981us
+Towers: iterations=1 runtime: 2618181us
+Towers: iterations=1 runtime: 3030993us
+Towers: iterations=1 runtime: 2540145us
+Towers: iterations=1 runtime: 2738731us
+Towers: iterations=1 runtime: 3843838us
+Towers: iterations=1 runtime: 3480199us
+Towers: iterations=1 runtime: 3527343us
+Towers: iterations=1 runtime: 2576527us
+Towers: iterations=60 average: 2921729us total: 175303753us
+
+
+Total Runtime: 175303753us
+Superinstruction guards were activated 28 times.
+            IncrementOperationNode mean:  1. {1=7}
+                  IfSumGreaterNode mean:  1. {1=21}

@@ -1,0 +1,1421 @@
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: DoubleLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: AndInlinedLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: AndInlinedLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: OrInlinedLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalArgumentReadNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanOrEqualPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalArgumentReadNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: TrueLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalArgumentReadNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: OrInlinedLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting CD benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: DoubleLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: AndInlinedLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: AndInlinedLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: OrInlinedLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalArgumentReadNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanOrEqualPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: GenericMessageSendNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+No verification result for 5 found.
+Result is: 129
+ERROR: Benchmark failed with incorrect result
+Superinstruction guards were activated 126 times.
+       AssignProductToVariableNode mean:  1. {1=27}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=6}
+            IncrementOperationNode mean:  1. {1=12}
+       AssignSubtractionResultNode mean:  1. {1=29}
+                  IfSumGreaterNode mean:  1. {1=52}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: TrueLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting DeltaBlue benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanOrEqualPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+DeltaBlue: iterations=1 runtime: 499972us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+DeltaBlue: iterations=1 average: 499972us total: 499972us
+
+
+Total Runtime: 499972us
+Superinstruction guards were activated 72 times.
+                  IfSumGreaterNode mean:  1. {1=51}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=7}
+            IncrementOperationNode mean:  1. {1=14}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Havlak benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalArgumentReadNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: TrueLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalArgumentReadNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: OrInlinedLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: NotNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Havlak: iterations=1 runtime: 2528070us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Havlak: iterations=1 average: 2528070us total: 2528070us
+
+
+Total Runtime: 2528070us
+Superinstruction guards were activated 93 times.
+                  IfSumGreaterNode mean:  1. {1=52}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=5}
+            IncrementOperationNode mean:  1. {1=28, 8=1}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Json benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndBoolMessageNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Json: iterations=1 runtime: 934998us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Json: iterations=1 average: 934998us total: 934998us
+
+
+Total Runtime: 934998us
+Superinstruction guards were activated 85 times.
+                  IfSumGreaterNode mean:  1. {1=70}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=5}
+            IncrementOperationNode mean:  1. {1=10}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Richards benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: GenericMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsEqualsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Richards: iterations=1 runtime: 1614699us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Richards: iterations=1 average: 1614699us total: 1614699us
+
+
+Total Runtime: 1614699us
+Superinstruction guards were activated 36 times.
+                  IfSumGreaterNode mean:  1. {1=27}
+            IncrementOperationNode mean:  1. {1=7}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=2}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Bounce benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Bounce: iterations=1 runtime: 447319us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Bounce: iterations=1 average: 447319us total: 447319us
+
+
+Total Runtime: 447319us
+Superinstruction guards were activated 34 times.
+            IncrementOperationNode mean:  1. {1=10}
+                  IfSumGreaterNode mean:  1. {1=24}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting List benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+List: iterations=1 runtime: 499064us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+List: iterations=1 average: 499064us total: 499064us
+
+
+Total Runtime: 499064us
+Superinstruction guards were activated 27 times.
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=1}
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=20}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Mandelbrot benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode: SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()); expected LessThanOrEqualPrim, actual LessThanPrimNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode: SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()); expected LessThanOrEqualPrim, actual LessThanPrimNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: LocalVariableWriteNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+WhileSmallerEqualThanArgumentNode conditionNode should have been EagerBinaryPrimitiveNode, but was: AndInlinedLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: EagerBinaryPrimitiveNode
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Mandelbrot: iterations=1 runtime: 266214us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Mandelbrot: iterations=1 average: 266214us total: 266214us
+
+
+Total Runtime: 266214us
+Superinstruction guards were activated 70 times.
+       AssignSubtractionResultNode mean:  1. {1=10}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=3}
+                  IfSumGreaterNode mean:  1. {1=21}
+       AssignProductToVariableNode mean:  1. {1=10}
+            IncrementOperationNode mean:  1. {1=26}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting NBody benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: EagerBinaryPrimitiveNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalArgumentReadNode
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: LocalArgumentReadNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: DoubleLiteralNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+AssignSubtractionResultNodeexp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignProductToVariableNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+AssignSubtractionResultNodeSOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: LocalVariableReadNodeGen
+AssignProductToVariableNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+NBody: iterations=1 runtime: 486800us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+NBody: iterations=1 average: 486800us total: 486800us
+
+
+Total Runtime: 486800us
+Superinstruction guards were activated 51 times.
+       AssignProductToVariableNode mean:  1. {1=10}
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=19}
+       AssignSubtractionResultNode mean:  1. {1=16}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Permute benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: UnequalsPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Permute: iterations=1 runtime: 344662us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Permute: iterations=1 average: 344662us total: 344662us
+
+
+Total Runtime: 344662us
+Superinstruction guards were activated 26 times.
+            IncrementOperationNode mean:  1. {1=6}
+                  IfSumGreaterNode mean:  1. {1=20}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Queens benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Queens: iterations=1 runtime: 437473us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Queens: iterations=1 average: 437473us total: 437473us
+
+
+Total Runtime: 437473us
+Superinstruction guards were activated 27 times.
+                  IfSumGreaterNode mean:  1. {1=21}
+            IncrementOperationNode mean:  1. {1=6}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Storage benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Storage: iterations=1 runtime: 469250us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Storage: iterations=1 average: 469250us total: 469250us
+
+
+Total Runtime: 469250us
+Superinstruction guards were activated 25 times.
+                  IfSumGreaterNode mean:  1. {1=19}
+            IncrementOperationNode mean:  1. {1=6}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Sieve benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: IntegerLiteralNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+WhileSmallerEqualThanArgumentNode: expectedBool was false.
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Sieve: iterations=1 runtime: 431809us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Sieve: iterations=1 average: 431809us total: 431809us
+
+
+Total Runtime: 431809us
+Superinstruction guards were activated 31 times.
+                  IfSumGreaterNode mean:  1. {1=20}
+ WhileSmallerEqualThanArgumentNode mean:  1. {1=1}
+            IncrementOperationNode mean:  1. {1=10}
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: LessThanPrimNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: EagerUnaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: condition.getPrimitive() instanceof GreaterThanPrim, actual: EqualsPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Starting Towers benchmark ... 
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: AndInlinedLiteralNode
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: EagerBinaryPrimitiveNode
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: IsNilNodeGen
+IncrementOperationNode: exp instanceof EagerBinaryPrimitiveNode, actual: TicksPrimNodeGen
+IncrementOperationNode: SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: LocalVariableReadNodeGen
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: SOMNode.unwrapIfNecessary(conditionNode) instanceof EagerBinaryPrimitiveNode, actual: UninitializedMessageSendNode
+Towers: iterations=1 runtime: 580668us
+IfSumGreaterNode: expectedBool was false.
+IfSumGreaterNode: unwrapReceiver(condition) instanceof DoubleLiteralNode, actual: UninitializedMessageSendNode
+Towers: iterations=1 average: 580668us total: 580668us
+
+
+Total Runtime: 580668us
+Superinstruction guards were activated 28 times.
+                  IfSumGreaterNode mean:  1. {1=21}
+            IncrementOperationNode mean:  1. {1=7}
