@@ -124,7 +124,7 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
     // whileFalse: does not match
     if (!expectedBool) {
       System.out.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
-          + ": expectedBool was false.");
+          + ": expectedBool was false." + " level: 7");
       return false;
     }
     conditionNode = SOMNode.unwrapIfNecessary(conditionNode);
@@ -149,36 +149,40 @@ abstract public class WhileSmallerEqualThanArgumentNode extends ExprWithTagsNode
                 return true;
               } else {
                 System.out.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
-                    + ": frame.isLong(variable.getLocal().getSlot()) should have been long, but was: "
-                    + variable.getLocal().getSlot().getKind().toString());
+                    + ": frame.isLong(variable.getLocal().getSlot()) expected: long actual: "
+                    + variable.getLocal().getSlot().getKind().toString() + " level: 1");
               }
             } else {
               System.out.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
-                  + ": SArguments.arg(frame, arg.getArgumentIndex()) should have type long, but was: "
+                  + ": SArguments.arg(frame, arg.getArgumentIndex()) expected: long actual: "
                   + SArguments.arg(frame, arg.getArgumentIndex()).getClass()
-                              .getSimpleName());
+                              .getSimpleName()
+                  + " level: 2");
             }
           } else {
             System.out.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
-                + ": SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()); expected LessThanOrEqualPrim, actual "
+                + ": SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()); expected: LessThanOrEqualPrim actual:"
                 + SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()).getClass()
-                         .getSimpleName());
+                         .getSimpleName()
+                + " level: 3");
           }
         } else {
           System.out.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
-              + ": SOMNode.unwrapIfNecessary(eagerNode.getArgument()); expected LocalArgumentReadNode, actual "
+              + ": SOMNode.unwrapIfNecessary(eagerNode.getArgument()); expected: LocalArgumentReadNode actual:"
               + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass()
-                       .getSimpleName());
+                       .getSimpleName()
+              + " level: 4");
         }
       } else {
         System.out.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
-            + ": SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual "
-            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName());
+            + ": SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) expected: LocalVariableReadNode actual:"
+            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName()
+            + " level: 5");
       }
     } else {
       System.out.println(WhileSmallerEqualThanArgumentNode.class.getSimpleName()
-          + " conditionNode should have been EagerBinaryPrimitiveNode, but was: "
-          + conditionNode.getClass().getSimpleName());
+          + " conditionNode should expected: EagerBinaryPrimitiveNode actual: "
+          + conditionNode.getClass().getSimpleName() + " level: 6");
       return false;
     }
 

@@ -22,6 +22,7 @@ import tools.Send;
 import tools.debugger.Tags.LocalVariableTag;
 import tools.dym.Tags.LocalVarRead;
 import tools.dym.Tags.LocalVarWrite;
+import tools.dym.superinstructions.GuardEvaluationCounter;
 
 
 public abstract class LocalVariableNode extends ExprWithTagsNode implements Send {
@@ -152,12 +153,16 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
       return expValue;
     }
 
+    protected static final String a = "AssignSubtractionResultNode";
+    protected static final String b = "IncrementOperationNode";
+    protected static final String c = "AssignProductToVariableNode";
+
     /**
      * Check for ``AssignSubtractionResultNode`` superinstruction and replace where
      * applicable.
      */
     @Specialization(
-        guards = {"SUPERINSTRUCTIONS", "isAssignSubtract", "isDoubleKind(expValue)"})
+        guards = {"SUPERINSTRUCTIONS", "isAssignSubtract", "isDoubleKindSI(expValue, a)"})
     public final double writeDoubleAndReplaceWithAssignSubtract(final VirtualFrame frame,
         final double expValue,
         final @Cached("isAssignSubtractionResultOperation(getExp())") boolean isAssignSubtract) {
@@ -169,7 +174,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
     /**
      * Check for ``IncrementOperationNode`` superinstruction and replace where applicable.
      */
-    @Specialization(guards = {"SUPERINSTRUCTIONS", "isIncrement", "isLongKind(expValue)"})
+    @Specialization(guards = {"SUPERINSTRUCTIONS", "isIncrement", "isLongKindSI(expValue, b)"})
     public final long writeLongAndReplaceWithIncrement(final VirtualFrame frame,
         final long expValue,
         final @Cached("isIncrementOperation(getExp(), var)") boolean isIncrement) {
@@ -183,7 +188,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
      * applicable.
      */
     @Specialization(
-        guards = {"SUPERINSTRUCTIONS", "isAssignProduct", "isDoubleKind(expValue)"})
+        guards = {"SUPERINSTRUCTIONS", "isAssignProduct", "isDoubleKindSI(expValue, c)"})
     public final double writeDoubleAndReplaceWithAssignProduct(final VirtualFrame frame,
         final double expValue,
         final @Cached("isAssignProductOperation(getExp(), frame)") boolean isAssignProduct) {
@@ -236,6 +241,25 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
     }
 
     // uses expValue to make sure guard is not converted to assertion
+    protected final boolean isLongKindSI(final long expValue, final String name) {
+      GuardEvaluationCounter.recordActivation(this.getClass(), this);
+      if (slot.getKind() == FrameSlotKind.Long) {
+        System.out.println(
+            LocalVariableNode.class.getSimpleName() + ": " + name + " isLongKind: " + true);
+        return true;
+      }
+      if (slot.getKind() == FrameSlotKind.Illegal) {
+        slot.setKind(FrameSlotKind.Long);
+        System.out.println(
+            LocalVariableNode.class.getSimpleName() + ": " + name + " isLongKind2: " + true);
+        return true;
+      }
+      System.out.println(
+          LocalVariableNode.class.getSimpleName() + ": " + name + " isLongKind: " + false);
+      return false;
+    }
+
+    // uses expValue to make sure guard is not converted to assertion
     protected final boolean isDoubleKind(final double expValue) {
       if (slot.getKind() == FrameSlotKind.Double) {
         return true;
@@ -244,6 +268,25 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
         slot.setKind(FrameSlotKind.Double);
         return true;
       }
+      return false;
+    }
+
+    // uses expValue to make sure guard is not converted to assertion
+    protected final boolean isDoubleKindSI(final double expValue, final String name) {
+      GuardEvaluationCounter.recordActivation(this.getClass(), this);
+      if (slot.getKind() == FrameSlotKind.Double) {
+        System.out.println(
+            LocalVariableNode.class.getSimpleName() + ": " + name + " isDoubleKind: " + true);
+        return true;
+      }
+      if (slot.getKind() == FrameSlotKind.Illegal) {
+        slot.setKind(FrameSlotKind.Double);
+        System.out.println(
+            LocalVariableNode.class.getSimpleName() + ": " + name + " isDoubleKind2: " + true);
+        return true;
+      }
+      System.out.println(
+          LocalVariableNode.class.getSimpleName() + ": " + name + " isDoubleKind: " + false);
       return false;
     }
 

@@ -132,28 +132,31 @@ public abstract class IncrementOperationNode extends LocalVariableNode {
               return true;
             } else {
               System.out.println(IncrementOperationNode.class.getSimpleName()
-                  + ": read.getLocal().equals(var), actual: " + var);
+                  + ": read.getLocal().equals(var), actual: " + var + " level: 1");
             }
           } else {
             System.out.println(IncrementOperationNode.class.getSimpleName()
                 + ": SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof AdditionPrim, actual: "
                 + SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()).getClass()
-                         .getSimpleName());
+                         .getSimpleName()
+                + " level: 2");
           }
         } else {
           System.out.println(IncrementOperationNode.class.getSimpleName()
               + ": SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof IntegerLiteralNode, actual: "
-              + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName());
+              + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName()
+              + " level: 3");
         }
       } else {
         System.out.println(IncrementOperationNode.class.getSimpleName()
             + ": SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: "
-            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName());
+            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName()
+            + " level: 4");
       }
     } else {
       System.out.println(IncrementOperationNode.class.getSimpleName()
           + ": exp instanceof EagerBinaryPrimitiveNode, actual: "
-          + exp.getClass().getSimpleName());
+          + exp.getClass().getSimpleName() + " level: 5");
     }
     return false;
   }

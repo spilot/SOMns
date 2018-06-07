@@ -146,35 +146,40 @@ public abstract class AssignProductToVariableNode extends LocalVariableNode {
                 return true;
               } else {
                 System.out.println(AssignProductToVariableNode.class.getSimpleName()
-                    + "right.getLocal().getSlot() expected Double, actual: "
-                    + right.getLocal().getSlot().getKind());
+                    + "right.getLocal().getSlot() expected: Double, actual: "
+                    + right.getLocal().getSlot().getKind()
+                    + " level: 1");
               }
             } else {
               System.out.println(AssignProductToVariableNode.class.getSimpleName()
-                  + "left.getLocal().getSlot() expected Double, actual: "
-                  + left.getLocal().getSlot().getKind());
+                  + "left.getLocal().getSlot() expected: Double, actual: "
+                  + left.getLocal().getSlot().getKind()
+                  + " level: 2");
             }
           } else {
             System.out.println(
                 AssignProductToVariableNode.class.getSimpleName()
-                    + ": SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof MultiplicationPrim, actual: "
+                    + ": SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) expected: MultiplicationPrim actual: "
                     + SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()).getClass()
-                             .getSimpleName());
+                             .getSimpleName()
+                    + " level: 3");
           }
         } else {
           System.out.println(AssignProductToVariableNode.class.getSimpleName()
-              + ": SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof LocalVariableReadNode, actual: "
-              + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName());
+              + ": SOMNode.unwrapIfNecessary(eagerNode.getArgument()) expected: LocalVariableReadNode actual: "
+              + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName()
+              + " level: 4");
         }
       } else {
         System.out.println(AssignProductToVariableNode.class.getSimpleName()
-            + ": SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof LocalVariableReadNode, actual: "
-            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName());
+            + ": SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) expected: LocalVariableReadNode actual: "
+            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName()
+            + " level: 5");
       }
     } else {
       System.out.println(AssignProductToVariableNode.class.getSimpleName()
-          + ": exp instanceof EagerBinaryPrimitiveNode, actual: "
-          + exp.getClass().getSimpleName());
+          + ": exp expected: EagerBinaryPrimitiveNode, actual: "
+          + exp.getClass().getSimpleName() + " level: 6");
     }
     return false;
   }

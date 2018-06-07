@@ -142,24 +142,27 @@ public abstract class AssignSubtractionResultNode extends LocalVariableNode {
             return true;
           } else {
             System.out.println(AssignSubtractionResultNode.class.getSimpleName() + ": "
-                + "SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) instanceof SubtractionPrim, actual: "
+                + "SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()) expected: SubtractionPrim, actual: "
                 + SOMNode.unwrapIfNecessary(eagerNode.getPrimitive()).getClass()
-                         .getSimpleName());
+                         .getSimpleName()
+                + " level: 1");
           }
         } else {
           System.out.println(AssignSubtractionResultNode.class.getSimpleName() + ": "
-              + "SOMNode.unwrapIfNecessary(eagerNode.getArgument()) instanceof GenericMessageSendNode, actual: "
-              + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName());
+              + "SOMNode.unwrapIfNecessary(eagerNode.getArgument()) expected: GenericMessageSendNode, actual: "
+              + SOMNode.unwrapIfNecessary(eagerNode.getArgument()).getClass().getSimpleName()
+              + " level: 2");
         }
       } else {
         System.out.println(AssignSubtractionResultNode.class.getSimpleName() + ": "
-            + "SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) instanceof GenericMessageSendNode, actual: "
-            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName());
+            + "SOMNode.unwrapIfNecessary(eagerNode.getReceiver()) expected: GenericMessageSendNode, actual: "
+            + SOMNode.unwrapIfNecessary(eagerNode.getReceiver()).getClass().getSimpleName()
+            + " level: 3");
       }
     } else {
       System.out.println(AssignSubtractionResultNode.class.getSimpleName() + ": "
-          + "exp instanceof EagerBinaryPrimitiveNode, actual: "
-          + exp.getClass().getSimpleName());
+          + "exp expected: EagerBinaryPrimitiveNode, actual: "
+          + exp.getClass().getSimpleName() + " level: 4");
     }
     return false;
   }
