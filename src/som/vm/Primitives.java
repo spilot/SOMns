@@ -26,6 +26,7 @@ import som.interpreter.nodes.dispatch.Dispatchable;
 import som.interpreter.nodes.specialized.AndMessageNodeFactory;
 import som.interpreter.nodes.specialized.BooleanInlinedLiteralNode.AndInlinedLiteralNode;
 import som.interpreter.nodes.specialized.BooleanInlinedLiteralNode.OrInlinedLiteralNode;
+import som.interpreter.nodes.specialized.IfInlinedLiteralNodeFactory;
 import som.interpreter.nodes.specialized.IfMessageNodeGen;
 import som.interpreter.nodes.specialized.IfTrueIfFalseInlinedLiteralsNode;
 import som.interpreter.nodes.specialized.IfTrueIfFalseMessageNodeFactory;
@@ -126,22 +127,22 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
     // ignore the implicit vmMirror argument
     final int numArgs = signature.getNumberOfSignatureArguments() - 1;
 
-    final Source s = SomLanguage.getSyntheticSource("primitive", specializer.getName());
-    final MethodBuilder prim = new MethodBuilder(true, lang, null);
-    final ExpressionNode[] args = new ExpressionNode[numArgs];
+    Source s = SomLanguage.getSyntheticSource("primitive", specializer.getName());
+    MethodBuilder prim = new MethodBuilder(true, lang, null);
+    ExpressionNode[] args = new ExpressionNode[numArgs];
 
-    final SourceSection source = s.createSection(1);
+    SourceSection source = s.createSection(1);
     for (int i = 0; i < numArgs; i++) {
       // we do not pass the vmMirror, makes it easier to use the same primitives
       // as replacements on the node level
       args[i] = new LocalArgumentReadNode(true, i + 1).initialize(source);
     }
 
-    final ExpressionNode primNode = specializer.create(null, args, source, false);
+    ExpressionNode primNode = specializer.create(null, args, source, false);
 
-    final String name = "vmMirror>>" + signature.toString();
+    String name = "vmMirror>>" + signature.toString();
 
-    final Primitive primMethodNode = new Primitive(name, primNode,
+    Primitive primMethodNode = new Primitive(name, primNode,
         prim.getScope().getFrameDescriptor(),
         (ExpressionNode) primNode.deepCopy(), false, lang);
     return new SInvokable(signature, AccessModifier.PUBLIC,
@@ -150,7 +151,7 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
 
   public EconomicMap<SSymbol, Dispatchable> takeVmMirrorPrimitives() {
     assert vmMirrorPrimitives != null : "vmMirrorPrimitives can only be obtained once";
-    final EconomicMap<SSymbol, Dispatchable> result = vmMirrorPrimitives;
+    EconomicMap<SSymbol, Dispatchable> result = vmMirrorPrimitives;
     vmMirrorPrimitives = null;
     return result;
   }
@@ -158,10 +159,10 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
   @Override
   protected void registerPrimitive(final bd.primitives.Primitive prim,
       final Specializer<VM, ExpressionNode, SSymbol> specializer) {
-    final String vmMirrorName = prim.primitive();
+    String vmMirrorName = prim.primitive();
 
     if (!("".equals(vmMirrorName))) {
-      final SSymbol signature = Symbols.symbolFor(vmMirrorName);
+      SSymbol signature = Symbols.symbolFor(vmMirrorName);
       assert !vmMirrorPrimitives.containsKey(
           signature) : "clash of vmMirrorPrimitive names";
       vmMirrorPrimitives.put(signature,
@@ -172,7 +173,7 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
   @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
   protected List<NodeFactory<? extends ExpressionNode>> getFactories() {
-    final List<NodeFactory<? extends ExpressionNode>> allFactories = new ArrayList<>();
+    List<NodeFactory<? extends ExpressionNode>> allFactories = new ArrayList<>();
     allFactories.addAll(ActorClassesFactory.getFactories());
     allFactories.addAll(BlockPrimsFactory.getFactories());
     allFactories.addAll(ClassPrimsFactory.getFactories());
@@ -224,6 +225,7 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
     allFactories.add(HashPrimFactory.getInstance());
     allFactories.add(IfTrueIfFalseMessageNodeFactory.getInstance());
 
+    allFactories.add(IfInlinedLiteralNodeFactory.getInstance());
     allFactories.add(WhileInlinedLiteralsNodeFactory.getInstance());
 
     allFactories.add(IntToDoMessageNodeFactory.getInstance());
@@ -257,7 +259,7 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
   }
 
   public static List<Class<? extends Node>> getInlinableNodes() {
-    final List<Class<? extends Node>> nodes = new ArrayList<>();
+    List<Class<? extends Node>> nodes = new ArrayList<>();
     nodes.add(AndInlinedLiteralNode.class);
     nodes.add(OrInlinedLiteralNode.class);
     // nodes.add(IfInlinedLiteralNode.class);
@@ -268,12 +270,13 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
   }
 
   public static List<NodeFactory<? extends Node>> getInlinableFactories() {
-    final List<NodeFactory<? extends Node>> factories = new ArrayList<>();
+    List<NodeFactory<? extends Node>> factories = new ArrayList<>();
 
     factories.add(IntDownToDoInlinedLiteralsNodeFactory.getInstance());
     factories.add(IntTimesRepeatLiteralNodeFactory.getInstance());
     factories.add(IntToDoInlinedLiteralsNodeFactory.getInstance());
 
+    factories.add(IfInlinedLiteralNodeFactory.getInstance());
     factories.add(WhileInlinedLiteralsNodeFactory.getInstance());
 
     return factories;
