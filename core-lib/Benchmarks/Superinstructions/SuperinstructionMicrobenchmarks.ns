@@ -1,0 +1,62 @@
+
+
+class Benchmarks usingPlatform: platform andHarness: harness = (
+| private Benchmark = harness Benchmark. |
+)(
+  public class AssignProductToVariableNode = Benchmark ()(
+    public innerBenchmarkLoop: innerIterations numThreads: threads = (
+      | acc factor |
+      factor:: acc:: innerIterations.
+      0 to: innerIterations do: [:i |
+        | tmp |
+        tmp:: acc * factor.
+        acc:: tmp
+      ].
+      ^ true
+    )
+  ) : ( public newInstance = ( ^ self new ) )
+
+  public class AssignSubtractionResultNode = Benchmark ()(
+    public innerBenchmarkLoop: innerIterations numThreads: threads = (
+      0 to: innerIterations do: [:i |
+
+
+
+      ].
+      ^ true
+    )
+  ) : ( public newInstance = ( ^ self new ) )
+
+  public class IfSumGreaterNode = Benchmark ()(
+    public innerBenchmarkLoop: innerIterations numThreads: threads = (
+      0 to: innerIterations do: [:i |
+
+
+
+      ].
+      ^ true
+    )
+  ) : ( public newInstance = ( ^ self new ) )
+
+  public class IncrementOperationNode = Benchmark ()(
+    public innerBenchmarkLoop: innerIterations numThreads: threads = (
+      0 to: innerIterations do: [:i |
+
+
+
+      ].
+      ^ true
+    )
+  ) : ( public newInstance = ( ^ self new ) )
+
+  public class WhileSmallerEqualThanArgumentNode = Benchmark ()(
+    public innerBenchmarkLoop: innerIterations numThreads: threads = (
+      0 to: innerIterations do: [:i |
+
+
+
+      ].
+      ^ true
+    )
+  ) : ( public newInstance = ( ^ self new ) )
+)
