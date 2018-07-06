@@ -262,7 +262,7 @@ if not args.interpreter and (args.igv or args.igv_to_file):
 if  not args.interpreter and args.only_igv:
     flags += ['-Dgraal.MethodFilter=' + args.only_igv]
 if not args.interpreter and args.igv_to_file:
-    flags += ['-Dgraal.PrintIdealGraphFile=true']
+    flags += ['-Dgraal.PrintGraphFile=true']
 if args.igv_methods:
     flags += ['-Dsom.igvDumpAfterParsing=true']
 if args.low_level:
