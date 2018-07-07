@@ -17,11 +17,12 @@ class Benchmarks usingPlatform: platform andHarness: harness = (
   ) : ( public newInstance = ( ^ self new ) )
 
   public class AssignSubtractionResultNode = Benchmark ()(
+    class Pair = (| public v1 ::= 10. public v2 ::= 20. |)()
     public innerBenchmarkLoop: innerIterations numThreads: threads = (
+      | x myPair |
+      myPair:: Pair new.
       0 to: innerIterations do: [:i |
-
-
-
+        x:: myPair v2 - myPair v1
       ].
       ^ true
     )
@@ -29,10 +30,11 @@ class Benchmarks usingPlatform: platform andHarness: harness = (
 
   public class IfSumGreaterNode = Benchmark ()(
     public innerBenchmarkLoop: innerIterations numThreads: threads = (
+    | a ::= 1.5. b ::= 1.5. acc |
       0 to: innerIterations do: [:i |
-
-
-
+        (a + b > 2.0) ifTrue: [
+          acc:: 1 / (i + 1)
+         ]
       ].
       ^ true
     )
@@ -40,10 +42,9 @@ class Benchmarks usingPlatform: platform andHarness: harness = (
 
   public class IncrementOperationNode = Benchmark ()(
     public innerBenchmarkLoop: innerIterations numThreads: threads = (
+      | j ::= 0. |
       0 to: innerIterations do: [:i |
-
-
-
+        j:: j + 3.
       ].
       ^ true
     )
@@ -52,9 +53,8 @@ class Benchmarks usingPlatform: platform andHarness: harness = (
   public class WhileSmallerEqualThanArgumentNode = Benchmark ()(
     public innerBenchmarkLoop: innerIterations numThreads: threads = (
       0 to: innerIterations do: [:i |
-
-
-
+        | x ::= 1. |
+        [x <= i] whileTrue: [x:: x + (x/x)].
       ].
       ^ true
     )
