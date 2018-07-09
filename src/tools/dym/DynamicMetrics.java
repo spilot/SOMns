@@ -39,10 +39,55 @@ import som.interpreter.Invokable;
 import som.interpreter.nodes.dispatch.Dispatchable;
 import som.vm.NotYetImplementedException;
 import som.vmobjects.SInvokable;
-import tools.dym.Tags.*;
 import tools.debugger.Tags.LiteralTag;
-import tools.dym.nodes.*;
-import tools.dym.profiles.*;
+import tools.dym.Tags.AnyNode;
+import tools.dym.Tags.BasicPrimitiveOperation;
+import tools.dym.Tags.CachedClosureInvoke;
+import tools.dym.Tags.CachedVirtualInvoke;
+import tools.dym.Tags.ClassRead;
+import tools.dym.Tags.ComplexPrimitiveOperation;
+import tools.dym.Tags.ControlFlowCondition;
+import tools.dym.Tags.FieldRead;
+import tools.dym.Tags.FieldWrite;
+import tools.dym.Tags.LocalArgRead;
+import tools.dym.Tags.LocalVarRead;
+import tools.dym.Tags.LocalVarWrite;
+import tools.dym.Tags.LoopBody;
+import tools.dym.Tags.LoopNode;
+import tools.dym.Tags.NewArray;
+import tools.dym.Tags.NewObject;
+import tools.dym.Tags.OpClosureApplication;
+import tools.dym.Tags.PrimitiveArgument;
+import tools.dym.Tags.VirtualInvoke;
+import tools.dym.Tags.VirtualInvokeReceiver;
+import tools.dym.nodes.AllocationProfilingNode;
+import tools.dym.nodes.ArrayAllocationProfilingNode;
+import tools.dym.nodes.CallTargetNode;
+import tools.dym.nodes.ClosureTargetNode;
+import tools.dym.nodes.ControlFlowProfileNode;
+import tools.dym.nodes.CountingNode;
+import tools.dym.nodes.InvocationProfilingNode;
+import tools.dym.nodes.LateCallTargetNode;
+import tools.dym.nodes.LateClosureTargetNode;
+import tools.dym.nodes.LateReportResultNode;
+import tools.dym.nodes.LoopIterationReportNode;
+import tools.dym.nodes.LoopProfilingNode;
+import tools.dym.nodes.OperationProfilingNode;
+import tools.dym.nodes.ReadProfilingNode;
+import tools.dym.nodes.ReportReceiverNode;
+import tools.dym.nodes.ReportResultNode;
+import tools.dym.nodes.TypeCountingNode;
+import tools.dym.profiles.AllocationProfile;
+import tools.dym.profiles.ArrayCreationProfile;
+import tools.dym.profiles.BranchProfile;
+import tools.dym.profiles.CallsiteProfile;
+import tools.dym.profiles.ClosureApplicationProfile;
+import tools.dym.profiles.Counter;
+import tools.dym.profiles.InvocationProfile;
+import tools.dym.profiles.LoopProfile;
+import tools.dym.profiles.OperationProfile;
+import tools.dym.profiles.ReadValueProfile;
+import tools.dym.profiles.TypeCounter;
 import tools.dym.superinstructions.CandidateDetector;
 import tools.dym.superinstructions.ContextCollector;
 import tools.language.StructuralProbe;
@@ -399,7 +444,26 @@ public class DynamicMetrics extends TruffleInstrument {
         maxStackDepth, getAllStatementsAlsoNotExecuted());
 
     identifySuperinstructionCandidates(metricsFolder);
+    printNodeActivations(metricsFolder);
     outputAllTruffleMethodsToIGV();
+  }
+
+  private void printNodeActivations(final String metricsFolder) {
+    // count the sum of node activations
+    final long activationCount =
+        activations.values().stream()
+                   .map(tc -> tc.getActivations().values().stream()
+                                .reduce(Long::sum).orElse(0L))
+                   .reduce(Long::sum)
+                   .orElse(0L);
+
+    final String report = "printNodeActivations: " + activationCount;
+    final Path reportPath = Paths.get(metricsFolder, "total-activations.txt");
+    try {
+      Files.write(reportPath, report.getBytes());
+    } catch (IOException e) {
+      throw new RuntimeException("Could not write total activation count: " + e);
+    }
   }
 
   private void identifySuperinstructionCandidates(final String metricsFolder) {

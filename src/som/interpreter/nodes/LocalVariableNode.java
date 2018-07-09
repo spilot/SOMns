@@ -174,6 +174,7 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
     /**
      * Check for ``IncrementOperationNode`` superinstruction and replace where applicable.
      */
+
     @Specialization(guards = {"SUPERINSTRUCTIONS", "isIncrement", "isLongKindSI(expValue, b)"})
     public final long writeLongAndReplaceWithIncrement(final VirtualFrame frame,
         final long expValue,
