@@ -5,19 +5,17 @@ class Benchmarks usingPlatform: platform andHarness: harness = (
 )(
   public class AssignProductToVariableNode = Benchmark ()(
     public innerBenchmarkLoop: innerIterations numThreads: threads = (
-      | acc factor |
-      factor:: acc:: innerIterations.
+      | acc factor tmp |
+      acc:: factor:: 2.0.
       0 to: innerIterations do: [:i |
-        | tmp |
         tmp:: acc * factor.
-        acc:: tmp
       ].
       ^ true
     )
   ) : ( public newInstance = ( ^ self new ) )
 
   public class AssignSubtractionResultNode = Benchmark ()(
-    class Pair = (| public v1 ::= 10. public v2 ::= 20. |)()
+    class Pair = (| public v1 ::= 1.0. public v2 ::= 2.0. |)()
     public innerBenchmarkLoop: innerIterations numThreads: threads = (
       | x myPair |
       myPair:: Pair new.
@@ -54,7 +52,7 @@ class Benchmarks usingPlatform: platform andHarness: harness = (
     public innerBenchmarkLoop: innerIterations numThreads: threads = (
       0 to: innerIterations do: [:i |
         | x ::= 1. |
-        [x <= i] whileTrue: [x:: x + (x/x)].
+        [x <= innerIterations] whileTrue: [x:: x + (x/x)].
       ].
       ^ true
     )
