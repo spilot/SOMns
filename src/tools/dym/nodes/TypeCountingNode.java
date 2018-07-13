@@ -3,12 +3,11 @@ package tools.dym.nodes;
 import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.ExecutionEventNode;
 import com.oracle.truffle.api.nodes.UnexpectedResultException;
+
 import som.interpreter.ReturnException;
 import som.interpreter.SomException;
 import som.vm.NotYetImplementedException;
 import tools.dym.profiles.TypeCounter;
-
-import java.util.Map;
 
 
 /**
