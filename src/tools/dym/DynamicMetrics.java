@@ -39,32 +39,16 @@ import som.interpreter.Invokable;
 import som.interpreter.nodes.dispatch.Dispatchable;
 import som.vm.NotYetImplementedException;
 import som.vmobjects.SInvokable;
-import tools.debugger.Tags.LiteralTag;
 import tools.dym.Tags.AnyNode;
 import tools.dym.Tags.BasicPrimitiveOperation;
 import tools.dym.Tags.CachedClosureInvoke;
 import tools.dym.Tags.CachedVirtualInvoke;
-import tools.dym.Tags.ClassRead;
 import tools.dym.Tags.ComplexPrimitiveOperation;
-import tools.dym.Tags.ControlFlowCondition;
-import tools.dym.Tags.FieldRead;
-import tools.dym.Tags.FieldWrite;
-import tools.dym.Tags.LocalArgRead;
-import tools.dym.Tags.LocalVarRead;
-import tools.dym.Tags.LocalVarWrite;
 import tools.dym.Tags.LoopBody;
-import tools.dym.Tags.LoopNode;
-import tools.dym.Tags.NewArray;
-import tools.dym.Tags.NewObject;
-import tools.dym.Tags.OpClosureApplication;
 import tools.dym.Tags.PrimitiveArgument;
-import tools.dym.Tags.VirtualInvoke;
 import tools.dym.Tags.VirtualInvokeReceiver;
-import tools.dym.nodes.AllocationProfilingNode;
-import tools.dym.nodes.ArrayAllocationProfilingNode;
 import tools.dym.nodes.CallTargetNode;
 import tools.dym.nodes.ClosureTargetNode;
-import tools.dym.nodes.ControlFlowProfileNode;
 import tools.dym.nodes.CountingNode;
 import tools.dym.nodes.InvocationProfilingNode;
 import tools.dym.nodes.LateCallTargetNode;
@@ -73,7 +57,6 @@ import tools.dym.nodes.LateReportResultNode;
 import tools.dym.nodes.LoopIterationReportNode;
 import tools.dym.nodes.LoopProfilingNode;
 import tools.dym.nodes.OperationProfilingNode;
-import tools.dym.nodes.ReadProfilingNode;
 import tools.dym.nodes.ReportReceiverNode;
 import tools.dym.nodes.ReportResultNode;
 import tools.dym.nodes.TypeCountingNode;
@@ -339,65 +322,55 @@ public class DynamicMetrics extends TruffleInstrument {
   @Override
   protected void onCreate(final Env env) {
     instrumenter = env.getInstrumenter();
-
-    addRootTagInstrumentation(instrumenter);
-
-    ExecutionEventNodeFactory virtInvokeFactory = addInstrumentation(
-        instrumenter, methodCallsiteProfiles,
-        new Class<?>[] {VirtualInvoke.class}, NO_TAGS,
-        CallsiteProfile::new, CountingNode<CallsiteProfile>::new);
-    addReceiverInstrumentation(instrumenter, virtInvokeFactory);
-    addCalltargetInstrumentation(instrumenter, virtInvokeFactory);
-
-    ExecutionEventNodeFactory closureApplicationFactory = addInstrumentation(
-        instrumenter, closureProfiles,
-        new Class<?>[] {OpClosureApplication.class}, NO_TAGS,
-        ClosureApplicationProfile::new, CountingNode<ClosureApplicationProfile>::new);
-    addClosureTargetInstrumentation(instrumenter, closureApplicationFactory);
-
-    addInstrumentation(instrumenter, newObjectCounter,
-        new Class<?>[] {NewObject.class}, NO_TAGS,
-        AllocationProfile::new, AllocationProfilingNode::new);
-    addInstrumentation(instrumenter, newArrayCounter,
-        new Class<?>[] {NewArray.class}, NO_TAGS,
-        ArrayCreationProfile::new, ArrayAllocationProfilingNode::new);
-
-    addInstrumentation(instrumenter, literalReadCounter,
-        new Class<?>[] {LiteralTag.class}, NO_TAGS,
-        Counter::new, CountingNode<Counter>::new);
-
-    ExecutionEventNodeFactory opInstrumentFact = addOperationInstrumentation(instrumenter);
-    addSubexpressionInstrumentation(instrumenter, opInstrumentFact);
-
-    addInstrumentation(instrumenter, fieldReadProfiles,
-        new Class<?>[] {FieldRead.class}, NO_TAGS,
-        ReadValueProfile::new,
-        ReadProfilingNode::new);
-    addInstrumentation(instrumenter, localsReadProfiles,
-        new Class<?>[] {LocalArgRead.class, LocalVarRead.class}, NO_TAGS,
-        ReadValueProfile::new, ReadProfilingNode::new);
-
-    addInstrumentation(instrumenter, fieldWriteProfiles,
-        new Class<?>[] {FieldWrite.class}, NO_TAGS,
-        Counter::new, CountingNode<Counter>::new);
-    addInstrumentation(instrumenter, classReadProfiles,
-        new Class<?>[] {ClassRead.class}, NO_TAGS,
-        Counter::new, CountingNode<Counter>::new);
-    addInstrumentation(instrumenter, localsWriteProfiles,
-        new Class<?>[] {LocalVarWrite.class}, NO_TAGS,
-        Counter::new, CountingNode<Counter>::new);
-
-    addInstrumentation(instrumenter, controlFlowProfiles,
-        new Class<?>[] {ControlFlowCondition.class}, NO_TAGS,
-        BranchProfile::new, ControlFlowProfileNode::new);
-
-    ExecutionEventNodeFactory loopProfileFactory =
-        addInstrumentation(instrumenter, loopProfiles,
-            new Class<?>[] {LoopNode.class}, NO_TAGS,
-            LoopProfile::new, LoopProfilingNode::new);
-
-    addLoopBodyInstrumentation(instrumenter, loopProfileFactory);
-
+    /*
+     * addRootTagInstrumentation(instrumenter);
+     * ExecutionEventNodeFactory virtInvokeFactory = addInstrumentation(
+     * instrumenter, methodCallsiteProfiles,
+     * new Class<?>[] {VirtualInvoke.class}, NO_TAGS,
+     * CallsiteProfile::new, CountingNode<CallsiteProfile>::new);
+     * addReceiverInstrumentation(instrumenter, virtInvokeFactory);
+     * addCalltargetInstrumentation(instrumenter, virtInvokeFactory);
+     * ExecutionEventNodeFactory closureApplicationFactory = addInstrumentation(
+     * instrumenter, closureProfiles,
+     * new Class<?>[] {OpClosureApplication.class}, NO_TAGS,
+     * ClosureApplicationProfile::new, CountingNode<ClosureApplicationProfile>::new);
+     * addClosureTargetInstrumentation(instrumenter, closureApplicationFactory);
+     * addInstrumentation(instrumenter, newObjectCounter,
+     * new Class<?>[] {NewObject.class}, NO_TAGS,
+     * AllocationProfile::new, AllocationProfilingNode::new);
+     * addInstrumentation(instrumenter, newArrayCounter,
+     * new Class<?>[] {NewArray.class}, NO_TAGS,
+     * ArrayCreationProfile::new, ArrayAllocationProfilingNode::new);
+     * addInstrumentation(instrumenter, literalReadCounter,
+     * new Class<?>[] {LiteralTag.class}, NO_TAGS,
+     * Counter::new, CountingNode<Counter>::new);
+     * ExecutionEventNodeFactory opInstrumentFact = addOperationInstrumentation(instrumenter);
+     * addSubexpressionInstrumentation(instrumenter, opInstrumentFact);
+     * addInstrumentation(instrumenter, fieldReadProfiles,
+     * new Class<?>[] {FieldRead.class}, NO_TAGS,
+     * ReadValueProfile::new,
+     * ReadProfilingNode::new);
+     * addInstrumentation(instrumenter, localsReadProfiles,
+     * new Class<?>[] {LocalArgRead.class, LocalVarRead.class}, NO_TAGS,
+     * ReadValueProfile::new, ReadProfilingNode::new);
+     * addInstrumentation(instrumenter, fieldWriteProfiles,
+     * new Class<?>[] {FieldWrite.class}, NO_TAGS,
+     * Counter::new, CountingNode<Counter>::new);
+     * addInstrumentation(instrumenter, classReadProfiles,
+     * new Class<?>[] {ClassRead.class}, NO_TAGS,
+     * Counter::new, CountingNode<Counter>::new);
+     * addInstrumentation(instrumenter, localsWriteProfiles,
+     * new Class<?>[] {LocalVarWrite.class}, NO_TAGS,
+     * Counter::new, CountingNode<Counter>::new);
+     * addInstrumentation(instrumenter, controlFlowProfiles,
+     * new Class<?>[] {ControlFlowCondition.class}, NO_TAGS,
+     * BranchProfile::new, ControlFlowProfileNode::new);
+     * ExecutionEventNodeFactory loopProfileFactory =
+     * addInstrumentation(instrumenter, loopProfiles,
+     * new Class<?>[] {LoopNode.class}, NO_TAGS,
+     * LoopProfile::new, LoopProfilingNode::new);
+     * addLoopBodyInstrumentation(instrumenter, loopProfileFactory);
+     */
     addActivationInstrumentation(instrumenter);
 
     instrumenter.attachLoadSourceSectionListener(
@@ -435,17 +408,17 @@ public class DynamicMetrics extends TruffleInstrument {
 
   @Override
   protected void onDispose(final Env env) {
-    String outputFile = System.getProperty("dm.output", "dynamic-metrics.json");
+    // String outputFile = System.getProperty("dm.output", "dynamic-metrics.json");
     Map<String, Map<SourceSection, ? extends JsonSerializable>> data = collectData();
-    JsonWriter.fileOut(data, outputFile);
+    // JsonWriter.fileOut(data, outputFile);
 
     String metricsFolder = System.getProperty("dm.metrics", "metrics");
-    MetricsCsvWriter.fileOut(data, metricsFolder, structuralProbe,
-        maxStackDepth, getAllStatementsAlsoNotExecuted());
+    MetricsCsvWriter.fileOut(data, metricsFolder, structuralProbe, maxStackDepth,
+        getAllStatementsAlsoNotExecuted());
 
     identifySuperinstructionCandidates(metricsFolder);
     printNodeActivations(metricsFolder);
-    outputAllTruffleMethodsToIGV();
+    // outputAllTruffleMethodsToIGV();
   }
 
   private void printNodeActivations(final String metricsFolder) {
@@ -457,7 +430,7 @@ public class DynamicMetrics extends TruffleInstrument {
                    .reduce(Long::sum)
                    .orElse(0L);
 
-    final String report = "printNodeActivations: " + activationCount;
+    final String report = "printNodeActivations: " + activationCount + "\n";
     final Path reportPath = Paths.get(metricsFolder, "total-activations.txt");
     try {
       Files.write(reportPath, report.getBytes());
