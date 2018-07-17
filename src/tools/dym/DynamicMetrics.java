@@ -1,7 +1,6 @@
 package tools.dym;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,12 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.StreamSupport;
 
 import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 import com.oracle.truffle.api.RootCallTarget;
 import com.oracle.truffle.api.Truffle;
-import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.EventContext;
 import com.oracle.truffle.api.instrumentation.ExecutionEventNode;
 import com.oracle.truffle.api.instrumentation.ExecutionEventNodeFactory;
@@ -31,7 +28,6 @@ import com.oracle.truffle.api.instrumentation.TruffleInstrument;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument.Registration;
 import com.oracle.truffle.api.nodes.GraphPrintVisitor;
 import com.oracle.truffle.api.nodes.Node;
-import com.oracle.truffle.api.nodes.NodeUtil;
 import com.oracle.truffle.api.nodes.RootNode;
 import com.oracle.truffle.api.source.SourceSection;
 
@@ -40,10 +36,7 @@ import som.compiler.MixinDefinition;
 import som.instrumentation.InstrumentableDirectCallNode;
 import som.instrumentation.InstrumentableDirectCallNode.InstrumentableBlockApplyNode;
 import som.interpreter.Invokable;
-import som.interpreter.nodes.SequenceNode;
 import som.interpreter.nodes.dispatch.Dispatchable;
-import som.interpreter.nodes.nary.EagerBinaryPrimitiveNode;
-import som.interpreter.nodes.nary.EagerPrimitiveNode;
 import som.vm.NotYetImplementedException;
 import som.vmobjects.SInvokable;
 import tools.debugger.Tags.LiteralTag;
@@ -96,6 +89,7 @@ import tools.dym.profiles.OperationProfile;
 import tools.dym.profiles.ReadValueProfile;
 import tools.dym.profiles.TypeCounter;
 import tools.dym.superinstructions.CandidateDetector;
+import tools.dym.superinstructions.CandidatePrinter;
 import tools.dym.superinstructions.ContextCollector;
 import tools.language.StructuralProbe;
 
@@ -145,6 +139,8 @@ public class DynamicMetrics extends TruffleInstrument {
   @CompilationFinal private static Instrumenter instrumenter; // TODO: this is one of those
                                                               // evil hacks
 
+  private final CandidatePrinter candidatePrinter;
+
   public static boolean isTaggedWith(final Node node, final Class<?> tag) {
     assert instrumenter != null : "Initialization order/dependencies?";
     return instrumenter.isTaggedWith(node, tag);
@@ -174,6 +170,8 @@ public class DynamicMetrics extends TruffleInstrument {
     activations = new HashMap<>();
 
     rootNodes = new HashSet<>();
+
+    candidatePrinter = new CandidatePrinter();
 
     assert "DefaultTruffleRuntime".equals(
         Truffle.getRuntime().getClass()
@@ -407,7 +405,7 @@ public class DynamicMetrics extends TruffleInstrument {
 
     addActivationInstrumentation(instrumenter);
 
-    addBranchProfilingInstrumentation(instrumenter);
+    candidatePrinter.addBranchProfilingInstrumentation(instrumenter);
 
     instrumenter.attachLoadSourceSectionListener(
         SourceSectionFilter.newBuilder().tagIs(RootTag.class).build(),
@@ -415,75 +413,6 @@ public class DynamicMetrics extends TruffleInstrument {
         true);
 
     env.registerService(structuralProbe);
-  }
-
-  public final Map<Node, BigInteger> rawActivations = new HashMap<>();;
-
-  public synchronized void countActivation(final Node node) {
-    if (node != null) {
-      rawActivations.compute(node,
-          (n, v) -> v == null
-              ? BigInteger.ONE
-              : v.add(BigInteger.ONE));
-    }
-  }
-
-  private void addBranchProfilingInstrumentation(final Instrumenter instrumenter) {
-    final SourceSectionFilter filter =
-        SourceSectionFilter.newBuilder().tagIs(AnyNode.class).build();
-    /*
-     * SourceSectionFilter.newBuilder()
-     * .tagIs(Tags.ControlFlowCondition.class, Tags.LoopNode.class)
-     * .build();
-     */
-    ExecutionEventNodeFactory factory = (context) -> {
-      return new ExecutionEventNode() {
-        @Override
-        protected void onEnter(final VirtualFrame frame) {
-          return;
-        }
-
-        @Override
-        protected void onReturnValue(final VirtualFrame frame, final Object result) {
-          countActivation(context.getInstrumentedNode());
-        }
-      };
-    };
-    instrumenter.attachFactory(filter, factory);
-  }
-
-  public long printActivationsForSubtrees(final Node n, final String prefix,
-      final StringBuilder accumulator, final List<Node> worklist) {
-    // final boolean print =
-    // (n instanceof EagerBinaryPrimitiveNode) && (rawActivations.get(n) != null);
-    if (rawActivations.get(n) != null || n.getParent() instanceof EagerPrimitiveNode) {
-      if (n instanceof EagerBinaryPrimitiveNode) {
-        System.out.println(prefix + "eager children");
-        System.out.println(prefix + NodeUtil.findNodeChildren(n));
-      }
-
-      accumulator.append(prefix)
-                 .append(n.toString())
-                 .append(": ")
-                 .append(rawActivations.get(n))
-                 .append('\n');
-    }
-    final List<Node> children = NodeUtil.findNodeChildren(n);
-    if (n instanceof SequenceNode) {
-      children.forEach(worklist::add);
-      return 0;
-    }
-    return (rawActivations.get(n) == null ? 0 : rawActivations.get(n).longValue())
-        + StreamSupport.stream(children.spliterator(), false)
-                       .mapToLong(
-                           ((child) -> {
-                             // if (print) {
-                             // System.out.println(prefix + child + rawActivations.get(child));
-                             // }
-                             return printActivationsForSubtrees(child, prefix + "  ",
-                                 accumulator, worklist);
-                           }))
-                       .sum();
   }
 
   private void addActivationInstrumentation(final Instrumenter instrumenter) {
@@ -525,49 +454,7 @@ public class DynamicMetrics extends TruffleInstrument {
     printNodeActivations(metricsFolder);
     outputAllTruffleMethodsToIGV();
 
-    class MyPair {
-      public final String tree;
-      public final double activations;
-
-      public MyPair(final String tree, final long activations) {
-        this.tree = tree;
-        this.activations = activations;
-      }
-    }
-
-    final List<MyPair> trees = new ArrayList<>();
-    final Set<Node> outerWorklist = new HashSet<>(rootNodes);
-    do { // forEach + modifying list is undefined, so we need this
-      final Set<Node> tempSet = new HashSet<>(outerWorklist);
-      outerWorklist.removeAll(tempSet);
-      tempSet.forEach((rootNode) -> {
-        final StringBuilder accumulator = new StringBuilder();
-        final List<Node> worklist = new ArrayList<>();
-        final long activations =
-            printActivationsForSubtrees(rootNode, "", accumulator, worklist);
-        outerWorklist.addAll(worklist);
-        final String result = accumulator.toString();
-        for (String s : result.split("\n")) {
-          // if (!s.contains("null")) {
-          trees.add(new MyPair(result, activations / result.split("\n").length));
-          break;
-          // }
-        }
-      });
-    } while (!outerWorklist.isEmpty());
-
-    trees.sort((pair1, pair2) -> (int) (pair2.activations - pair1.activations));
-
-    int i = 0;
-    for (MyPair tree : trees) {
-      if (i >= 5) {
-        break;
-      }
-      i++;
-      System.out.println("=============================");
-      System.out.println(tree.activations);
-      System.out.println(tree.tree);
-    }
+    candidatePrinter.onDynamicMetricDispose(rootNodes);
   }
 
   private void printNodeActivations(final String metricsFolder) {
