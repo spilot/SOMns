@@ -454,7 +454,7 @@ public class DynamicMetrics extends TruffleInstrument {
     printNodeActivations(metricsFolder);
     outputAllTruffleMethodsToIGV();
 
-    candidatePrinter.onDynamicMetricDispose(rootNodes);
+    candidatePrinter.onDynamicMetricDisposeNew(rootNodes);
   }
 
   private void printNodeActivations(final String metricsFolder) {
