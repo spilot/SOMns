@@ -66,13 +66,15 @@ class SingleSubAST extends AbstractSubAST {
   public long                activations;
   private List<SingleSubAST> children;
 
-  private Node enclosedNode;
+  private Class<? extends Node> enclosedNodeType;
+  private String                enclosedNodeString;
 
   public SingleSubAST(final Node enclosedNode,
       final List<SingleSubAST> children,
       final long activations) {
     this.children = children;
-    this.enclosedNode = enclosedNode;
+    this.enclosedNodeType = enclosedNode.getClass();
+    this.enclosedNodeString = enclosedNode.toString();
     this.activations = activations;
   }
 
@@ -85,11 +87,9 @@ class SingleSubAST extends AbstractSubAST {
     if ((this.isLeaf() && !n.isLeaf()) || (!this.isLeaf() && n.isLeaf())) {
       return false;
     }
-    if (this.enclosedNode.getClass() != n.enclosedNode.getClass()) {
+    if (this.enclosedNodeType != n.enclosedNodeType) {
       return false;
     }
-
-    // are both leaf nodes?
     if (((n.isLeaf() && this.isLeaf()))) {
       return true;
     }
@@ -164,7 +164,7 @@ class SingleSubAST extends AbstractSubAST {
   public StringBuilder toStringRecursive(final StringBuilder accumulator,
       final String prefix) {
     accumulator.append(prefix)
-               .append(enclosedNode)
+               .append(enclosedNodeString)
                .append(": ")
                .append(activations)
                .append('\n');
