@@ -12,13 +12,13 @@ import com.oracle.truffle.api.nodes.NodeUtil;
 import som.interpreter.nodes.SequenceNode;
 
 
-class SubAST implements Comparable<SubAST> {
+class SingleSubAST extends AbstractSubAST {
   /**
    * Traverses the AST under rootNode. Adds every SequenceNode to the given worklist. Returns
    * a SubAST representing the given AST. Filters all AST nodes that have sourceSection ==
    * null.
    */
-  public static SubAST fromAST(final Node n, final List<Node> worklist,
+  public static SingleSubAST fromAST(final Node n, final List<Node> worklist,
       final Map<Node, BigInteger> rawActivations) {
     final List<Node> children = NodeUtil.findNodeChildren(n);
 
@@ -31,7 +31,7 @@ class SubAST implements Comparable<SubAST> {
       children.forEach(worklist::add);
     }
 
-    final List<SubAST> newChildren;
+    final List<SingleSubAST> newChildren;
 
     if (n instanceof SequenceNode || children.isEmpty()) {
       newChildren = null;
@@ -45,7 +45,7 @@ class SubAST implements Comparable<SubAST> {
           if (childNode.getSourceSection() == null) {
             if (childNode instanceof SequenceNode) {
               children.forEach(worklist::add);
-              newChildren.add(new SubAST(n, null,
+              newChildren.add(new SingleSubAST(n, null,
                   rawActivations.get(childNode) == null ? 0L
                       : rawActivations.get(childNode).longValue()));
             } else {
@@ -57,19 +57,19 @@ class SubAST implements Comparable<SubAST> {
         });
       } while (!innerWorklist.isEmpty());
     }
-    return new SubAST(n, newChildren,
+    return new SingleSubAST(n, newChildren,
         rawActivations.get(n) == null ? 0L
             : rawActivations.get(n).longValue());
 
   }
 
-  public long         activations;
-  public List<SubAST> children;
+  public long                activations;
+  private List<SingleSubAST> children;
 
-  public Node enclosedNode;
+  private Node enclosedNode;
 
-  public SubAST(final Node enclosedNode,
-      final List<SubAST> children,
+  public SingleSubAST(final Node enclosedNode,
+      final List<SingleSubAST> children,
       final long activations) {
     this.children = children;
     this.enclosedNode = enclosedNode;
@@ -77,16 +77,11 @@ class SubAST implements Comparable<SubAST> {
   }
 
   @Override
-  public int compareTo(final SubAST arg0) {
-    return (int) (arg0.score() - this.score());
-  }
-
-  @Override
   public boolean equals(final Object o) {
-    if (!(o instanceof SubAST)) {
+    if (!(o instanceof SingleSubAST)) {
       return false;
     }
-    SubAST n = (SubAST) o;
+    SingleSubAST n = (SingleSubAST) o;
     if ((this.isLeaf() && !n.isLeaf()) || (!this.isLeaf() && n.isLeaf())) {
       return false;
     }
@@ -109,10 +104,10 @@ class SubAST implements Comparable<SubAST> {
     // lets zip both lists to a list of pairs and compare the pairs
 
     class TreeNodePair {
-      SubAST a;
-      SubAST b;
+      SingleSubAST a;
+      SingleSubAST b;
 
-      public TreeNodePair(final SubAST a, final SubAST b) {
+      public TreeNodePair(final SingleSubAST a, final SingleSubAST b) {
         this.a = a;
         this.b = b;
       }
@@ -147,6 +142,7 @@ class SubAST implements Comparable<SubAST> {
     return children.stream().anyMatch((child) -> child.isRelevant());
   }
 
+  @Override
   public int numberOfNodes() {
     if (isLeaf()) {
       return 1;
@@ -155,6 +151,7 @@ class SubAST implements Comparable<SubAST> {
     }
   }
 
+  @Override
   public long score() {
     return totalActivations() / numberOfNodes();
   }
@@ -177,6 +174,7 @@ class SubAST implements Comparable<SubAST> {
     return accumulator;
   }
 
+  @Override
   public long totalActivations() {
     if (isLeaf()) {
       return activations;
