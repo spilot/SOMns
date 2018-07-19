@@ -1,6 +1,5 @@
 package tools.dym.superinstructions;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,7 @@ class SingleSubAST extends AbstractSubAST {
    * null.
    */
   public static SingleSubAST fromAST(final Node n, final List<Node> worklist,
-      final Map<Node, BigInteger> rawActivations) {
+      final Map<Node, Long> rawActivations) {
     final List<Node> children = NodeUtil.findNodeChildren(n);
 
     if (n.getSourceSection() == null) {
@@ -47,7 +46,7 @@ class SingleSubAST extends AbstractSubAST {
               children.forEach(worklist::add);
               newChildren.add(new SingleSubAST(n, null,
                   rawActivations.get(childNode) == null ? 0L
-                      : rawActivations.get(childNode).longValue()));
+                      : rawActivations.get(childNode)));
             } else {
               childNode.getChildren().forEach(innerWorklist::add);
             }

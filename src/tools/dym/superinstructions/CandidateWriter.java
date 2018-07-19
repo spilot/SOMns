@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,8 +20,8 @@ public class CandidateWriter {
 
   public static final String CANDIDATE_DATA_FILE_NAME = "/candidates.data";
 
-  public final Map<Node, BigInteger> rawActivations = new HashMap<>();
-  public List<AbstractSubAST>        olderSubASTs;
+  public final Map<Node, Long> rawActivations = new HashMap<>();
+  public List<AbstractSubAST>  olderSubASTs;
 
   public CandidateWriter() {
     olderSubASTs = null;
@@ -112,10 +111,7 @@ public class CandidateWriter {
 
   public synchronized void countActivation(final Node node) {
     if (node != null) {
-      rawActivations.compute(node,
-          (n, v) -> v == null
-              ? BigInteger.ONE
-              : v.add(BigInteger.ONE));
+      rawActivations.compute(node, (n, v) -> v == null ? 1L : v + 1L);
     }
   }
 }
