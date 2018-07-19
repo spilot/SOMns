@@ -468,7 +468,7 @@ public class DynamicMetrics extends TruffleInstrument {
     printNodeActivations(metricsFolder);
     outputAllTruffleMethodsToIGV();
 
-    candidateWriter.fileOut(rootNodes, metricsFolder);
+    candidateWriter.fileOut(rootNodes);
   }
 
   private void printNodeActivations(final String metricsFolder) {
@@ -499,11 +499,12 @@ public class DynamicMetrics extends TruffleInstrument {
     CandidateDetector detector = new CandidateDetector(collector.getContexts());
     // ... and write a report to the metrics folder
     String report = detector.detect();
-    Path reportPath = Paths.get(metricsFolder, "superinstruction-candidates.txt");
+    Path reportPath = Paths.get(metricsFolder, "superinstruction-candidates-friedrich.txt");
     try {
       Files.write(reportPath, report.getBytes());
     } catch (IOException e) {
-      throw new RuntimeException("Could not write superinstruction candidate report: " + e);
+      throw new RuntimeException(
+          "Could not write Friedrich's superinstruction candidate report: " + e);
     }
   }
 

@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,22 +25,22 @@ public class CandidateWriter {
 
   public final Map<Node, Long> rawActivations = new HashMap<>();
   public List<AbstractSubAST>  olderSubASTs;
+  public final String          metricsFolder;
 
-  public CandidateWriter() {
-    olderSubASTs = null;
-  }
-
+  @SuppressWarnings("unchecked")
   public CandidateWriter(final String metricsFolder) {
+    this.metricsFolder = metricsFolder;
     try (ObjectInputStream ois =
         new ObjectInputStream(new FileInputStream(metricsFolder + CANDIDATE_DATA_FILE_NAME))) {
-      this.olderSubASTs = (List<AbstractSubAST>) ois.readObject();
+      final Object readObject = ois.readObject();
+      this.olderSubASTs = (List<AbstractSubAST>) readObject;
     } catch (ClassCastException | IOException | ClassNotFoundException e) {
-      e.printStackTrace();
+      System.out.println("No old candidate data found.");
       olderSubASTs = null;
     }
   }
 
-  public void fileOut(final Set<RootNode> rootNodes, final String path) {
+  public void fileOut(final Set<RootNode> rootNodes) {
     final List<AbstractSubAST> subASTs =
         olderSubASTs == null ? new ArrayList<>() : olderSubASTs;
     final Set<Node> outerWorklist = new HashSet<>(rootNodes);
@@ -90,22 +93,29 @@ public class CandidateWriter {
     uniqueASTs.sort(null);
 
     try (ObjectOutputStream oos =
-        new ObjectOutputStream(new FileOutputStream(path + CANDIDATE_DATA_FILE_NAME))) {
+        new ObjectOutputStream(
+            new FileOutputStream(this.metricsFolder + CANDIDATE_DATA_FILE_NAME))) {
       oos.writeObject(uniqueASTs);
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
-    int i = 0;
+    final StringBuilder report = new StringBuilder();
+
     for (AbstractSubAST ast : uniqueASTs) {
-      if (i >= 10) {
-        break;
-      }
-      i++;
-      System.out.println("=============================");
-      System.out.println(ast.score());
-      System.out.println(ast);
+      report.append(
+          "===============================================================================\n")
+            .append(ast.score())
+            .append(" activations:\n")
+            .append(ast).append('\n');
+    }
+
+    Path reportPath = Paths.get(this.metricsFolder, "superinstruction-candidates-stefan.txt");
+    try {
+      Files.write(reportPath, report.toString().getBytes());
+    } catch (IOException e) {
+      throw new RuntimeException("Could not write superinstruction candidate report: " + e);
     }
   }
 

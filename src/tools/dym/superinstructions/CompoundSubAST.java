@@ -44,7 +44,7 @@ public class CompoundSubAST extends AbstractSubAST {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     enclosedNodes.forEach((subast) -> {
-      subast.toStringRecursive(sb.append("--\n"), "");
+      subast.toStringRecursive(sb.append("--\n"), "  ");
     });
     return sb.toString();
   }
