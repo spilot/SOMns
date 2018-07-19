@@ -1,5 +1,10 @@
 package tools.dym.superinstructions;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,27 +13,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.instrumentation.ExecutionEventNode;
-import com.oracle.truffle.api.instrumentation.ExecutionEventNodeFactory;
-import com.oracle.truffle.api.instrumentation.Instrumenter;
-import com.oracle.truffle.api.instrumentation.SourceSectionFilter;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
 
-import tools.dym.Tags.AnyNode;
 
+public class CandidateWriter {
 
-public class CandidatePrinter {
+  public static final String CANDIDATE_DATA_FILE_NAME = "/candidates.data";
 
-  public final Map<Node, BigInteger> rawActivations;
+  public final Map<Node, BigInteger> rawActivations = new HashMap<>();
+  public List<AbstractSubAST>        olderSubASTs;
 
-  public CandidatePrinter() {
-    this.rawActivations = new HashMap<>();
+  public CandidateWriter() {
+    olderSubASTs = null;
   }
 
-  public List<AbstractSubAST> onDynamicMetricDispose(final Set<RootNode> rootNodes) {
-    final List<AbstractSubAST> subASTs = new ArrayList<>();
+  public CandidateWriter(final String metricsFolder) {
+    try (ObjectInputStream ois =
+        new ObjectInputStream(new FileInputStream(metricsFolder + CANDIDATE_DATA_FILE_NAME))) {
+      this.olderSubASTs = (List<AbstractSubAST>) ois.readObject();
+    } catch (ClassCastException | IOException | ClassNotFoundException e) {
+      e.printStackTrace();
+      olderSubASTs = null;
+    }
+  }
+
+  public void fileOut(final Set<RootNode> rootNodes, final String path) {
+    final List<AbstractSubAST> subASTs =
+        olderSubASTs == null ? new ArrayList<>() : olderSubASTs;
     final Set<Node> outerWorklist = new HashSet<>(rootNodes);
     do { // myList.forEach while modifying myList is undefined, so we need this
       final Set<Node> tempSet = new HashSet<>(outerWorklist);
@@ -67,6 +79,7 @@ public class CandidatePrinter {
       }
     }
 
+    // remove null elements from unique array by adding all non-null items to a list
     List<AbstractSubAST> uniqueASTs = new ArrayList<>();
     for (AbstractSubAST ast : ra) {
       if (ast != null) {
@@ -76,6 +89,14 @@ public class CandidatePrinter {
 
     // sort using the natural ordering specified by the compareTo method
     uniqueASTs.sort(null);
+
+    try (ObjectOutputStream oos =
+        new ObjectOutputStream(new FileOutputStream(path + CANDIDATE_DATA_FILE_NAME))) {
+      oos.writeObject(uniqueASTs);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
     int i = 0;
     for (AbstractSubAST ast : uniqueASTs) {
@@ -87,8 +108,6 @@ public class CandidatePrinter {
       System.out.println(ast.score());
       System.out.println(ast);
     }
-
-    return uniqueASTs;
   }
 
   public synchronized void countActivation(final Node node) {
@@ -98,17 +117,5 @@ public class CandidatePrinter {
               ? BigInteger.ONE
               : v.add(BigInteger.ONE));
     }
-  }
-
-  public void addBranchProfilingInstrumentation(final Instrumenter instrumenter) {
-    final SourceSectionFilter filter =
-        SourceSectionFilter.newBuilder().tagIs(AnyNode.class).build();
-    ExecutionEventNodeFactory factory = (context) -> new ExecutionEventNode() {
-      @Override
-      protected void onEnter(final VirtualFrame frame) {
-        countActivation(context.getInstrumentedNode());
-      }
-    };
-    instrumenter.attachFactory(filter, factory);
   }
 }

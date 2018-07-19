@@ -16,6 +16,7 @@ import java.util.function.Function;
 import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 import com.oracle.truffle.api.RootCallTarget;
 import com.oracle.truffle.api.Truffle;
+import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.EventContext;
 import com.oracle.truffle.api.instrumentation.ExecutionEventNode;
 import com.oracle.truffle.api.instrumentation.ExecutionEventNodeFactory;
@@ -89,7 +90,7 @@ import tools.dym.profiles.OperationProfile;
 import tools.dym.profiles.ReadValueProfile;
 import tools.dym.profiles.TypeCounter;
 import tools.dym.superinstructions.CandidateDetector;
-import tools.dym.superinstructions.CandidatePrinter;
+import tools.dym.superinstructions.CandidateWriter;
 import tools.dym.superinstructions.ContextCollector;
 import tools.language.StructuralProbe;
 
@@ -139,7 +140,7 @@ public class DynamicMetrics extends TruffleInstrument {
   @CompilationFinal private static Instrumenter instrumenter; // TODO: this is one of those
                                                               // evil hacks
 
-  private final CandidatePrinter candidatePrinter;
+  private final CandidateWriter candidateWriter;
 
   public static boolean isTaggedWith(final Node node, final Class<?> tag) {
     assert instrumenter != null : "Initialization order/dependencies?";
@@ -171,7 +172,8 @@ public class DynamicMetrics extends TruffleInstrument {
 
     rootNodes = new HashSet<>();
 
-    candidatePrinter = new CandidatePrinter();
+    String metricsFolder = System.getProperty("dm.metrics", "metrics");
+    candidateWriter = new CandidateWriter(metricsFolder);
 
     assert "DefaultTruffleRuntime".equals(
         Truffle.getRuntime().getClass()
@@ -405,7 +407,7 @@ public class DynamicMetrics extends TruffleInstrument {
 
     addActivationInstrumentation(instrumenter);
 
-    candidatePrinter.addBranchProfilingInstrumentation(instrumenter);
+    addBranchProfilingInstrumentation(instrumenter);
 
     instrumenter.attachLoadSourceSectionListener(
         SourceSectionFilter.newBuilder().tagIs(RootTag.class).build(),
@@ -422,6 +424,18 @@ public class DynamicMetrics extends TruffleInstrument {
       TypeCounter p = activations.computeIfAbsent(ctx.getInstrumentedNode(),
           k -> new TypeCounter(ctx.getInstrumentedSourceSection()));
       return new TypeCountingNode<>(p);
+    };
+    instrumenter.attachFactory(filter, factory);
+  }
+
+  public void addBranchProfilingInstrumentation(final Instrumenter instrumenter) {
+    final SourceSectionFilter filter =
+        SourceSectionFilter.newBuilder().tagIs(AnyNode.class).build();
+    ExecutionEventNodeFactory factory = (context) -> new ExecutionEventNode() {
+      @Override
+      protected void onEnter(final VirtualFrame frame) {
+        candidateWriter.countActivation(context.getInstrumentedNode());
+      }
     };
     instrumenter.attachFactory(filter, factory);
   }
@@ -454,7 +468,7 @@ public class DynamicMetrics extends TruffleInstrument {
     printNodeActivations(metricsFolder);
     outputAllTruffleMethodsToIGV();
 
-    candidatePrinter.onDynamicMetricDisposeNew(rootNodes);
+    candidateWriter.fileOut(rootNodes, metricsFolder);
   }
 
   private void printNodeActivations(final String metricsFolder) {
