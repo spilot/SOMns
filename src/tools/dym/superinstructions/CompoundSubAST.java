@@ -2,19 +2,20 @@ package tools.dym.superinstructions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 
-public class CompoundSubAST extends AbstractSubAST {
+class CompoundSubAST extends AbstractSubAST {
 
-  private List<SingleSubAST> enclosedNodes;
-  private long               activations;
+  protected final String ACTIVATIONS_STRING = " sum of mean activations:\n";
 
-  public CompoundSubAST(final SingleSubAST... nodes) {
+  protected List<SingleSubAST> enclosedNodes;
+
+  CompoundSubAST(final SingleSubAST... nodes) {
     if (nodes.length == 0) {
       throw new IllegalArgumentException();
     }
     enclosedNodes = new ArrayList<>();
-    activations = 0L;
     for (SingleSubAST n : nodes) {
       if (n == null) {
         throw new NullPointerException();
@@ -23,40 +24,17 @@ public class CompoundSubAST extends AbstractSubAST {
         throw new IllegalArgumentException();
       }
       enclosedNodes.add(n);
-      activations += n.activations;
     }
   }
 
-  public void add(final SingleSubAST node) {
-    if (!node.equals(enclosedNodes.get(0))) {
-      throw new IllegalArgumentException();
+  public void add(final AbstractSubAST arg) {
+    if (arg instanceof SingleSubAST) {
+      addIfNew((SingleSubAST) arg);
+    } else if (arg instanceof CompoundSubAST || arg instanceof VirtualSubAST) {
+      ((CompoundSubAST) arg).enclosedNodes.forEach(this::addIfNew);
+    } else {
+      assert false;
     }
-    this.enclosedNodes.add(node);
-    this.activations += node.activations;
-  }
-
-  @Override
-  public long score() {
-    return enclosedNodes.stream().mapToLong(SingleSubAST::score).sum();
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    enclosedNodes.forEach((subast) -> {
-      subast.toStringRecursive(sb.append("--\n"), "  ");
-    });
-    return sb.toString();
-  }
-
-  @Override
-  public int numberOfNodes() {
-    return enclosedNodes.stream().mapToInt(SingleSubAST::numberOfNodes).sum();
-  }
-
-  @Override
-  public long totalActivations() {
-    return activations;
   }
 
   @Override
@@ -64,4 +42,42 @@ public class CompoundSubAST extends AbstractSubAST {
     return this.enclosedNodes.get(0).equals(arg);
   }
 
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder().append(this.score()).append(ACTIVATIONS_STRING);
+    enclosedNodes.forEach((subAST) -> {
+      subAST.toStringRecursive(sb.append("--\n"), "  ");
+    });
+    return sb.toString();
+  }
+
+  private void addIfNew(final SingleSubAST item) {
+    if (this.enclosedNodes.stream().noneMatch((existingNode) -> (existingNode == item))) {
+      this.enclosedNodes.add(item);
+    }
+  }
+
+  @Override
+  Stream<SingleSubAST> allSubASTs() {
+    return this.enclosedNodes.stream().flatMap(SingleSubAST::allSubASTs);
+  }
+
+  @Override
+  Stream<VirtualSubAST> commonSubASTs(final AbstractSubAST arg) {
+    return this.allSubASTs().flatMap((mySubAST) -> mySubAST.commonSubASTs(arg));
+  }
+
+  SingleSubAST getFirstNode() {
+    return this.enclosedNodes.get(0);
+  }
+
+  @Override
+  boolean isLeaf() {
+    return false;
+  }
+
+  @Override
+  long score() {
+    return enclosedNodes.stream().mapToLong(SingleSubAST::score).sum();
+  }
 }

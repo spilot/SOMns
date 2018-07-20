@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
@@ -17,7 +18,7 @@ class SingleSubAST extends AbstractSubAST {
    * a SubAST representing the given AST. Filters all AST nodes that have sourceSection ==
    * null.
    */
-  public static SingleSubAST fromAST(final Node n, final List<Node> worklist,
+  static SingleSubAST fromAST(final Node n, final List<Node> worklist,
       final Map<Node, Long> rawActivations) {
     final List<Node> children = NodeUtil.findNodeChildren(n);
 
@@ -62,13 +63,13 @@ class SingleSubAST extends AbstractSubAST {
 
   }
 
-  public long                activations;
+  private long               activations;
   private List<SingleSubAST> children;
 
-  private Class<? extends Node> enclosedNodeType;
   private String                enclosedNodeString;
+  private Class<? extends Node> enclosedNodeType;
 
-  public SingleSubAST(final Node enclosedNode,
+  SingleSubAST(final Node enclosedNode,
       final List<SingleSubAST> children,
       final long activations) {
     this.children = children;
@@ -124,32 +125,6 @@ class SingleSubAST extends AbstractSubAST {
 
   }
 
-  public boolean isLeaf() {
-    return this.children == null;
-  }
-
-  /**
-   * @return true if this tree contains nodes with activations
-   */
-  public boolean isRelevant() {
-    if (this.activations > 0) {
-      return true;
-    }
-    if (isLeaf()) {
-      return false;
-    }
-    return children.stream().anyMatch((child) -> child.isRelevant());
-  }
-
-  @Override
-  public int numberOfNodes() {
-    if (isLeaf()) {
-      return 1;
-    } else {
-      return 1 + children.stream().mapToInt((child) -> child.numberOfNodes()).sum();
-    }
-  }
-
   @Override
   public long score() {
     return totalActivations() / numberOfNodes();
@@ -160,7 +135,70 @@ class SingleSubAST extends AbstractSubAST {
     return this.toStringRecursive(new StringBuilder(), "").toString();
   }
 
-  public StringBuilder toStringRecursive(final StringBuilder accumulator,
+  /**
+   * @return true if this tree contains nodes with activations and is not a leaf
+   */
+  boolean isRelevant() {
+    if (this.isLeaf()) {
+      return false;
+    }
+    if (this.activations > 0) {
+      return true;
+    }
+    return children.stream().anyMatch((child) -> child.isRelevant());
+  }
+
+  private int numberOfNodes() {
+    if (isLeaf()) {
+      return 1;
+    } else {
+      return 1 + children.stream().mapToInt(SingleSubAST::numberOfNodes).sum();
+    }
+  }
+
+  private long totalActivations() {
+    if (isLeaf()) {
+      return activations;
+    } else {
+      return activations
+          + children.stream().mapToLong((child) -> child.totalActivations()).sum();
+    }
+  }
+
+  @Override
+  Stream<SingleSubAST> allSubASTs() {
+    if (isLeaf()) {
+      return Stream.empty();
+    } else {
+      return Stream.concat(this.children.stream().filter(AbstractSubAST::isNotLeaf),
+          this.children.stream().flatMap(AbstractSubAST::allSubASTs));
+    }
+  }
+
+  @Override
+  Stream<VirtualSubAST> commonSubASTs(final AbstractSubAST arg) {
+    if (arg instanceof CompoundSubAST) {
+      return arg.commonSubASTs(this);
+    }
+    assert arg instanceof SingleSubAST;
+    return this.allSubASTs().flatMap((mySubAST) -> {
+      SingleSubAST[] theirMatchingSubASTs =
+          arg.allSubASTs().filter((theirSubAST) -> theirSubAST.equals(mySubAST))
+             .toArray(SingleSubAST[]::new);
+      if (theirMatchingSubASTs.length > 0) {
+        return Stream.of(new VirtualSubAST(mySubAST, theirMatchingSubASTs));
+      } else {
+        return Stream.empty();
+      }
+    });
+  }
+
+  @Override
+  boolean isLeaf() {
+    return this.children == null;
+  }
+
+  StringBuilder toStringRecursive(final StringBuilder accumulator,
       final String prefix) {
     accumulator.append(prefix)
                .append(enclosedNodeString)
@@ -172,15 +210,4 @@ class SingleSubAST extends AbstractSubAST {
     }
     return accumulator;
   }
-
-  @Override
-  public long totalActivations() {
-    if (isLeaf()) {
-      return activations;
-    } else {
-      return activations
-          + children.stream().mapToLong((child) -> child.totalActivations()).sum();
-    }
-  }
-
 }
