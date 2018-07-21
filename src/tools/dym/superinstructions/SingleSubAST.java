@@ -1,8 +1,10 @@
 package tools.dym.superinstructions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -16,10 +18,10 @@ class SingleSubAST extends AbstractSubAST {
   /**
    * Traverses the AST under rootNode. Adds every SequenceNode to the given worklist. Returns
    * a SubAST representing the given AST. Filters all AST nodes that have sourceSection ==
-   * null.
+   * null. Returns null if the given AST node has sourceSection == null
    */
-  static SingleSubAST fromAST(final Node n, final List<Node> worklist,
-      final Map<Node, Long> rawActivations) {
+  static SingleSubAST fromAST(final Node n, final Set<Node> worklist,
+      final Map<Node, Map<String, Long>> rawActivations) {
     final List<Node> children = NodeUtil.findNodeChildren(n);
 
     if (n.getSourceSection() == null) {
@@ -46,7 +48,7 @@ class SingleSubAST extends AbstractSubAST {
             if (childNode instanceof SequenceNode) {
               children.forEach(worklist::add);
               newChildren.add(new SingleSubAST(n, null,
-                  rawActivations.get(childNode) == null ? 0L
+                  rawActivations.get(childNode) == null ? new HashMap<>()
                       : rawActivations.get(childNode)));
             } else {
               childNode.getChildren().forEach(innerWorklist::add);
@@ -58,24 +60,24 @@ class SingleSubAST extends AbstractSubAST {
       } while (!innerWorklist.isEmpty());
     }
     return new SingleSubAST(n, newChildren,
-        rawActivations.get(n) == null ? 0L
-            : rawActivations.get(n).longValue());
+        rawActivations.get(n) == null ? new HashMap<>()
+            : rawActivations.get(n));
 
   }
 
-  private long               activations;
+  private Map<String, Long>  activationsByType;
   private List<SingleSubAST> children;
 
   private String                enclosedNodeString;
   private Class<? extends Node> enclosedNodeType;
 
-  SingleSubAST(final Node enclosedNode,
+  private SingleSubAST(final Node enclosedNode,
       final List<SingleSubAST> children,
-      final long activations) {
+      final Map<String, Long> activationsByType) {
     this.children = children;
     this.enclosedNodeType = enclosedNode.getClass();
     this.enclosedNodeString = enclosedNode.toString();
-    this.activations = activations;
+    this.activationsByType = activationsByType;
   }
 
   @Override
@@ -142,7 +144,7 @@ class SingleSubAST extends AbstractSubAST {
     if (this.isLeaf()) {
       return false;
     }
-    if (this.activations > 0) {
+    if (this.totalActivations() > 0) {
       return true;
     }
     return children.stream().anyMatch((child) -> child.isRelevant());
@@ -157,10 +159,11 @@ class SingleSubAST extends AbstractSubAST {
   }
 
   private long totalActivations() {
+    final long localActivations = activationsByType.values().stream().reduce(0L, Long::sum);
     if (isLeaf()) {
-      return activations;
+      return localActivations;
     } else {
-      return activations
+      return localActivations
           + children.stream().mapToLong((child) -> child.totalActivations()).sum();
     }
   }
@@ -203,7 +206,7 @@ class SingleSubAST extends AbstractSubAST {
     accumulator.append(prefix)
                .append(enclosedNodeString)
                .append(": ")
-               .append(activations)
+               .append(activationsByType)
                .append('\n');
     if (!isLeaf()) {
       children.forEach((child) -> child.toStringRecursive(accumulator, prefix + "  "));

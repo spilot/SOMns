@@ -16,7 +16,6 @@ import java.util.function.Function;
 import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 import com.oracle.truffle.api.RootCallTarget;
 import com.oracle.truffle.api.Truffle;
-import com.oracle.truffle.api.frame.VirtualFrame;
 import com.oracle.truffle.api.instrumentation.EventContext;
 import com.oracle.truffle.api.instrumentation.ExecutionEventNode;
 import com.oracle.truffle.api.instrumentation.ExecutionEventNodeFactory;
@@ -431,12 +430,7 @@ public class DynamicMetrics extends TruffleInstrument {
   public void addBranchProfilingInstrumentation(final Instrumenter instrumenter) {
     final SourceSectionFilter filter =
         SourceSectionFilter.newBuilder().tagIs(AnyNode.class).build();
-    ExecutionEventNodeFactory factory = (context) -> new ExecutionEventNode() {
-      @Override
-      protected void onEnter(final VirtualFrame frame) {
-        candidateWriter.countActivation(context.getInstrumentedNode());
-      }
-    };
+    ExecutionEventNodeFactory factory = candidateWriter.getExecutionEventNodeFactory();
     instrumenter.attachFactory(filter, factory);
   }
 

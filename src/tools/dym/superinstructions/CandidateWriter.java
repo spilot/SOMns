@@ -15,16 +15,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.oracle.truffle.api.frame.VirtualFrame;
+import com.oracle.truffle.api.instrumentation.ExecutionEventNode;
+import com.oracle.truffle.api.instrumentation.ExecutionEventNodeFactory;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
 
 
 public class CandidateWriter {
-  static final String  CANDIDATE_DATA_FILE_NAME = "/candidates.data";
+  static final String CANDIDATE_DATA_FILE_NAME = "/candidates.data";
+
   final String         metricsFolder;
   List<AbstractSubAST> olderSubASTs;
 
-  final Map<Node, Long> rawActivations = new HashMap<>();
+  final Map<Node, Map<String, Long>> rawActivations = new HashMap<>();
 
   @SuppressWarnings("unchecked")
   public CandidateWriter(final String metricsFolder) {
@@ -39,9 +43,10 @@ public class CandidateWriter {
     }
   }
 
-  public synchronized void countActivation(final Node node) {
+  synchronized void countActivation(final Node node, final String resultTypeName) {
     if (node != null) {
-      rawActivations.compute(node, (n, v) -> v == null ? 1L : v + 1L);
+      rawActivations.putIfAbsent(node, new HashMap<>());
+      rawActivations.get(node).compute(resultTypeName, (n, v) -> v == null ? 1L : v + 1L);
     }
   }
 
@@ -60,6 +65,16 @@ public class CandidateWriter {
     List<AbstractSubAST> uniqueVirtualASts = myDeduplicator.getVirtualSubASTs();
 
     writeHumanReadableReport(myDeduplicator.getDeduplicatedASTs(), uniqueVirtualASts);
+  }
+
+  public ExecutionEventNodeFactory getExecutionEventNodeFactory() {
+    return (context) -> new ExecutionEventNode() {
+      @Override
+      protected void onReturnValue(final VirtualFrame frame, final Object result) {
+        countActivation(context.getInstrumentedNode(),
+            result == null ? "null" : result.getClass().getSimpleName());
+      }
+    };
   }
 
   private class SubASTListDeduplicator {
@@ -134,19 +149,18 @@ public class CandidateWriter {
   private List<AbstractSubAST> extractAllSubASTsOfRootNodes(
       final List<AbstractSubAST> preExistingSubASTs,
       final Set<RootNode> rootNodes) {
-    final Set<Node> outerWorklist = new HashSet<>(rootNodes);
-    do { // myList.forEach while modifying myList is undefined, so we need this
-      final Set<Node> tempSet = new HashSet<>(outerWorklist);
-      outerWorklist.removeAll(tempSet);
+    final Set<Node> worklist = new HashSet<>(rootNodes);
+    do { // Set::forEach while modifying the Set is undefined behaviour, so we need this
+      final Set<Node> tempSet = new HashSet<>(worklist);
+      worklist.removeAll(tempSet);
       tempSet.forEach((rootNode) -> {
-        final List<Node> worklist = new ArrayList<>();
-        final SingleSubAST result = SingleSubAST.fromAST(rootNode, worklist, rawActivations);
-        outerWorklist.addAll(worklist);
+        final SingleSubAST result =
+            SingleSubAST.fromAST(rootNode, worklist, rawActivations);
         if (result != null && result.isRelevant()) {
           preExistingSubASTs.add(result);
         }
       });
-    } while (!outerWorklist.isEmpty());
+    } while (!worklist.isEmpty());
     return preExistingSubASTs;
   }
 
