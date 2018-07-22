@@ -98,11 +98,12 @@ public class CandidateWriter {
                 ra[i].commonSubASTs(ra[j]).forEach(putVirtualSubASTsHere::add);
               }
               if (ra[i].equals(ra[j])) {
-                if (ra[i] instanceof SingleSubAST) {
-                  if (ra[j] instanceof SingleSubAST) {
+                if (ra[i] instanceof SingleSubASTwithChildren) {
+                  if (ra[j] instanceof SingleSubASTwithChildren) {
                     // case 1: both are SingleSubASTs
                     if (ra[i] != ra[j]) {
-                      ra[i] = new CompoundSubAST((SingleSubAST) ra[i], (SingleSubAST) ra[j]);
+                      ra[i] = new CompoundSubAST((SingleSubASTwithChildren) ra[i],
+                          (SingleSubASTwithChildren) ra[j]);
                     }
                     ra[j] = null;
                   } else {
@@ -111,9 +112,9 @@ public class CandidateWriter {
                     ra[i] = null;
                   }
                 } else {
-                  if (ra[j] instanceof SingleSubAST) {
+                  if (ra[j] instanceof SingleSubASTwithChildren) {
                     // case 2.2: ra[j] is Single, ra[i] is Compound
-                    assert ra[j] instanceof SingleSubAST;
+                    assert ra[j] instanceof SingleSubASTwithChildren;
                     ((CompoundSubAST) ra[i]).add(ra[j]);
                   } else {
                     // case 3: both are Compound
@@ -155,6 +156,7 @@ public class CandidateWriter {
       worklist.removeAll(tempSet);
       tempSet.forEach((rootNode) -> {
         final SingleSubAST result =
+            // will also add all Nodes we should also consider as root nodes to the worklist
             SingleSubAST.fromAST(rootNode, worklist, rawActivations);
         if (result != null && result.isRelevant()) {
           preExistingSubASTs.add(result);
@@ -187,7 +189,7 @@ public class CandidateWriter {
     for (AbstractSubAST ast : uniqueASTs) {
       report.append(
           "===============================================================================\n");
-      if (ast instanceof SingleSubAST) {
+      if (ast instanceof SingleSubASTwithChildren) {
         report.append(ast.score()).append(" activations:\n");
       }
       report.append(ast).append('\n');
