@@ -1,7 +1,8 @@
 package tools.dym.superinstructions;
 
 import java.io.Serializable;
-import java.util.stream.Stream;
+import java.util.LinkedList;
+import java.util.List;
 
 
 abstract class AbstractSubAST implements Comparable<AbstractSubAST>, Serializable {
@@ -17,9 +18,18 @@ abstract class AbstractSubAST implements Comparable<AbstractSubAST>, Serializabl
   @Override
   public abstract String toString();
 
-  abstract Stream<SingleSubAST> allSubASTs();
+  List<SingleSubAST> allSubASTs() {
+    return allSubASTs(new LinkedList<>());
+  }
 
-  abstract Stream<VirtualSubAST> commonSubASTs(AbstractSubAST arg);
+  abstract List<SingleSubAST> allSubASTs(List<SingleSubAST> accumulator);
+
+  List<VirtualSubAST> commonSubASTs(final AbstractSubAST arg) {
+    return commonSubASTs(arg, new LinkedList<>());
+  }
+
+  abstract List<VirtualSubAST> commonSubASTs(AbstractSubAST arg,
+      List<VirtualSubAST> accumulator);
 
   abstract boolean isLeaf();
 

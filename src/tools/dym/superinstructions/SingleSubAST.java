@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
@@ -89,21 +88,24 @@ abstract class SingleSubAST extends AbstractSubAST {
   }
 
   @Override
-  Stream<VirtualSubAST> commonSubASTs(final AbstractSubAST arg) {
+  List<VirtualSubAST> commonSubASTs(final AbstractSubAST arg,
+      final List<VirtualSubAST> accumulator) {
     if (arg instanceof CompoundSubAST) {
       return arg.commonSubASTs(this);
     }
     assert arg instanceof SingleSubAST;
-    return this.allSubASTs().flatMap((mySubAST) -> {
-      SingleSubAST[] theirMatchingSubASTs =
-          arg.allSubASTs().filter((theirSubAST) -> theirSubAST.equals(mySubAST))
-             .toArray(SingleSubAST[]::new);
-      if (theirMatchingSubASTs.length > 0) {
-        return Stream.of(new VirtualSubAST(mySubAST, theirMatchingSubASTs));
-      } else {
-        return Stream.empty();
+    this.allSubASTs().forEach((mySubAST) -> {
+      List<SingleSubAST> theirMatchingSubASTs = new ArrayList<>();
+      arg.allSubASTs().forEach((theirSubAST) -> {
+        if (mySubAST.equals(theirSubAST)) {
+          theirMatchingSubASTs.add(theirSubAST);
+        }
+      });
+      if (theirMatchingSubASTs.size() > 0) {
+        accumulator.add(new VirtualSubAST(mySubAST, theirMatchingSubASTs));
       }
     });
+    return accumulator;
   }
 
   /**

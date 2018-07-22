@@ -2,7 +2,6 @@ package tools.dym.superinstructions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 
 class CompoundSubAST extends AbstractSubAST {
@@ -25,6 +24,14 @@ class CompoundSubAST extends AbstractSubAST {
       }
       enclosedNodes.add(n);
     }
+  }
+
+  CompoundSubAST(final List<SingleSubAST> children) {
+    children.forEach((child) -> {
+      assert child != null;
+      assert children.get(0).equals(child);
+    });
+    enclosedNodes = children;
   }
 
   public void add(final AbstractSubAST arg) {
@@ -58,13 +65,18 @@ class CompoundSubAST extends AbstractSubAST {
   }
 
   @Override
-  Stream<SingleSubAST> allSubASTs() {
-    return this.enclosedNodes.stream().flatMap(SingleSubAST::allSubASTs);
+  List<SingleSubAST> allSubASTs(final List<SingleSubAST> accumulator) {
+    for (SingleSubAST child : enclosedNodes) {
+      child.allSubASTs(accumulator);
+    }
+    return accumulator;
   }
 
   @Override
-  Stream<VirtualSubAST> commonSubASTs(final AbstractSubAST arg) {
-    return this.allSubASTs().flatMap((mySubAST) -> mySubAST.commonSubASTs(arg));
+  List<VirtualSubAST> commonSubASTs(final AbstractSubAST arg,
+      final List<VirtualSubAST> accumulator) {
+    this.allSubASTs().forEach((mySubAST) -> mySubAST.commonSubASTs(arg, accumulator));
+    return accumulator;
   }
 
   SingleSubAST getFirstNode() {

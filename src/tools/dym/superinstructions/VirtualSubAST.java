@@ -1,9 +1,12 @@
 package tools.dym.superinstructions;
 
+import java.util.List;
+
+
 public class VirtualSubAST extends CompoundSubAST {
   protected final String ACTIVATIONS_STRING = " sum of mean activations (VIRTUAL):\n";
 
-  public VirtualSubAST(final SingleSubAST head, final SingleSubAST... tail) {
+  public VirtualSubAST(final SingleSubAST head, final List<SingleSubAST> tail) {
     super(tail);
     this.enclosedNodes.add(head);
   }

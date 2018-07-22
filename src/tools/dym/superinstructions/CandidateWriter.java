@@ -95,7 +95,7 @@ public class CandidateWriter {
           for (int j = i + 1; j < ra.length; j++) {
             if (ra[j] != null) {
               if (collectVirtualASTs) {
-                ra[i].commonSubASTs(ra[j]).forEach(putVirtualSubASTsHere::add);
+                putVirtualSubASTsHere.addAll(ra[i].commonSubASTs(ra[j]));
               }
               if (ra[i].equals(ra[j])) {
                 if (ra[i] instanceof SingleSubASTwithChildren) {
