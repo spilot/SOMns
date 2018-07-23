@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
@@ -127,5 +128,15 @@ abstract class SingleSubAST extends AbstractSubAST {
                .append(activationsByType)
                .append('\n');
     return accumulator;
+  }
+
+  @Override
+  public AbstractSubAST add(final AbstractSubAST arg) {
+    return new CompoundSubAST(this).add(arg);
+  }
+
+  @Override
+  public void forEach(final Consumer<SingleSubAST> action) {
+    action.accept(this);
   }
 }

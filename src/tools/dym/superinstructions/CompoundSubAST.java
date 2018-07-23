@@ -2,6 +2,7 @@ package tools.dym.superinstructions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 class CompoundSubAST extends AbstractSubAST {
@@ -34,14 +35,10 @@ class CompoundSubAST extends AbstractSubAST {
     enclosedNodes = children;
   }
 
-  public void add(final AbstractSubAST arg) {
-    if (arg instanceof SingleSubAST) {
-      addIfNew((SingleSubAST) arg);
-    } else if (arg instanceof CompoundSubAST || arg instanceof VirtualSubAST) {
-      ((CompoundSubAST) arg).enclosedNodes.forEach(this::addIfNew);
-    } else {
-      assert false;
-    }
+  @Override
+  public AbstractSubAST add(final AbstractSubAST arg) {
+    arg.forEach(this::addIfNew);
+    return this;
   }
 
   @Override
@@ -91,5 +88,10 @@ class CompoundSubAST extends AbstractSubAST {
   @Override
   long score() {
     return enclosedNodes.stream().mapToLong(SingleSubAST::score).sum();
+  }
+
+  @Override
+  void forEach(final Consumer<SingleSubAST> action) {
+    enclosedNodes.forEach(action);
   }
 }

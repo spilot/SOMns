@@ -98,30 +98,8 @@ public class CandidateWriter {
                 putVirtualSubASTsHere.addAll(ra[i].commonSubASTs(ra[j]));
               }
               if (ra[i].equals(ra[j])) {
-                if (ra[i] instanceof SingleSubASTwithChildren) {
-                  if (ra[j] instanceof SingleSubASTwithChildren) {
-                    // case 1: both are SingleSubASTs
-                    if (ra[i] != ra[j]) {
-                      ra[i] = new CompoundSubAST((SingleSubASTwithChildren) ra[i],
-                          (SingleSubASTwithChildren) ra[j]);
-                    }
-                    ra[j] = null;
-                  } else {
-                    // case 2.1: ra[i] is Single, ra[j] is Compound
-                    ((CompoundSubAST) ra[j]).add(ra[i]);
-                    ra[i] = null;
-                  }
-                } else {
-                  if (ra[j] instanceof SingleSubASTwithChildren) {
-                    // case 2.2: ra[j] is Single, ra[i] is Compound
-                    assert ra[j] instanceof SingleSubASTwithChildren;
-                    ((CompoundSubAST) ra[i]).add(ra[j]);
-                  } else {
-                    // case 3: both are Compound
-                    ((CompoundSubAST) ra[i]).add(ra[j]);
-                  }
-                  ra[j] = null;
-                }
+                ra[i] = ra[i].add(ra[j]);
+                ra[j] = null;
               }
             }
           }

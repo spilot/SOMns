@@ -3,6 +3,7 @@ package tools.dym.superinstructions;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 abstract class AbstractSubAST implements Comparable<AbstractSubAST>, Serializable {
@@ -42,4 +43,8 @@ abstract class AbstractSubAST implements Comparable<AbstractSubAST>, Serializabl
    * a superinstruction.
    */
   abstract long score();
+
+  public abstract AbstractSubAST add(AbstractSubAST argument);
+
+  abstract void forEach(Consumer<SingleSubAST> action);
 }
