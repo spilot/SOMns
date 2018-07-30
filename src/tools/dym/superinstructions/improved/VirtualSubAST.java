@@ -13,8 +13,11 @@ public class VirtualSubAST extends CompoundSubAST {
 
   @Override
   public boolean equals(final Object o) {
-    return (o instanceof VirtualSubAST)
-        && this.getFirstNode().equals(((VirtualSubAST) o).getFirstNode());
+    if (o instanceof CompoundSubAST) {
+      return this.getFirstNode().equals(((CompoundSubAST) o).getFirstNode());
+    }
+    assert o instanceof SingleSubAST;
+    return this.getFirstNode().equals(o);
   }
 
   @Override

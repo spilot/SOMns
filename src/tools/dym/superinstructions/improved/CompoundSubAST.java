@@ -28,7 +28,8 @@ class CompoundSubAST extends AbstractSubAST {
       assert child != null;
       assert children.get(0).equals(child);
     });
-    enclosedNodes = children;
+    enclosedNodes = new ArrayList<>();
+    children.forEach(this::add);
   }
 
   @Override
@@ -69,8 +70,8 @@ class CompoundSubAST extends AbstractSubAST {
   }
 
   @Override
-  List<VirtualSubAST> commonSubASTs(final AbstractSubAST arg,
-      final List<VirtualSubAST> accumulator) {
+  List<AbstractSubAST> commonSubASTs(final AbstractSubAST arg,
+      final List<AbstractSubAST> accumulator) {
     this.allSubASTs().forEach((mySubAST) -> mySubAST.commonSubASTs(arg, accumulator));
     return accumulator;
   }

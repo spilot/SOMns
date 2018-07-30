@@ -28,18 +28,10 @@ abstract class AbstractSubAST implements Comparable<AbstractSubAST>, Serializabl
 
   abstract List<SingleSubAST> allSubASTs(List<SingleSubAST> accumulator);
 
-  // List<VirtualSubAST> commonSubASTs(final AbstractSubAST arg) {
-  // return commonSubASTs(arg, new ArrayList<>());
-  // }
-
-  abstract List<VirtualSubAST> commonSubASTs(AbstractSubAST arg,
-      List<VirtualSubAST> accumulator);
+  abstract List<AbstractSubAST> commonSubASTs(AbstractSubAST arg,
+      List<AbstractSubAST> accumulator);
 
   abstract boolean isLeaf();
-
-  final boolean isNotLeaf() {
-    return !isLeaf();
-  }
 
   /**
    * The higher a SubASTs score is, the more speedup should be achievable by replacing it with

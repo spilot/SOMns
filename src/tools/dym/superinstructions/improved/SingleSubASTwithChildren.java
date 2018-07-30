@@ -87,7 +87,7 @@ class SingleSubASTwithChildren extends SingleSubAST {
   @Override
   List<SingleSubAST> allSubASTs(final List<SingleSubAST> accumulator) {
     for (SingleSubAST child : children) {
-      if (child.isNotLeaf()) {
+      if (!child.isLeaf()) {
         accumulator.add(child);
         child.allSubASTs(accumulator);
       }

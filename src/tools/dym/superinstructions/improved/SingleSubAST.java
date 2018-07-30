@@ -99,15 +99,16 @@ abstract class SingleSubAST extends AbstractSubAST {
   }
 
   @Override
-  List<VirtualSubAST> commonSubASTs(final AbstractSubAST arg,
-      final List<VirtualSubAST> accumulator) {
+  List<AbstractSubAST> commonSubASTs(final AbstractSubAST arg,
+      final List<AbstractSubAST> accumulator) {
     if (arg instanceof CompoundSubAST) {
       return arg.commonSubASTs(this, accumulator);
     }
     assert arg instanceof SingleSubAST;
     for (SingleSubAST mySubAST : allSubASTs()) {
       List<SingleSubAST> theirMatchingSubASTs =
-          arg.allSubASTs().stream().filter(mySubAST::equals).collect(Collectors.toList());
+          arg.allSubASTs().parallelStream().filter(mySubAST::equals)
+             .collect(Collectors.toList());
       if (theirMatchingSubASTs.size() > 0) {
         accumulator.add(new VirtualSubAST(mySubAST, theirMatchingSubASTs));
       }

@@ -62,9 +62,7 @@ public class CandidateWriter {
 
     serializeASTsForFurtherSOMnsInvocations(myDeduplicator.getDeduplicatedASTs());
 
-    List<AbstractSubAST> uniqueVirtualASts = myDeduplicator.getVirtualSubASTs();
-
-    writeHumanReadableReport(myDeduplicator.getDeduplicatedASTs(), uniqueVirtualASts);
+    writeHumanReadableReport(myDeduplicator.getVirtualSubASTs());
   }
 
   public ExecutionEventNodeFactory getExecutionEventNodeFactory() {
@@ -79,13 +77,13 @@ public class CandidateWriter {
 
   private class SubASTListDeduplicator {
     private final List<AbstractSubAST> inputWithoutDuplicates;
-    private final List<VirtualSubAST>  putVirtualSubASTsHere = new ArrayList<>();
+    private List<AbstractSubAST>       putVirtualSubASTsHere = new ArrayList<>();
 
     SubASTListDeduplicator(final List<AbstractSubAST> input) {
       inputWithoutDuplicates = deduplicate(input, true);
     }
 
-    private List<AbstractSubAST> deduplicate(final List<? extends AbstractSubAST> input,
+    private List<AbstractSubAST> deduplicate(final List<AbstractSubAST> input,
         final boolean collectVirtualASTs) {
       AbstractSubAST[] ra = new AbstractSubAST[input.size()];
       ra = input.toArray(ra);
@@ -121,6 +119,7 @@ public class CandidateWriter {
     }
 
     List<AbstractSubAST> getVirtualSubASTs() {
+      putVirtualSubASTsHere.addAll(inputWithoutDuplicates);
       return deduplicate(putVirtualSubASTsHere, false);
     }
   }
@@ -155,11 +154,9 @@ public class CandidateWriter {
     }
   }
 
-  private void writeHumanReadableReport(final List<AbstractSubAST> uniqueASTs,
-      final List<AbstractSubAST> uniqueVirtualASts) {
+  private void writeHumanReadableReport(final List<AbstractSubAST> uniqueASTs) {
     // sort _all_ ASTs (including virtual) using the natural ordering specified by the
     // compareTo method
-    uniqueASTs.addAll(uniqueVirtualASts);
     uniqueASTs.sort(null);
 
     final StringBuilder report = new StringBuilder();
