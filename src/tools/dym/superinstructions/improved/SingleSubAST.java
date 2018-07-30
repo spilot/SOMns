@@ -1,4 +1,4 @@
-package tools.dym.superinstructions;
+package tools.dym.superinstructions.improved;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
@@ -67,6 +68,9 @@ abstract class SingleSubAST extends AbstractSubAST {
         }
       });
     } while (!children.isEmpty());
+    if (newChildren.isEmpty()) {
+      return new SingleSubASTLeaf(n, activationsByType);
+    }
     return new SingleSubASTwithChildren(n,
         newChildren.toArray(new SingleSubAST[newChildren.size()]),
         activationsByType);
@@ -83,6 +87,12 @@ abstract class SingleSubAST extends AbstractSubAST {
     this.activationsByType = activationsByType;
   }
 
+  SingleSubAST(final SingleSubAST copyFrom) {
+    enclosedNodeString = copyFrom.enclosedNodeString;
+    enclosedNodeType = copyFrom.enclosedNodeType;
+    activationsByType = copyFrom.activationsByType;
+  }
+
   @Override
   public String toString() {
     return this.toStringRecursive(new StringBuilder(), "").toString();
@@ -95,17 +105,13 @@ abstract class SingleSubAST extends AbstractSubAST {
       return arg.commonSubASTs(this);
     }
     assert arg instanceof SingleSubAST;
-    this.allSubASTs().forEach((mySubAST) -> {
-      List<SingleSubAST> theirMatchingSubASTs = new ArrayList<>();
-      arg.allSubASTs().forEach((theirSubAST) -> {
-        if (mySubAST.equals(theirSubAST)) {
-          theirMatchingSubASTs.add(theirSubAST);
-        }
-      });
+    for (SingleSubAST mySubAST : allSubASTs()) {
+      List<SingleSubAST> theirMatchingSubASTs =
+          arg.allSubASTs().stream().filter(mySubAST::equals).collect(Collectors.toList());
       if (theirMatchingSubASTs.size() > 0) {
         accumulator.add(new VirtualSubAST(mySubAST, theirMatchingSubASTs));
       }
-    });
+    }
     return accumulator;
   }
 
@@ -132,6 +138,9 @@ abstract class SingleSubAST extends AbstractSubAST {
 
   @Override
   public AbstractSubAST add(final AbstractSubAST arg) {
+    if (arg instanceof CompoundSubAST) {
+      return ((CompoundSubAST) arg).add(this);
+    }
     return new CompoundSubAST(this).add(arg);
   }
 

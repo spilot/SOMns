@@ -88,9 +88,9 @@ import tools.dym.profiles.LoopProfile;
 import tools.dym.profiles.OperationProfile;
 import tools.dym.profiles.ReadValueProfile;
 import tools.dym.profiles.TypeCounter;
-import tools.dym.superinstructions.CandidateDetector;
-import tools.dym.superinstructions.CandidateWriter;
-import tools.dym.superinstructions.ContextCollector;
+import tools.dym.superinstructions.improved.CandidateWriter;
+import tools.dym.superinstructions.legacy.CandidateDetector;
+import tools.dym.superinstructions.legacy.ContextCollector;
 import tools.language.StructuralProbe;
 
 

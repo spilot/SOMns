@@ -1,4 +1,4 @@
-package tools.dym.superinstructions;
+package tools.dym.superinstructions.legacy;
 
 import java.util.*;
 import java.util.stream.Collectors;

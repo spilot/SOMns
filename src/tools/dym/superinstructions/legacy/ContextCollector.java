@@ -1,4 +1,4 @@
-package tools.dym.superinstructions;
+package tools.dym.superinstructions.legacy;
 
 import bd.primitives.nodes.EagerPrimitive;
 import com.oracle.truffle.api.instrumentation.InstrumentableFactory;

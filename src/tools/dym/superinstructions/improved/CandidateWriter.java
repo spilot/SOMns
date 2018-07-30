@@ -1,4 +1,4 @@
-package tools.dym.superinstructions;
+package tools.dym.superinstructions.improved;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

@@ -1,4 +1,4 @@
-package tools.dym.superinstructions;
+package tools.dym.superinstructions.improved;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +11,10 @@ class SingleSubASTLeaf extends SingleSubAST {
     super(enclosedNode, activationsByType);
   }
 
+  SingleSubASTLeaf(final SingleSubAST copyFrom) {
+    super(copyFrom);
+  }
+
   @Override
   public boolean equals(final Object o) {
     return (o instanceof SingleSubASTLeaf)
@@ -18,8 +22,8 @@ class SingleSubASTLeaf extends SingleSubAST {
   }
 
   @Override
-  public long score() {
-    return totalActivations();
+  void computeScore() {
+    score = totalActivations();
   }
 
   @Override

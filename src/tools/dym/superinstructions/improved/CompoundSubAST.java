@@ -1,4 +1,4 @@
-package tools.dym.superinstructions;
+package tools.dym.superinstructions.improved;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.function.Consumer;
 
 class CompoundSubAST extends AbstractSubAST {
 
-  protected final String ACTIVATIONS_STRING = " sum of mean activations:\n";
+  final String ACTIVATIONS_STRING = " sum of mean activations:\n";
 
-  protected List<SingleSubAST> enclosedNodes;
+  List<SingleSubAST> enclosedNodes;
 
   CompoundSubAST(final SingleSubAST... nodes) {
     if (nodes.length == 0) {
@@ -17,12 +17,8 @@ class CompoundSubAST extends AbstractSubAST {
     }
     enclosedNodes = new ArrayList<>();
     for (SingleSubAST n : nodes) {
-      if (n == null) {
-        throw new NullPointerException();
-      }
-      if (!n.equals(nodes[0])) {
-        throw new IllegalArgumentException();
-      }
+      assert n != null;
+      assert n.equals(nodes[0]);
       enclosedNodes.add(n);
     }
   }
@@ -56,9 +52,12 @@ class CompoundSubAST extends AbstractSubAST {
   }
 
   private void addIfNew(final SingleSubAST item) {
-    if (this.enclosedNodes.stream().noneMatch((existingNode) -> (existingNode == item))) {
-      this.enclosedNodes.add(item);
+    for (SingleSubAST enclosedNode : enclosedNodes) {
+      if (enclosedNode == item) {
+        return;
+      }
     }
+    enclosedNodes.add(item);
   }
 
   @Override
@@ -86,8 +85,8 @@ class CompoundSubAST extends AbstractSubAST {
   }
 
   @Override
-  long score() {
-    return enclosedNodes.stream().mapToLong(SingleSubAST::score).sum();
+  void computeScore() {
+    score = enclosedNodes.stream().mapToLong(SingleSubAST::score).sum();
   }
 
   @Override
