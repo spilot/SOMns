@@ -79,13 +79,13 @@ public class CandidateWriter {
 
   private class SubASTListDeduplicator {
     private final List<AbstractSubAST> inputWithoutDuplicates;
-    private final List<AbstractSubAST> putVirtualSubASTsHere = new ArrayList<>();
+    private final List<VirtualSubAST>  putVirtualSubASTsHere = new ArrayList<>();
 
     SubASTListDeduplicator(final List<AbstractSubAST> input) {
       inputWithoutDuplicates = deduplicate(input, true);
     }
 
-    private List<AbstractSubAST> deduplicate(final List<AbstractSubAST> input,
+    private List<AbstractSubAST> deduplicate(final List<? extends AbstractSubAST> input,
         final boolean collectVirtualASTs) {
       AbstractSubAST[] ra = new AbstractSubAST[input.size()];
       ra = input.toArray(ra);
@@ -95,7 +95,7 @@ public class CandidateWriter {
           for (int j = i + 1; j < ra.length; j++) {
             if (ra[j] != null) {
               if (collectVirtualASTs) {
-                putVirtualSubASTsHere.addAll(ra[i].commonSubASTs(ra[j]));
+                ra[i].commonSubASTs(ra[j], putVirtualSubASTsHere);
               }
               if (ra[i].equals(ra[j])) {
                 ra[i] = ra[i].add(ra[j]);

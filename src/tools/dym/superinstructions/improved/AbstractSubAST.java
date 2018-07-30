@@ -28,9 +28,9 @@ abstract class AbstractSubAST implements Comparable<AbstractSubAST>, Serializabl
 
   abstract List<SingleSubAST> allSubASTs(List<SingleSubAST> accumulator);
 
-  List<VirtualSubAST> commonSubASTs(final AbstractSubAST arg) {
-    return commonSubASTs(arg, new ArrayList<>());
-  }
+  // List<VirtualSubAST> commonSubASTs(final AbstractSubAST arg) {
+  // return commonSubASTs(arg, new ArrayList<>());
+  // }
 
   abstract List<VirtualSubAST> commonSubASTs(AbstractSubAST arg,
       List<VirtualSubAST> accumulator);

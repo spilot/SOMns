@@ -10,11 +10,7 @@ import som.interpreter.nodes.SequenceNode;
 
 
 class SingleSubASTwithChildren extends SingleSubAST {
-  private Map<String, Long> activationsByType;
-  private SingleSubAST[]    children;
-
-  private String                enclosedNodeString;
-  private Class<? extends Node> enclosedNodeType;
+  private SingleSubAST[] children;
 
   SingleSubASTwithChildren(final Node enclosedNode,
       final SingleSubAST[] children,

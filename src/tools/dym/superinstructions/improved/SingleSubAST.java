@@ -102,7 +102,7 @@ abstract class SingleSubAST extends AbstractSubAST {
   List<VirtualSubAST> commonSubASTs(final AbstractSubAST arg,
       final List<VirtualSubAST> accumulator) {
     if (arg instanceof CompoundSubAST) {
-      return arg.commonSubASTs(this);
+      return arg.commonSubASTs(this, accumulator);
     }
     assert arg instanceof SingleSubAST;
     for (SingleSubAST mySubAST : allSubASTs()) {
