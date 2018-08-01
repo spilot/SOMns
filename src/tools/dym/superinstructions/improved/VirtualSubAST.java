@@ -2,6 +2,8 @@ package tools.dym.superinstructions.improved;
 
 import java.util.List;
 
+import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
+
 
 public class VirtualSubAST extends CompoundSubAST {
   protected final String ACTIVATIONS_STRING = " sum of mean activations (VIRTUAL):\n";
@@ -22,10 +24,15 @@ public class VirtualSubAST extends CompoundSubAST {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder().append(this.score()).append(ACTIVATIONS_STRING);
+    StringBuilder sb = new StringBuilder().append(this.getScore()).append(ACTIVATIONS_STRING);
     enclosedNodes.forEach((subAST) -> {
       subAST.toStringRecursive(sb.append("--\n"), "  ");
     });
     return sb.toString();
+  }
+
+  @Override
+  long computeScore(final ScoreVisitor scoreVisitor) {
+    return scoreVisitor.score(this);
   }
 }

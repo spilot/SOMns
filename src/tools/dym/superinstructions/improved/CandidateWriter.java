@@ -157,7 +157,7 @@ public class CandidateWriter {
   private void writeHumanReadableReport(final List<AbstractSubAST> uniqueASTs) {
     // sort _all_ ASTs (including virtual) using the natural ordering specified by the
     // compareTo method
-    uniqueASTs.sort(null);
+    uniqueASTs.sort(SubASTComparator.HIGHEST_STATIC_FREQUENCY_FIRST);
 
     final StringBuilder report = new StringBuilder();
 
@@ -165,7 +165,7 @@ public class CandidateWriter {
       report.append(
           "===============================================================================\n");
       if (ast instanceof SingleSubASTwithChildren) {
-        report.append(ast.score()).append(" activations:\n");
+        report.append(ast.getScore()).append(" activations:\n");
       }
       report.append(ast).append('\n');
     }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
+
 
 class CompoundSubAST extends AbstractSubAST {
 
@@ -45,7 +47,7 @@ class CompoundSubAST extends AbstractSubAST {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder().append(this.score()).append(ACTIVATIONS_STRING);
+    StringBuilder sb = new StringBuilder().append(this.getScore()).append(ACTIVATIONS_STRING);
     enclosedNodes.forEach((subAST) -> {
       subAST.toStringRecursive(sb.append("--\n"), "  ");
     });
@@ -86,8 +88,8 @@ class CompoundSubAST extends AbstractSubAST {
   }
 
   @Override
-  void computeScore() {
-    score = enclosedNodes.stream().mapToLong(SingleSubAST::score).sum();
+  long computeScore(final ScoreVisitor scoreVisitor) {
+    return scoreVisitor.score(this);
   }
 
   @Override

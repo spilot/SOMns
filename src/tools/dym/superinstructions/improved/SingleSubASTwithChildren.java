@@ -7,6 +7,7 @@ import java.util.Map;
 import com.oracle.truffle.api.nodes.Node;
 
 import som.interpreter.nodes.SequenceNode;
+import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
 
 class SingleSubASTwithChildren extends SingleSubAST {
@@ -48,11 +49,6 @@ class SingleSubASTwithChildren extends SingleSubAST {
       }
     }
     return true;
-  }
-
-  @Override
-  void computeScore() {
-    score = totalActivations() / numberOfNodes();
   }
 
   /**
@@ -135,7 +131,7 @@ class SingleSubASTwithChildren extends SingleSubAST {
       if (!children[i].isLeaf() && children[i].enclosedNodeType != SequenceNode.class) {
         SingleSubAST[] combinationWithoutSubtree =
             Arrays.copyOf(currentCombination, currentCombination.length);
-        combinationWithoutSubtree[i] = new VirtualSingleSubASTLeaf(children[i]);
+        combinationWithoutSubtree[i] = new CutSubAST(children[i]);
         addPowerSetRecursively(i - 1, combinationWithoutSubtree(i, currentCombination),
             accumulator);
       }
@@ -146,7 +142,7 @@ class SingleSubASTwithChildren extends SingleSubAST {
       final SingleSubAST[] currentCombination) {
     SingleSubAST[] combinationWithoutSubtree =
         Arrays.copyOf(currentCombination, currentCombination.length);
-    combinationWithoutSubtree[i] = new VirtualSingleSubASTLeaf(children[i]);
+    combinationWithoutSubtree[i] = new CutSubAST(children[i]);
     return combinationWithoutSubtree;
   }
 
@@ -163,5 +159,10 @@ class SingleSubASTwithChildren extends SingleSubAST {
       child.toStringRecursive(accumulator, prefix + "  ");
     }
     return accumulator;
+  }
+
+  @Override
+  long computeScore(final ScoreVisitor scoreVisitor) {
+    return scoreVisitor.score(this);
   }
 }

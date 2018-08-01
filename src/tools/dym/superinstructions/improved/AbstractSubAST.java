@@ -5,16 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
-abstract class AbstractSubAST implements Comparable<AbstractSubAST>, Serializable {
 
-  long            score;
-  private boolean isScoreValid = false;
+abstract class AbstractSubAST implements Serializable {
 
-  @Override
-  public final int compareTo(final AbstractSubAST arg) {
-    return (int) (arg.score() - this.score());
-  }
+  private long         score;
+  private ScoreVisitor lastScoreVisitor = null;
 
   @Override
   public abstract boolean equals(Object arg);
@@ -37,19 +34,30 @@ abstract class AbstractSubAST implements Comparable<AbstractSubAST>, Serializabl
    * The higher a SubASTs score is, the more speedup should be achievable by replacing it with
    * a superinstruction.
    */
-  final long score() {
-    if (!isScoreValid) {
-      computeScore();
-      isScoreValid = true;
+  final long score(final ScoreVisitor scoreVisitor) {
+    if (!isScoreValid(scoreVisitor)) {
+      score = computeScore(scoreVisitor);
+      lastScoreVisitor = scoreVisitor;
     }
     return score;
   }
 
-  final void invalidateScore() {
-    this.isScoreValid = false;
+  final boolean isScoreValid(final ScoreVisitor scoreVisitor) {
+    return lastScoreVisitor != null && lastScoreVisitor == scoreVisitor;
   }
 
-  abstract void computeScore();
+  abstract long computeScore(ScoreVisitor scoreGiver);
+
+  final void invalidateScore() {
+    this.lastScoreVisitor = null;
+  }
+
+  final long getScore() {
+    if (lastScoreVisitor == null) {
+      return Long.MAX_VALUE;
+    }
+    return score;
+  }
 
   public abstract AbstractSubAST add(AbstractSubAST argument);
 

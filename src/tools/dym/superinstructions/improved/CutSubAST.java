@@ -1,14 +1,12 @@
 package tools.dym.superinstructions.improved;
 
-public class VirtualSingleSubASTLeaf extends SingleSubASTLeaf {
+import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
-  VirtualSingleSubASTLeaf(final SingleSubAST copyFrom) {
+
+public class CutSubAST extends SingleSubASTLeaf {
+
+  CutSubAST(final SingleSubAST copyFrom) {
     super(copyFrom);
-  }
-
-  @Override
-  void computeScore() {
-    score = 0;
   }
 
   @Override
@@ -21,5 +19,10 @@ public class VirtualSingleSubASTLeaf extends SingleSubASTLeaf {
                .append("\u001B[31m" + " (sub-AST cut)" + "\u001B[0m")
                .append('\n');
     return accumulator;
+  }
+
+  @Override
+  long computeScore(final ScoreVisitor scoreVisitor) {
+    return scoreVisitor.score(this);
   }
 }
