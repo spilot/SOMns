@@ -1,7 +1,7 @@
 package tools.dym.superinstructions.improved;
 
-import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.oracle.truffle.api.nodes.Node;
 
@@ -29,8 +29,8 @@ class SingleSubASTLeaf extends SingleSubAST {
   }
 
   @Override
-  List<SingleSubAST> allSubASTs(final List<SingleSubAST> accumulator) {
-    return accumulator;
+  public void forEachRelevantSubAST(final Consumer<SingleSubAST> action) {
+    return;
   }
 
   @Override

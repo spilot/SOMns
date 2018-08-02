@@ -1,12 +1,12 @@
 package tools.dym.superinstructions.improved;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.oracle.truffle.api.nodes.Node;
 
-import som.interpreter.nodes.SequenceNode;
 import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
 
@@ -24,6 +24,33 @@ class SingleSubASTwithChildren extends SingleSubAST {
       final SingleSubAST[] children) {
     super(copyFrom);
     this.children = children;
+  }
+
+  /**
+   * Only used for power set creation.
+   *
+   * @param copyFrom The SingleSubAST to copy the data from.
+   * @param cutHere Insert CutSubASTs when encountering these, instead of copying.
+   */
+  SingleSubASTwithChildren(final SingleSubASTwithChildren copyFrom,
+      final List<SingleSubASTwithChildren> cutHere) {
+    super(copyFrom);
+    // copy children
+    this.children = new SingleSubAST[copyFrom.children.length];
+    for (int i = 0; i < copyFrom.children.length; i++) {
+      SingleSubAST child = copyFrom.children[i];
+      if (cutHere.contains(child)) {
+        this.children[i] = new CutSubAST(child);
+      } else {
+        if (child.isLeaf()) {
+          this.children[i] = child;
+        } else {
+          assert child instanceof SingleSubASTwithChildren;
+          this.children[i] =
+              new SingleSubASTwithChildren((SingleSubASTwithChildren) child, cutHere);
+        }
+      }
+    }
   }
 
   @Override
@@ -52,14 +79,11 @@ class SingleSubASTwithChildren extends SingleSubAST {
   }
 
   /**
-   * @return true if this tree contains nodes with activations and is not a leaf
+   * @return true if this tree has more nodes than it has activations
    */
   @Override
   boolean isRelevant() {
-    if (this.totalActivations() > 0) {
-      return true;
-    }
-    return Arrays.stream(children).anyMatch((child) -> child.isRelevant());
+    return this.totalActivations() > this.numberOfNodes();
   }
 
   @Override
@@ -81,69 +105,52 @@ class SingleSubASTwithChildren extends SingleSubAST {
   }
 
   @Override
-  List<SingleSubAST> allSubASTs(final List<SingleSubAST> accumulator) {
-    for (SingleSubAST child : children) {
-      if (!child.isLeaf()) {
-        accumulator.add(child);
-        child.allSubASTs(accumulator);
-      }
-    }
-    addPowerSetRecursively(accumulator);
-    return accumulator;
-  }
+  public void forEachRelevantSubAST(final Consumer<SingleSubAST> action) {
+    if (this.isRelevant()) {
+      action.accept(this);
 
-  private void addPowerSetRecursively(final List<SingleSubAST> accumulator) {
-    boolean allChildrenAreLeaves = true;
-    for (SingleSubAST child : children) {
-      if (!child.isLeaf() && !(child.enclosedNodeType == SequenceNode.class)) {
-        allChildrenAreLeaves = false;
-        break;
+      for (SingleSubAST child : children) {
+        child.forEachRelevantSubAST(action);
       }
-    }
-    if (children.length == 1 || this.totalActivations() == 0 || allChildrenAreLeaves) {
-      // this greatly reduces complexity
-      // and I hope eliminates no usable candidates
-      accumulator.add(this);
-    } else {
-      addPowerSetRecursively(children.length - 1, new SingleSubAST[children.length],
-          accumulator);
+      if (powerSetCache == null) {
+        powerSetCache = createRelevantPowerset();
+      }
+
+      powerSetCache.forEach(action);
     }
   }
 
-  private void addPowerSetRecursively(final int i, final SingleSubAST[] currentCombination,
-      final List<SingleSubAST> accumulator) {
-    currentCombination[i] = children[i];
-    if (i == 0) {
-      if (!children[i].isLeaf() && children[i].enclosedNodeType != SequenceNode.class) {
-        accumulator.add(new SingleSubASTwithChildren(SingleSubASTwithChildren.this,
-            combinationWithoutSubtree(i, currentCombination)));
-      }
-      for (int j = 0; j < children.length; j++) {
-        if (children[j] != currentCombination[j]) {
-          accumulator.add(
-              new SingleSubASTwithChildren(SingleSubASTwithChildren.this, currentCombination));
-          break;
+  List<SingleSubASTwithChildren> powerSetCache;
+
+  private List<SingleSubASTwithChildren> createRelevantPowerset() {
+    List<SingleSubASTwithChildren> input =
+        recursivelyAddAllChildrenWithChildrenToAccumulator(new ArrayList<>());
+    List<SingleSubASTwithChildren> resultList = new ArrayList<>();
+    for (long i = 1; i < input.size() * input.size(); i++) {
+      final List<SingleSubASTwithChildren> elementOfPowerSet = new ArrayList<>();
+      for (int index = 0; index < input.size(); index++) {
+        if (((i >>> index) & 1) == 1) {
+          elementOfPowerSet.add(input.get(index));
         }
       }
+      SingleSubASTwithChildren result = new SingleSubASTwithChildren(this, elementOfPowerSet);
+      if (result.isRelevant()) {
+        resultList.add(result);
+      }
+    }
+    return resultList;
+  }
 
-    } else {
-      addPowerSetRecursively(i - 1, currentCombination, accumulator);
-      if (!children[i].isLeaf() && children[i].enclosedNodeType != SequenceNode.class) {
-        SingleSubAST[] combinationWithoutSubtree =
-            Arrays.copyOf(currentCombination, currentCombination.length);
-        combinationWithoutSubtree[i] = new CutSubAST(children[i]);
-        addPowerSetRecursively(i - 1, combinationWithoutSubtree(i, currentCombination),
+  private List<SingleSubASTwithChildren> recursivelyAddAllChildrenWithChildrenToAccumulator(
+      final List<SingleSubASTwithChildren> accumulator) {
+    for (SingleSubAST child : children) {
+      if (child instanceof SingleSubASTwithChildren) {
+        accumulator.add((SingleSubASTwithChildren) child);
+        ((SingleSubASTwithChildren) child).recursivelyAddAllChildrenWithChildrenToAccumulator(
             accumulator);
       }
     }
-  }
-
-  private SingleSubAST[] combinationWithoutSubtree(final int i,
-      final SingleSubAST[] currentCombination) {
-    SingleSubAST[] combinationWithoutSubtree =
-        Arrays.copyOf(currentCombination, currentCombination.length);
-    combinationWithoutSubtree[i] = new CutSubAST(children[i]);
-    return combinationWithoutSubtree;
+    return accumulator;
   }
 
   @Override

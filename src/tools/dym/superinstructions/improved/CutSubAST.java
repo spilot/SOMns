@@ -16,7 +16,9 @@ public class CutSubAST extends SingleSubASTLeaf {
                .append(enclosedNodeString)
                .append(": ")
                .append(activationsByType)
-               .append("\u001B[31m" + " (sub-AST cut)" + "\u001B[0m")
+               .append("\u001B[31m") // red text
+               .append(" (sub-AST cut)")
+               .append("\u001B[0m")// default-coloured text
                .append('\n');
     return accumulator;
   }

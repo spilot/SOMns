@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
@@ -56,9 +55,8 @@ abstract class SingleSubAST extends AbstractSubAST {
         if (childNode.getSourceSection() == null) {
           if (childNode instanceof SequenceNode) {
             children.forEach(worklist::add);
-            newChildren.add(
-                new SingleSubASTLeaf(n,
-                    rawActivations.getOrDefault(childNode, new HashMap<>())));
+            newChildren.add(new SingleSubASTLeaf(n,
+                rawActivations.getOrDefault(childNode, new HashMap<>())));
           } else {
             childNode.getChildren().forEach(children::add);
           }
@@ -72,8 +70,7 @@ abstract class SingleSubAST extends AbstractSubAST {
       return new SingleSubASTLeaf(n, activationsByType);
     }
     return new SingleSubASTwithChildren(n,
-        newChildren.toArray(new SingleSubAST[newChildren.size()]),
-        activationsByType);
+        newChildren.toArray(new SingleSubAST[newChildren.size()]), activationsByType);
   }
 
   Map<String, Long>     activationsByType;
@@ -101,18 +98,17 @@ abstract class SingleSubAST extends AbstractSubAST {
   @Override
   List<AbstractSubAST> commonSubASTs(final AbstractSubAST arg,
       final List<AbstractSubAST> accumulator) {
-    if (arg instanceof CompoundSubAST) {
-      return arg.commonSubASTs(this, accumulator);
-    }
-    assert arg instanceof SingleSubAST;
-    for (SingleSubAST mySubAST : allSubASTs()) {
-      List<SingleSubAST> theirMatchingSubASTs =
-          arg.allSubASTs().parallelStream().filter(mySubAST::equals)
-             .collect(Collectors.toList());
+    this.forEachRelevantSubAST((mySubAST) -> {
+      List<SingleSubAST> theirMatchingSubASTs = new ArrayList<>();
+      arg.forEachRelevantSubAST((sAST) -> {
+        if (sAST.equals(mySubAST)) {
+          theirMatchingSubASTs.add(sAST);
+        }
+      });
       if (theirMatchingSubASTs.size() > 0) {
         accumulator.add(new VirtualSubAST(mySubAST, theirMatchingSubASTs));
       }
-    }
+    });
     return accumulator;
   }
 

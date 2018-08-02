@@ -56,7 +56,7 @@ class CompoundSubAST extends AbstractSubAST {
 
   private void addIfNew(final SingleSubAST item) {
     for (SingleSubAST enclosedNode : enclosedNodes) {
-      if (enclosedNode == item) {
+      if (enclosedNode == item) { // || enclosedNode.toString().equals(item.toString())) {
         return;
       }
     }
@@ -64,17 +64,9 @@ class CompoundSubAST extends AbstractSubAST {
   }
 
   @Override
-  List<SingleSubAST> allSubASTs(final List<SingleSubAST> accumulator) {
-    for (SingleSubAST child : enclosedNodes) {
-      child.allSubASTs(accumulator);
-    }
-    return accumulator;
-  }
-
-  @Override
   List<AbstractSubAST> commonSubASTs(final AbstractSubAST arg,
       final List<AbstractSubAST> accumulator) {
-    this.allSubASTs().forEach((mySubAST) -> mySubAST.commonSubASTs(arg, accumulator));
+    this.forEachRelevantSubAST((mySubAST) -> mySubAST.commonSubASTs(arg, accumulator));
     return accumulator;
   }
 
@@ -95,5 +87,14 @@ class CompoundSubAST extends AbstractSubAST {
   @Override
   void forEach(final Consumer<SingleSubAST> action) {
     enclosedNodes.forEach(action);
+  }
+
+  @Override
+  void forEachRelevantSubAST(final Consumer<SingleSubAST> action) {
+    for (SingleSubAST child : enclosedNodes) {
+      if (child.isRelevant()) {
+        child.forEachRelevantSubAST(action);
+      }
+    }
   }
 }

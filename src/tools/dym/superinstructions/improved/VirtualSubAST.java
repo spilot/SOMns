@@ -10,7 +10,7 @@ public class VirtualSubAST extends CompoundSubAST {
 
   public VirtualSubAST(final SingleSubAST head, final List<SingleSubAST> tail) {
     super(tail);
-    this.enclosedNodes.add(head);
+    this.add(head);
   }
 
   @Override

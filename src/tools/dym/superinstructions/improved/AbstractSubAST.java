@@ -1,7 +1,6 @@
 package tools.dym.superinstructions.improved;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -18,12 +17,6 @@ abstract class AbstractSubAST implements Serializable {
 
   @Override
   public abstract String toString();
-
-  List<SingleSubAST> allSubASTs() {
-    return allSubASTs(new ArrayList<>());
-  }
-
-  abstract List<SingleSubAST> allSubASTs(List<SingleSubAST> accumulator);
 
   abstract List<AbstractSubAST> commonSubASTs(AbstractSubAST arg,
       List<AbstractSubAST> accumulator);
@@ -61,5 +54,14 @@ abstract class AbstractSubAST implements Serializable {
 
   public abstract AbstractSubAST add(AbstractSubAST argument);
 
+  /**
+   * Iterates over the elements of a compoundSubAST and executes action.
+   * For SingleSubAST, calls action on this.
+   */
   abstract void forEach(Consumer<SingleSubAST> action);
+
+  /**
+   * Traverses the whole tree and executes for every subAST there is.
+   */
+  abstract void forEachRelevantSubAST(Consumer<SingleSubAST> action);
 }

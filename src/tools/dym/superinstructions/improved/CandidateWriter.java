@@ -38,6 +38,7 @@ public class CandidateWriter {
       final Object readObject = ois.readObject();
       this.olderSubASTs = (List<AbstractSubAST>) readObject;
     } catch (ClassCastException | IOException | ClassNotFoundException e) {
+      // TODO replace with logger call
       System.out.println("No old candidate data found.");
       olderSubASTs = new ArrayList<>();
     }
@@ -80,11 +81,27 @@ public class CandidateWriter {
     private List<AbstractSubAST>       putVirtualSubASTsHere = new ArrayList<>();
 
     SubASTListDeduplicator(final List<AbstractSubAST> input) {
-      inputWithoutDuplicates = deduplicate(input, true);
+      inputWithoutDuplicates = deduplicate(input);
     }
 
-    private List<AbstractSubAST> deduplicate(final List<AbstractSubAST> input,
-        final boolean collectVirtualASTs) {
+    private void collectVirtualSubASTs(final List<AbstractSubAST> input) {
+      AbstractSubAST[] ra = new AbstractSubAST[input.size()];
+      ra = input.toArray(ra);
+      for (int i = 0; i < ra.length - 1; i++) {
+        assert ra[i] != null;
+        // TODO
+        System.out.println("iter: " + i + ", total: " + (ra.length - 1) + ", virtuals: "
+            + putVirtualSubASTsHere.size());
+        for (int j = i + 1 // TODO
+        // this would be correct if commonSubASTs was commutative. Is it?
+        ; j < ra.length; j++) {
+          assert ra[j] != null;
+          ra[i].commonSubASTs(ra[j], putVirtualSubASTsHere);
+        }
+      }
+    }
+
+    private List<AbstractSubAST> deduplicate(final List<AbstractSubAST> input) {
       AbstractSubAST[] ra = new AbstractSubAST[input.size()];
       ra = input.toArray(ra);
 
@@ -92,9 +109,6 @@ public class CandidateWriter {
         if (ra[i] != null) {
           for (int j = i + 1; j < ra.length; j++) {
             if (ra[j] != null) {
-              if (collectVirtualASTs) {
-                ra[i].commonSubASTs(ra[j], putVirtualSubASTsHere);
-              }
               if (ra[i].equals(ra[j])) {
                 ra[i] = ra[i].add(ra[j]);
                 ra[j] = null;
@@ -103,7 +117,6 @@ public class CandidateWriter {
           }
         }
       }
-
       // remove null elements from unique array by adding all non-null items to a list
       List<AbstractSubAST> uniqueASTs = new ArrayList<>();
       for (AbstractSubAST ast : ra) {
@@ -119,8 +132,9 @@ public class CandidateWriter {
     }
 
     List<AbstractSubAST> getVirtualSubASTs() {
+      collectVirtualSubASTs(inputWithoutDuplicates);
       putVirtualSubASTsHere.addAll(inputWithoutDuplicates);
-      return deduplicate(putVirtualSubASTsHere, false);
+      return deduplicate(putVirtualSubASTsHere);
     }
   }
 
@@ -135,7 +149,10 @@ public class CandidateWriter {
         final SingleSubAST result =
             // will also add all Nodes we should also consider as root nodes to the worklist
             SingleSubAST.fromAST(rootNode, worklist, rawActivations);
-        if (result != null && result.isRelevant()) {
+        if (result != null && /*
+                               * calling isRelevant here drastically reduces complexity and we
+                               * seem to not lose any good candidates
+                               */result.isRelevant()) {
           preExistingSubASTs.add(result);
         }
       });
@@ -157,7 +174,7 @@ public class CandidateWriter {
   private void writeHumanReadableReport(final List<AbstractSubAST> uniqueASTs) {
     // sort _all_ ASTs (including virtual) using the natural ordering specified by the
     // compareTo method
-    uniqueASTs.sort(SubASTComparator.HIGHEST_STATIC_FREQUENCY_FIRST);
+    uniqueASTs.sort(SubASTComparator.HIGHEST_ACTIVATIONS_SAVED_FIRST);
 
     final StringBuilder report = new StringBuilder();
 
