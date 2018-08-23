@@ -12,14 +12,30 @@ import com.oracle.truffle.api.nodes.NodeUtil;
 import com.oracle.truffle.api.source.SourceSection;
 
 import som.interpreter.nodes.SequenceNode;
+import som.interpreter.nodes.specialized.IfInlinedLiteralNode;
+import som.interpreter.nodes.specialized.IfMessageNode;
+import som.interpreter.nodes.specialized.IfTrueIfFalseInlinedLiteralsNode;
+import som.interpreter.nodes.specialized.IfTrueIfFalseMessageNode;
 
 
 abstract class SingleSubAST extends AbstractSubAST {
+
+  private static boolean isControlFlowDividingNode(final Node n) {
+    // TODO un-hardcode this somehow?
+    // TODO extend list of nodes?
+    return n instanceof SequenceNode
+        || n instanceof IfInlinedLiteralNode
+        || n instanceof IfMessageNode
+        || n instanceof IfTrueIfFalseInlinedLiteralsNode
+        || n instanceof IfTrueIfFalseMessageNode;
+
+  }
+
   /**
    * Recursively traverses the AST under rootNode and constructs a new SubAST.
-   * If this method encounters SequenceNodes, it will add them to the SubAST under
-   * construction, but not their children. Instead, they will be added to the given worklist to
-   * make the caller consider them as further root nodes.
+   * If this method encounters SequenceNodes, they will be added to the SubAST under
+   * construction, but their children will not. Instead, they will be added to the given
+   * worklist to make the caller consider them as further root nodes.
    * If the first Node, n, has no source section (SourceSection == null), we add its children
    * to the aforementioned worklist and we return null, thus skipping the null node.
    * If we encounter a node with no source section in another place, we skip it by continuing
@@ -33,46 +49,44 @@ abstract class SingleSubAST extends AbstractSubAST {
       children.forEach(worklist::add);
       return null;
     }
-    if (n instanceof SequenceNode) {
-      children.forEach(worklist::add);
-    }
-
     final Map<String, Long> activationsByType =
         rawActivations.getOrDefault(n, new HashMap<>());
 
-    if (n instanceof SequenceNode || children.isEmpty()) {
+    if (isControlFlowDividingNode(n)) {
+      children.forEach(worklist::add);
+      return new SingleSubASTLeaf(n, activationsByType);
+    }
+    if (children.isEmpty()) {
       return new SingleSubASTLeaf(n, activationsByType);
     }
 
-    // now we do the actual work: decide what our result subASTs children will be.
+    // now we do the actual work: decide what our result subASTs children will be
     final List<SingleSubAST> newChildren = new ArrayList<>();
 
     while (!children.isEmpty()) {
       final Node childNode = children.remove(children.size() - 1); // removing last element
-                                                                   // takes
-      // constant time in ArrayList
-      if (childNode instanceof SequenceNode /*
-                                             * TODO define more nodes as
-                                             * "control flow dividers"?
-                                             */) {
-        // consider all SequenceNode children as new root nodes
+                                                                   // takes constant time in
+                                                                   // ArrayList
+      if (isControlFlowDividingNode(childNode)) {
+        // consider all children of control flow divider as new root nodes
         childNode.getChildren().forEach(worklist::add);
-        // add a leaf containing the SequenceNode to indicate that we pruned it
+        // add a leaf containing the control flow divider node to indicate that we pruned it
         newChildren.add(new CutSubAST(childNode,
             rawActivations.getOrDefault(childNode, new HashMap<>())));
       } else if (childNode.getSourceSection() == null) {
-        // skip tree nodes with null SourceSections. This removes WrapperNodes etc. from our
-        // superinstruction candidates
+        // skip tree nodes with null SourceSections. Removes WrapperNodes etc. from result
         childNode.getChildren().forEach(children::add);
       } else {
+        // this is the "normal case"
         newChildren.add(fromAST(childNode, worklist, rawActivations));
       }
     }
+
     if (newChildren.isEmpty()) {
       return new SingleSubASTLeaf(n, activationsByType);
     }
     return new SingleSubASTwithChildren(n,
-        // TODO this call to Collection::toArray may be optimizable
+        // TODO PMD says this call to Collection::toArray may be optimizable
         newChildren.toArray(new SingleSubAST[newChildren.size()]), activationsByType);
   }
 
@@ -168,7 +182,7 @@ abstract class SingleSubAST extends AbstractSubAST {
   }
 
   @Override
-  public void forEachDirectSubAST(final Consumer<SingleSubAST> action) {
+  void forEachDirectSubAST(final Consumer<SingleSubAST> action) {
     action.accept(this);
   }
 
