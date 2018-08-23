@@ -238,4 +238,28 @@ class SingleSubASTwithChildren extends SingleSubAST {
     }
     return result;
   }
+
+  @Override
+  public boolean equals(final Object that) {
+    if (this == that) {
+      return true;
+    }
+    if ((that instanceof SingleSubASTwithChildren)) {
+      final SingleSubASTwithChildren thatAST = (SingleSubASTwithChildren) that;
+      if (!(this.enclosedNodeType == thatAST.enclosedNodeType
+          && this.sourceFileIndex == thatAST.sourceFileIndex
+          && this.sourceSectionLength == thatAST.sourceSectionLength
+          && this.children.length == thatAST.children.length
+          && this.sourceFileName.equals(thatAST.sourceFileName))) {
+        return false;
+      }
+      for (int i = 0; i < children.length; i++) {
+        if (!(this.children[i].equals(thatAST.children[i]))) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
 }

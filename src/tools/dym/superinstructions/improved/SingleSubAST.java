@@ -179,17 +179,5 @@ abstract class SingleSubAST extends AbstractSubAST {
   }
 
   @Override
-  public boolean equals(final Object that) {
-    if (this == that) {
-      return true;
-    }
-    if (that instanceof SingleSubAST) {
-      final SingleSubAST thatAST = (SingleSubAST) that;
-      return this.enclosedNodeType == thatAST.enclosedNodeType
-          && this.sourceFileIndex == thatAST.sourceFileIndex
-          && this.sourceSectionLength == thatAST.sourceSectionLength
-          && this.sourceFileName.equals(thatAST.sourceFileName);
-    }
-    return false;
-  }
+  public abstract boolean equals(Object that);
 }

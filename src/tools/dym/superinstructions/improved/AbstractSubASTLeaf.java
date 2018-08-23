@@ -41,4 +41,20 @@ abstract class AbstractSubASTLeaf extends SingleSubAST {
   long totalActivations() {
     return totalLocalActivations;
   }
+
+  @Override
+  public boolean equals(final Object that) {
+    if (this == that) {
+      return true;
+    }
+    if (that instanceof AbstractSubASTLeaf) {
+      final SingleSubAST thatAST = (SingleSubAST) that;
+      return this.enclosedNodeType == thatAST.enclosedNodeType
+          && this.sourceFileIndex == thatAST.sourceFileIndex
+          && this.sourceSectionLength == thatAST.sourceSectionLength
+          && this.sourceFileName.equals(thatAST.sourceFileName);
+    }
+    return false;
+  }
+
 }
