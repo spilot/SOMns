@@ -25,6 +25,7 @@ public class VmSettings implements Settings {
   public static final boolean PROMISE_RESOLVED_WITH;
   public static final boolean REPLAY;
   public static final boolean SUPERINSTRUCTIONS;
+  public static final boolean WRITE_HUMAN_FRIENDLY_SUPERINSTRUCTION_REPORT;
 
   public static final boolean TRUFFLE_DEBUGGER_ENABLED;
 
@@ -74,6 +75,8 @@ public class VmSettings implements Settings {
     IGV_DUMP_AFTER_PARSING = getBool("som.igvDumpAfterParsing", false);
 
     SUPERINSTRUCTIONS = getBool("som.superinstructions", true);
+    WRITE_HUMAN_FRIENDLY_SUPERINSTRUCTION_REPORT =
+        getBool("som.superinstructions.writeReportForHumans", false);
 
     ANSI_COLOR_IN_OUTPUT = getBool("som.useAnsiColoring", false);
   }

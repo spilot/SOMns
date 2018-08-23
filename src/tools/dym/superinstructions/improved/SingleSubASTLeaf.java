@@ -1,50 +1,53 @@
 package tools.dym.superinstructions.improved;
 
 import java.util.Map;
-import java.util.function.Consumer;
 
 import com.oracle.truffle.api.nodes.Node;
 
 import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
 
-class SingleSubASTLeaf extends SingleSubAST {
+class SingleSubASTLeaf extends AbstractSubASTLeaf {
   SingleSubASTLeaf(final Node enclosedNode, final Map<String, Long> activationsByType) {
     super(enclosedNode, activationsByType);
   }
 
-  SingleSubASTLeaf(final SingleSubAST copyFrom) {
-    super(copyFrom);
-  }
-
   @Override
-  public boolean equals(final Object o) {
-    return (o instanceof SingleSubASTLeaf)
+  public boolean congruent(final SingleSubAST o) {
+    return o instanceof SingleSubASTLeaf
         && this.enclosedNodeType == ((SingleSubASTLeaf) o).enclosedNodeType;
-  }
-
-  @Override
-  boolean isRelevant() {
-    return false;
-  }
-
-  @Override
-  public void forEachRelevantSubAST(final Consumer<SingleSubAST> action) {
-    return;
-  }
-
-  @Override
-  boolean isLeaf() {
-    return true;
-  }
-
-  @Override
-  int numberOfNodes() {
-    return 1;
   }
 
   @Override
   long computeScore(final ScoreVisitor scoreVisitor) {
     return scoreVisitor.score(this);
   }
+
+  @Override
+  StringBuilder toStringRecursive(final StringBuilder accumulator,
+      final String prefix) {
+    if (this.sourceSection == null) {
+      accumulator.append(prefix)
+                 .append(this.enclosedNodeType.getSimpleName())
+                 .append('(')
+                 .append(this.sourceFileName)
+                 .append(' ')
+                 .append(this.sourceFileIndex)
+                 .append('-')
+                 .append(sourceFileIndex + sourceSectionLength)
+                 .append("): ")
+                 .append(activationsByType)
+                 .append('\n');
+    } else {
+      accumulator.append(prefix)
+                 .append(this.enclosedNodeType.getSimpleName())
+                 .append('(')
+                 .append(this.sourceSection)
+                 .append("): ")
+                 .append(activationsByType)
+                 .append('\n');
+    }
+    return accumulator;
+  }
+
 }

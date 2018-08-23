@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,8 @@ import com.oracle.truffle.api.instrumentation.ExecutionEventNode;
 import com.oracle.truffle.api.instrumentation.ExecutionEventNodeFactory;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
+
+import som.vm.VmSettings;
 
 
 public class CandidateWriter {
@@ -38,7 +41,7 @@ public class CandidateWriter {
       final Object readObject = ois.readObject();
       this.olderSubASTs = (List<AbstractSubAST>) readObject;
     } catch (ClassCastException | IOException | ClassNotFoundException e) {
-      // TODO replace with logger call
+      // TODO replace with logger call?
       System.out.println("No old candidate data found.");
       olderSubASTs = new ArrayList<>();
     }
@@ -52,18 +55,26 @@ public class CandidateWriter {
   }
 
   public void filesOut(final Set<RootNode> rootNodes) {
-    List<AbstractSubAST> subASTs = extractAllSubASTsOfRootNodes(olderSubASTs, rootNodes);
+    final List<AbstractSubAST> subASTs = extractAllSubASTsOfRootNodes(olderSubASTs, rootNodes);
 
-    // make list items unique by folding all equal ASTs into compound ASTs
-    // in the process we also extract virtual ASTs, which are children of ASTs that exist in
-    // more than one one AST and may have a larger score when combined, thus yielding
-    // superinstruction candidates we should consider
-    // we do this by creating an object. Yay for OOP.
-    final SubASTListDeduplicator myDeduplicator = new SubASTListDeduplicator(subASTs);
+    // make list items unique by folding all congruent single ASTs into grouped ASTs.
+    final List<AbstractSubAST> deduplicatedSubASTs = stackAllCongruentSubASTs(subASTs);
 
-    serializeASTsForFurtherSOMnsInvocations(myDeduplicator.getDeduplicatedASTs());
+    serializeASTsForFurtherSOMnsInvocations(deduplicatedSubASTs);
 
-    writeHumanReadableReport(myDeduplicator.getVirtualSubASTs());
+    if (VmSettings.WRITE_HUMAN_FRIENDLY_SUPERINSTRUCTION_REPORT) {
+      // Extract virtual ASTs, which are children of ASTs that exist in
+      // more than one one AST and may have a larger score when combined, thus yielding
+      // possibly good superinstruction candidates.
+      final List<AbstractSubAST> virtualSubASTs =
+          stackAllCongruentSubASTs(collectVirtualSubASTs(deduplicatedSubASTs));
+
+      writeHumanReadableReport(virtualSubASTs,
+          SubASTComparator.HIGHEST_ACTIVATIONS_SAVED_FIRST);
+
+      writeHumanReadableReport(virtualSubASTs,
+          SubASTComparator.HIGHEST_STATIC_FREQUENCY_FIRST);
+    }
   }
 
   public ExecutionEventNodeFactory getExecutionEventNodeFactory() {
@@ -76,66 +87,47 @@ public class CandidateWriter {
     };
   }
 
-  private class SubASTListDeduplicator {
-    private final List<AbstractSubAST> inputWithoutDuplicates;
-    private List<AbstractSubAST>       putVirtualSubASTsHere = new ArrayList<>();
-
-    SubASTListDeduplicator(final List<AbstractSubAST> input) {
-      inputWithoutDuplicates = deduplicate(input);
-    }
-
-    private void collectVirtualSubASTs(final List<AbstractSubAST> input) {
-      AbstractSubAST[] ra = new AbstractSubAST[input.size()];
-      ra = input.toArray(ra);
-      for (int i = 0; i < ra.length - 1; i++) {
-        assert ra[i] != null;
-        // TODO
-        System.out.println("iter: " + i + ", total: " + (ra.length - 1) + ", virtuals: "
-            + putVirtualSubASTsHere.size());
-        for (int j = i + 1 // TODO
-        // this would be correct if commonSubASTs was commutative. Is it?
-        ; j < ra.length; j++) {
-          assert ra[j] != null;
-          ra[i].commonSubASTs(ra[j], putVirtualSubASTsHere);
-        }
-      }
-    }
-
-    private List<AbstractSubAST> deduplicate(final List<AbstractSubAST> input) {
-      AbstractSubAST[] ra = new AbstractSubAST[input.size()];
-      ra = input.toArray(ra);
-
-      for (int i = 0; i < ra.length - 1; i++) {
-        if (ra[i] != null) {
-          for (int j = i + 1; j < ra.length; j++) {
-            if (ra[j] != null) {
-              if (ra[i].equals(ra[j])) {
-                ra[i] = ra[i].add(ra[j]);
-                ra[j] = null;
-              }
-            }
+  private static List<AbstractSubAST> stackAllCongruentSubASTs(
+      final List<AbstractSubAST> input) {
+    AbstractSubAST[] ra = input.toArray(new AbstractSubAST[input.size()]);
+    for (int i = 0; i < ra.length - 1; i++) {
+      if (ra[i] != null) {
+        for (int j = i + 1; j < ra.length; j++) {
+          if (ra[j] != null && ra[i].congruent(ra[j])) {
+            ra[i] = ra[i].add(ra[j]);
+            ra[j] = null;
           }
         }
       }
-      // remove null elements from unique array by adding all non-null items to a list
-      List<AbstractSubAST> uniqueASTs = new ArrayList<>();
-      for (AbstractSubAST ast : ra) {
-        if (ast != null) {
-          uniqueASTs.add(ast);
-        }
+    }
+    // remove null elements from unique array by adding all non-null items to a list
+    final List<AbstractSubAST> uniqueASTs = new ArrayList<>();
+    for (final AbstractSubAST ast : ra) {
+      if (ast != null) {
+        uniqueASTs.add(ast);
       }
-      return uniqueASTs;
     }
+    return uniqueASTs;
+  }
 
-    List<AbstractSubAST> getDeduplicatedASTs() {
-      return inputWithoutDuplicates;
+  private static List<AbstractSubAST> collectVirtualSubASTs(final List<AbstractSubAST> input) {
+    final List<AbstractSubAST> result = new ArrayList<>();
+    AbstractSubAST[] ra = input.toArray(new AbstractSubAST[input.size()]);
+    for (int i = 0; i < ra.length - 1/*
+                                      * -1 because we don't need to compare the last element
+                                      * to itself
+                                      */; i++) {
+      assert ra[i] != null;
+      for (int j = i + 1 /*
+                          * starting at i+1 is correct because AbstractSubAST::commonSubASTs
+                          * is commutative
+                          */; j < ra.length; j++) {
+        assert ra[j] != null;
+        ra[i].commonSubASTs(ra[j], result);
+      }
     }
-
-    List<AbstractSubAST> getVirtualSubASTs() {
-      collectVirtualSubASTs(inputWithoutDuplicates);
-      putVirtualSubASTsHere.addAll(inputWithoutDuplicates);
-      return deduplicate(putVirtualSubASTsHere);
-    }
+    result.addAll(input);
+    return result;
   }
 
   private List<AbstractSubAST> extractAllSubASTsOfRootNodes(
@@ -166,32 +158,43 @@ public class CandidateWriter {
             new FileOutputStream(this.metricsFolder + CANDIDATE_DATA_FILE_NAME))) {
       oos.writeObject(uniqueASTs);
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
 
-  private void writeHumanReadableReport(final List<AbstractSubAST> uniqueASTs) {
-    // sort _all_ ASTs (including virtual) using the natural ordering specified by the
-    // compareTo method
-    uniqueASTs.sort(SubASTComparator.HIGHEST_ACTIVATIONS_SAVED_FIRST);
+  private void writeHumanReadableReport(final List<AbstractSubAST> uniqueASTs,
+      final SubASTComparator scoringMethod) {
+    uniqueASTs.sort(scoringMethod);
 
     final StringBuilder report = new StringBuilder();
+    final Formatter formatter = new Formatter(report);
 
-    for (AbstractSubAST ast : uniqueASTs) {
+    for (final AbstractSubAST ast : uniqueASTs) {
       report.append(
-          "===============================================================================\n");
-      if (ast instanceof SingleSubASTwithChildren) {
-        report.append(ast.getScore()).append(" activations:\n");
+          "===============================================================================\n")
+            .append(scoringMethod.getDescription());
+      formatter.format("%,d", ast.getScore());
+      // .append(ast.getScore());
+      if (ast instanceof VirtualSubAST) {
+        report.append(" (virtual)\n\n");
+      } else {
+        report.append("\n\n");
       }
-      report.append(ast).append('\n');
+
+      ast.toStringRecursive(report, "");
+      if (ast instanceof SingleSubAST) {
+        report.append('\n');
+      }
     }
 
-    Path reportPath = Paths.get(this.metricsFolder, "superinstruction-candidates-stefan.txt");
+    formatter.close();
+
+    final Path reportPath = Paths.get(this.metricsFolder,
+        "superinstruction-candidates-stefan-" + scoringMethod.getSimpleName() + ".txt");
     try {
       Files.write(reportPath, report.toString().getBytes());
     } catch (IOException e) {
-      throw new RuntimeException("Could not write superinstruction candidate report: " + e);
+      throw new RuntimeException("Could not write superinstruction candidate report.", e);
     }
   }
 
