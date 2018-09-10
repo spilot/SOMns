@@ -1,9 +1,15 @@
 package tools.dym.superinstructions.improved;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.oracle.truffle.api.nodes.Node;
 
@@ -11,15 +17,14 @@ import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
 
 class SingleSubASTwithChildren extends SingleSubAST {
-  private final SingleSubAST[]   children;
-  List<SingleSubASTwithChildren> powerSetCache;
+  private final SingleSubAST[]          children;
+  private Set<SingleSubASTwithChildren> powerSetCache, relevantPowerSetCache;
 
   SingleSubASTwithChildren(final Node enclosedNode,
       final SingleSubAST[] children,
       final Map<String, Long> activationsByType) {
     super(enclosedNode, activationsByType);
     this.children = children;
-    this.totalLocalActivations = activationsByType.values().stream().reduce(0L, Long::sum);
   }
 
   SingleSubASTwithChildren(final SingleSubAST copyFrom,
@@ -28,35 +33,8 @@ class SingleSubASTwithChildren extends SingleSubAST {
     this.children = children;
   }
 
-  /**
-   * Only used for power set creation.
-   *
-   * @param copyFrom The SingleSubAST to copy the data from.
-   * @param cutHere Insert CutSubASTs when encountering these, instead of copying.
-   */
-  SingleSubASTwithChildren(final SingleSubASTwithChildren copyFrom,
-      final List<SingleSubASTwithChildren> cutHere) {
-    super(copyFrom);
-    // copy children
-    this.children = new SingleSubAST[copyFrom.children.length];
-    for (int i = 0; i < copyFrom.children.length; i++) {
-      final SingleSubAST child = copyFrom.children[i];
-      if (cutHere.contains(child)) {
-        this.children[i] = new CutSubAST(child);
-      } else {
-        if (child.isLeaf()) {
-          this.children[i] = child;
-        } else {
-          assert child instanceof SingleSubASTwithChildren;
-          this.children[i] =
-              new SingleSubASTwithChildren((SingleSubASTwithChildren) child, cutHere);
-        }
-      }
-    }
-  }
-
   @Override
-  public boolean congruent(final SingleSubAST obj) {
+  boolean congruent(final SingleSubAST obj) {
     if (obj instanceof SingleSubASTwithChildren) {
       final SingleSubASTwithChildren arg = (SingleSubASTwithChildren) obj;
 
@@ -86,7 +64,14 @@ class SingleSubASTwithChildren extends SingleSubAST {
    */
   @Override
   boolean isRelevant() {
-    return this.totalActivations() > this.numberOfNodes();
+    boolean atLeastOneNonCutChild = false;
+    for (final SingleSubAST child : children) {
+      if (!(child instanceof CutSubAST)) {
+        atLeastOneNonCutChild = true;
+        break;
+      }
+    }
+    return atLeastOneNonCutChild && (this.totalActivations() > this.numberOfNodes());
   }
 
   @Override
@@ -108,14 +93,16 @@ class SingleSubASTwithChildren extends SingleSubAST {
   }
 
   @Override
-  public void forEachTransitiveRelevantSubAST(final Consumer<SingleSubAST> action) {
+  void forEachTransitiveRelevantSubAST(final Consumer<SingleSubAST> action) {
     if (this.isRelevant()) {
-      action.accept(this);
-
-      if (powerSetCache == null) {
-        powerSetCache = createRelevantPowerset();
-      }
-      powerSetCache.forEach(action);
+      // we don't need to call action.accept(this), because *this* is a member of its own
+      // power set and we call action.accept on each member of the power set
+      // System.out.println("iterating powerset size=" + getRelevantPowerset().size());
+      // if (getRelevantPowerset().size() > 70000) {
+      // System.out.println(this);
+      // }
+      // getRelevantPowerset().forEach(action);
+      action.accept(this); // TODO
 
       for (final SingleSubAST child : children) {
         child.forEachTransitiveRelevantSubAST(action);
@@ -123,72 +110,95 @@ class SingleSubASTwithChildren extends SingleSubAST {
     }
   }
 
-  private List<SingleSubASTwithChildren> createRelevantPowerset() {
-    final List<SingleSubASTwithChildren> input =
-        recursivelyAddAllChildrenWithChildrenToAccumulator(new ArrayList<>());
-    final List<SingleSubASTwithChildren> resultList = new ArrayList<>();
-    outer: for (long i = 1; i < input.size() * input.size(); i++) {
-      final List<SingleSubASTwithChildren> elementOfPowerSet = new ArrayList<>();
-      for (int index = 0; index < input.size(); index++) {
-        if (((i >>> index) & 1) == 1) {
-          elementOfPowerSet.add(input.get(index));
-        }
-      }
-      final SingleSubASTwithChildren result =
-          new SingleSubASTwithChildren(this, elementOfPowerSet);
-
-      // we only add the current result to the resultList only if it's relevant
-      if (result.isRelevant()) {
-
-        for (final SingleSubASTwithChildren item : resultList) {
-          // this last check is made because the above method of creating the power set yields
-          // some
-          // duplicate combinations. Consider the tree:
-          // a
-          // / \
-          // b c
-          // Now, we generate all 2^n combinations, including !a, b, c; !a, b, !c etc., but all
-          // combinations where a is pruned that differ only in the tree below a are congruent.
-          // Therefore, we continue the outer loop (thus not adding the current result) if a
-          // result we already have equals the current result
-          if (item.congruent(result)) {
-            continue outer;
-          }
-        }
-        resultList.add(result);
-      }
-
-      // if (result.isRelevant() &&
-      //
-      // // the last check is made because the above method of creating the power set yields
-      // some
-      // // duplicate combinations. Consider the tree:
-      // // a
-      // // / \
-      // // b c
-      // // Now, we generate all 2^n combinations, including !a, b, c; !a, b, !c etc., but all
-      // // combinations where a is pruned that differ only in the tree below a are equal.
-      // // Therefore, we eliminate them with this check.
-      // resultList.stream().noneMatch((item) -> item.congruent(result))) {
-      //
-      // resultList.add(result);
-      // }
+  Set<SingleSubASTwithChildren> getRelevantPowerset() {
+    if (relevantPowerSetCache == null) {
+      relevantPowerSetCache = getPowerset().stream()
+                                           .filter(SingleSubAST::isRelevant)
+                                           .collect(Collectors.toSet());
+      assert (!this.isRelevant()) || relevantPowerSetCache.size() > 0;
     }
-
-    return resultList;
-
+    return relevantPowerSetCache;
   }
 
-  private List<SingleSubASTwithChildren> recursivelyAddAllChildrenWithChildrenToAccumulator(
-      final List<SingleSubASTwithChildren> accumulator) {
-    for (final SingleSubAST child : children) {
+  private Set<SingleSubASTwithChildren> getPowerset() {
+    if (powerSetCache == null) {
+      powerSetCache = computePowerset();
+      assert powerSetCache.size() > 0;
+    }
+    return powerSetCache;
+  }
+
+  private Set<SingleSubASTwithChildren> computePowerset() {
+    int n = 0;
+    int[] childrenWithChildrenIndices = new int[children.length];
+    for (int i = 0; i < children.length; i++) {
+      final SingleSubAST child = children[i];
       if (child instanceof SingleSubASTwithChildren) {
-        accumulator.add((SingleSubASTwithChildren) child);
-        ((SingleSubASTwithChildren) child).recursivelyAddAllChildrenWithChildrenToAccumulator(
-            accumulator);
+        childrenWithChildrenIndices[n] = i;
+        n++;
       }
     }
-    return accumulator;
+    // assert n <= 31;
+    if (n > 31) {
+      System.out.println(this);
+    }
+    Set<SingleSubASTwithChildren> result = new HashSet<>();
+    for (int configuration = 0; configuration < (1 << n); configuration++) {
+      // TODO find a way to avoid creating this object
+      List<SingleSubASTwithChildren> clones = new ArrayList<>();
+      clones.add(new SingleSubASTwithChildren(this,
+          Arrays.copyOf(children, children.length)));
+
+      // for each immediate child with children
+      for (int bitIndex = 0; bitIndex < n; bitIndex++) {
+        final int currentChildwithChildrenIndex =
+            childrenWithChildrenIndices[bitIndex];
+        assert children[currentChildwithChildrenIndex] instanceof SingleSubASTwithChildren;
+
+        if (((configuration >>> bitIndex) & 1) == 1) {
+          List<SingleSubASTwithChildren> childsPowerset = new ArrayList<>();
+          childsPowerset.addAll(
+              ((SingleSubASTwithChildren) children[currentChildwithChildrenIndex]).getPowerset());
+
+          assert childsPowerset.size() > 0;
+
+          // for the head of the powerset change the clones in-place
+          clones.forEach((clone) -> {
+            clone.children[currentChildwithChildrenIndex] = childsPowerset.get(0);
+          });
+
+          // if there are more, clone the clones for the tail
+          if (childsPowerset.size() > 1) {
+            for (final ListIterator<SingleSubASTwithChildren> clonesItor =
+                clones.listIterator(); clonesItor.hasNext();) {
+              final SingleSubASTwithChildren clone = clonesItor.next();
+              for (final ListIterator<SingleSubASTwithChildren> powerSetItor =
+                  childsPowerset.listIterator(1); powerSetItor.hasNext();) {
+                final SingleSubAST childsPowersetItem = powerSetItor.next();
+
+                final SingleSubAST[] newChildren =
+                    Arrays.copyOf(clone.children, clone.children.length);
+                newChildren[currentChildwithChildrenIndex] = childsPowersetItem;
+                clonesItor.add(new SingleSubASTwithChildren(clone, newChildren));
+              }
+            }
+          }
+        } else {
+          assert ((configuration >>> bitIndex) & 1) == 0;
+          for (final SingleSubASTwithChildren clone : clones) {
+            clone.children[currentChildwithChildrenIndex] =
+                new CutSubAST(children[currentChildwithChildrenIndex]);
+          }
+        }
+      }
+      result.addAll(clones);
+      // System.out.println(result.size());
+      // if (result.size() > 1000) {
+      // System.out.println(this);
+      // }
+    }
+    assert result.size() > 0;
+    return result;
   }
 
   @Override
@@ -240,6 +250,19 @@ class SingleSubASTwithChildren extends SingleSubAST {
   }
 
   @Override
+  void addWithIncrementalMean(final SingleSubAST arg) {
+    assert arg instanceof SingleSubASTwithChildren;
+    assert arg.equals(this);
+    incrementalMeanUnion(arg);
+
+    final SingleSubASTwithChildren that = (SingleSubASTwithChildren) arg;
+    assert this.children.length == that.children.length;
+    for (int i = 0; i < children.length; i++) {
+      children[i].addWithIncrementalMean(that.children[i]);
+    }
+  }
+
+  @Override
   public boolean equals(final Object that) {
     if (this == that) {
       return true;
@@ -262,4 +285,155 @@ class SingleSubASTwithChildren extends SingleSubAST {
     }
     return false;
   }
+
+  @Override
+  public int hashCode() {
+    return ((1 << 31) - 1) * Objects.hash(this.enclosedNodeType, this.sourceFileName,
+        Integer.valueOf(this.sourceFileIndex),
+        Integer.valueOf(this.sourceSectionLength))
+        + Arrays.hashCode(children);
+  }
+
+  /**
+   * Head node types and number of children are equal, a maximum of two children have different
+   * types.
+   *
+   * The common part of two non-similar Sub-ASTs cannot be a superinstruction, because it would
+   * be just one node with only cut children
+   *
+   * Is it symmetric? transitive? reflexive?
+   */
+  boolean similarInternal(final SingleSubASTwithChildren that) {
+    if (this.enclosedNodeType != that.enclosedNodeType) {
+      return false;
+    }
+    if (this.children.length != that.children.length) {
+      return false;
+    }
+    // this and that are similar if there is at least
+    // 1. a child with children that is of equal type in both this and that
+    // or
+    // 2. more than one child that is of equal type in this and that (count them as "count")
+    //
+    int count = 0;
+    for (int i = 0; i < this.children.length; i++) {
+      if (this.children[i].enclosedNodeType == that.children[i].enclosedNodeType) {
+        if (++count > 1 || (!this.children[i].isLeaf() && !that.children[i].isLeaf())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Integer.MAX_VALUE means very similar, Integer.MIN_VALUE means very dissimilar
+   *
+   * TODO Symmetry? Reflexivity? Transitivity?
+   */
+  int similarity(final SingleSubASTwithChildren that) {
+    if (this.equals(that) || this.congruent(that)) {
+      return Integer.MAX_VALUE;
+    }
+    if (!this.similarInternal(that)) {
+      return Integer.MIN_VALUE;
+    }
+    final SingleSubASTwithChildren clone = new SingleSubASTwithChildren(that,
+        Arrays.copyOf(that.children, that.children.length));
+    final List<PotentialPruningSite> worklist = new ArrayList<>();
+    int result = this.numberOfNodes() + that.numberOfNodes();
+    for (int i = 0; i < children.length; i++) {
+      worklist.add(this.new PotentialPruningSite(clone.children, i));
+    }
+    while (!worklist.isEmpty()) {
+      final PotentialPruningSite head = worklist.remove(worklist.size() - 1);
+      if (head.isPruningSite()) {
+        result -= head.numberOfNodes();
+        assert result <= this.numberOfNodes() + that.numberOfNodes();
+      } else {
+        head.yield(worklist);
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Remember to filter for relevancy.
+   */
+  SingleSubASTwithChildren commonPart(final SingleSubASTwithChildren that) {
+    assert this.similarInternal(that);
+    final SingleSubASTwithChildren clone = new SingleSubASTwithChildren(that,
+        Arrays.copyOf(that.children, that.children.length));
+    List<PotentialPruningSite> worklist = new ArrayList<>();
+    for (int i = 0; i < children.length; i++) {
+      worklist.add(this.new PotentialPruningSite(clone.children, i));
+    }
+    while (!worklist.isEmpty()) {
+      final PotentialPruningSite head = worklist.remove(worklist.size() - 1);
+      if (head.isPruningSite()) {
+        head.prune();
+      } else {
+        head.yield(worklist);
+      }
+    }
+    // assert clone.congruent(this);
+    return clone;
+  }
+
+  class PotentialPruningSite {
+    final SingleSubAST[] clone;
+    final int            index;
+
+    PotentialPruningSite(final SingleSubAST[] clone, final int index) {
+      this.clone = clone;
+      this.index = index;
+    }
+
+    boolean isPruningSite() {
+      if (clone[index].enclosedNodeType != children[index].enclosedNodeType) {
+        return true;
+      }
+      if (clone[index].isLeaf() != children[index].isLeaf()) {
+        return true;
+      }
+      if (!clone[index].isLeaf() && !children[index].isLeaf()) {
+        return ((SingleSubASTwithChildren) children[index]).children.length != ((SingleSubASTwithChildren) clone[index]).children.length;
+      }
+      return false;
+    }
+
+    void prune() {
+      assert isPruningSite();
+      clone[index] = new CutSubAST(clone[index]);
+    }
+
+    void yield(final List<PotentialPruningSite> accumulator) {
+      assert !isPruningSite();
+      if (!clone[index].isLeaf() && !children[index].isLeaf()) {
+        final SingleSubASTwithChildren placeInClone, placeInThis;
+        placeInClone = (SingleSubASTwithChildren) clone[index];
+        placeInThis = (SingleSubASTwithChildren) children[index];
+        for (int i = 0; i < placeInClone.children.length; i++) {
+          accumulator.add(
+              placeInThis.new PotentialPruningSite(placeInClone.children, i));
+        }
+      }
+    }
+
+    int numberOfNodes() {
+      return children[index].numberOfNodes() + clone[index].numberOfNodes();
+    }
+  }
+
+  boolean similar(final AbstractSubAST that) {
+    if (that instanceof SingleSubAST) {
+      if (that.isLeaf()) {
+        return false;
+      }
+      return similarInternal((SingleSubASTwithChildren) that);
+    }
+    assert that instanceof GroupedSubAST;
+    return ((GroupedSubAST) that).similar(this);
+  }
+
 }

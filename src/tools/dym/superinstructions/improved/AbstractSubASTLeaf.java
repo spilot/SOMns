@@ -1,6 +1,7 @@
 package tools.dym.superinstructions.improved;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import com.oracle.truffle.api.nodes.Node;
@@ -11,8 +12,7 @@ abstract class AbstractSubASTLeaf extends SingleSubAST {
   AbstractSubASTLeaf(final Node enclosedNode,
       final Map<String, Long> activationsByType) {
     super(enclosedNode, activationsByType);
-    this.totalLocalActivations =
-        this.activationsByType.values().stream().reduce(0L, Long::sum);
+
   }
 
   AbstractSubASTLeaf(final SingleSubAST copyFrom) {
@@ -25,7 +25,7 @@ abstract class AbstractSubASTLeaf extends SingleSubAST {
   }
 
   @Override
-  public void forEachTransitiveRelevantSubAST(final Consumer<SingleSubAST> action) {}
+  void forEachTransitiveRelevantSubAST(final Consumer<SingleSubAST> action) {}
 
   @Override
   boolean isLeaf() {
@@ -55,6 +55,18 @@ abstract class AbstractSubASTLeaf extends SingleSubAST {
           && this.sourceFileName.equals(thatAST.sourceFileName);
     }
     return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.enclosedNodeType, this.sourceFileName,
+        Integer.valueOf(this.sourceFileIndex), Integer.valueOf(this.sourceSectionLength));
+  }
+
+  @Override
+  void addWithIncrementalMean(final SingleSubAST arg) {
+    assert arg.equals(this);
+    incrementalMeanUnion(arg);
   }
 
 }

@@ -3,6 +3,8 @@ package tools.dym.superinstructions.improved;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import tools.dym.superinstructions.improved.SingleSubAST.IncrementalAverage;
+
 
 class SubASTComparator implements Comparator<AbstractSubAST> {
   static interface ScoreVisitor {
@@ -70,8 +72,11 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
             final SingleSubAST current = worklist.remove(worklist.size() - 1);
             // childrenActi += current.score(this);
             if (!(current instanceof CutSubAST)) {
-              childrenActi += current.activationsByType.values().stream().reduce(0L,
-                  Long::sum);
+              childrenActi +=
+                  current.activationsByType.values()
+                                           .stream()
+                                           .mapToLong(IncrementalAverage::get)
+                                           .reduce(0L, Long::sum);
             }
             if (current instanceof SingleSubASTwithChildren) {
               ((SingleSubASTwithChildren) current).getChildren().forEach(worklist::add);
@@ -82,7 +87,10 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
 
         @Override
         public long score(final SingleSubASTLeaf subAST) {
-          return subAST.activationsByType.values().stream().reduce(0L, Long::sum);
+          return subAST.activationsByType.values()
+                                         .stream()
+                                         .mapToLong(IncrementalAverage::get)
+                                         .reduce(0L, Long::sum);
         }
 
         @Override
@@ -93,7 +101,8 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
         @Override
         public long score(final GroupedSubAST subAST) {
           return subAST.enclosedNodes.stream()
-                                     .mapToLong((singleSubAST) -> singleSubAST.score(this))
+                                     .mapToLong(
+                                         (singleSubAST) -> singleSubAST.score(this))
                                      .sum();
         }
 
@@ -119,5 +128,9 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
 
   String getSimpleName() {
     return this.scoreVisitor.getSimpleName();
+  }
+
+  ScoreVisitor getScoreVisitor() {
+    return this.scoreVisitor;
   }
 }

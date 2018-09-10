@@ -1,5 +1,6 @@
 package tools.dym.superinstructions.improved;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,14 +22,13 @@ import som.interpreter.nodes.specialized.IfTrueIfFalseMessageNode;
 abstract class SingleSubAST extends AbstractSubAST {
 
   private static boolean isControlFlowDividingNode(final Node n) {
-    // TODO un-hardcode this somehow?
+    // TODO un-hardcode this somehow? Use tags?
     // TODO extend list of nodes?
     return n instanceof SequenceNode
         || n instanceof IfInlinedLiteralNode
         || n instanceof IfMessageNode
         || n instanceof IfTrueIfFalseInlinedLiteralsNode
         || n instanceof IfTrueIfFalseMessageNode;
-
   }
 
   /**
@@ -46,6 +46,7 @@ abstract class SingleSubAST extends AbstractSubAST {
     final List<Node> children = NodeUtil.findNodeChildren(n);
 
     if (n.getSourceSection() == null) {
+      assert false; // TODO
       children.forEach(worklist::add);
       return null;
     }
@@ -87,31 +88,81 @@ abstract class SingleSubAST extends AbstractSubAST {
     }
     return new SingleSubASTwithChildren(n,
         // TODO PMD says this call to Collection::toArray may be optimizable
-        newChildren.toArray(new SingleSubAST[newChildren.size()]), activationsByType);
+        newChildren.toArray(new SingleSubAST[newChildren.size()]),
+        activationsByType);
   }
 
-  Map<String, Long>       activationsByType;
-  String                  sourceFileName;
-  int                     sourceFileIndex;
-  int                     sourceSectionLength;
-  Class<? extends Node>   enclosedNodeType;
-  transient SourceSection sourceSection;
-  long                    totalLocalActivations;
+  final static class IncrementalAverage implements Serializable {
+    private long avg;
+    private int  N;
+
+    IncrementalAverage(final long init) {
+      avg = init;
+      N = 1;
+    }
+
+    IncrementalAverage(final IncrementalAverage copyFrom) {
+      this.avg = copyFrom.avg;
+      this.N = copyFrom.N;
+    }
+
+    long get() {
+      return avg;
+    }
+
+    void add(final long x) {
+      System.out.print("AVG(" + avg + "," + x + ")=");
+      avg += (x - avg) / ++N;
+      System.out.println(avg);
+    }
+
+    void merge(final IncrementalAverage other) {
+      if (other.avg == avg) {
+        N += other.N;
+      } else {
+        do {
+          add(other.avg);
+          other.N--;
+        } while (other.N >= 0);
+      }
+    }
+
+    @Override
+    public String toString() {
+      return (Long.valueOf(get())).toString();
+    }
+  }
+
+  Class<? extends Node>           enclosedNodeType;
+  String                          sourceFileName;
+  int                             sourceFileIndex;
+  int                             sourceSectionLength;
+  transient SourceSection         sourceSection;
+  Map<String, IncrementalAverage> activationsByType;
+  long                            totalLocalActivations;
 
   SingleSubAST(final Node enclosedNode,
       final Map<String, Long> activationsByType) {
     super();
     this.enclosedNodeType = enclosedNode.getClass();
-    this.activationsByType = activationsByType;
+    this.activationsByType = new HashMap<>();
+    activationsByType.entrySet()
+                     .forEach((entry) -> this.activationsByType.put(entry.getKey(),
+                         new IncrementalAverage(entry.getValue())));
     this.sourceFileName = enclosedNode.getSourceSection().getSource().getName();
     this.sourceFileIndex = enclosedNode.getSourceSection().getCharIndex();
     this.sourceSectionLength = enclosedNode.getSourceSection().getCharLength();
     this.sourceSection = enclosedNode.getSourceSection();
+    updateLocalActivationsCache();
   }
 
   SingleSubAST(final SingleSubAST copyFrom) {
     super();
-    this.activationsByType = copyFrom.activationsByType;
+    this.activationsByType = new HashMap<>();
+    copyFrom.activationsByType.entrySet()
+                              .forEach((entry) -> this.activationsByType.put(
+                                  entry.getKey(),
+                                  new IncrementalAverage(entry.getValue())));
     this.sourceFileName = copyFrom.sourceFileName;
     this.sourceFileIndex = copyFrom.sourceFileIndex;
     this.sourceSectionLength = copyFrom.sourceSectionLength;
@@ -132,7 +183,7 @@ abstract class SingleSubAST extends AbstractSubAST {
           if (a instanceof VirtualSubAST) {
             match = (VirtualSubAST) a;
           } else if (a instanceof CompoundSubAST) {
-            // TODO can we actually ever enter this branch?
+            // TODO do we actually ever enter this branch?
             assert false;
             match = new VirtualSubAST((CompoundSubAST) a);
           } else {
@@ -148,6 +199,9 @@ abstract class SingleSubAST extends AbstractSubAST {
       if (match == null) {
         result = new VirtualSubAST(mySubAST);
       } else {
+        // TODO this line often adds SingleSubASTs to GroupedSubASTs which already contain them
+        // (contain identical subasts)
+
         result = (VirtualSubAST) match.add(mySubAST);
       }
 
@@ -178,6 +232,11 @@ abstract class SingleSubAST extends AbstractSubAST {
     if (arg instanceof CompoundSubAST) {
       return ((CompoundSubAST) arg).add(this);
     }
+    assert arg instanceof SingleSubAST;
+    if (arg.equals(this)) {
+      addWithIncrementalMean((SingleSubAST) arg);
+      return this;
+    }
     return new CompoundSubAST(this).add(arg);
   }
 
@@ -194,4 +253,32 @@ abstract class SingleSubAST extends AbstractSubAST {
 
   @Override
   public abstract boolean equals(Object that);
+
+  final void incrementalMeanUnion(final SingleSubAST that) {
+    for (final String type : this.activationsByType.keySet()) {
+      if (that.activationsByType.containsKey(type)) {
+        this.activationsByType.get(type).merge(that.activationsByType.get(type));
+      }
+    }
+    for (final String type : that.activationsByType.keySet()) {
+      if (!this.activationsByType.containsKey(type)) {
+        activationsByType.put(type, that.activationsByType.get(type));
+      }
+    }
+    updateLocalActivationsCache();
+  }
+
+  /**
+   * Calling this method implies that *this* and arg are equal.
+   */
+  abstract void addWithIncrementalMean(final SingleSubAST that);
+
+  private void updateLocalActivationsCache() {
+    this.totalLocalActivations =
+        activationsByType.values()
+                         .stream()
+                         .mapToLong(IncrementalAverage::get)
+                         .reduce(0L, Long::sum);
+  }
+
 }
