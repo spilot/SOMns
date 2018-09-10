@@ -21,7 +21,7 @@ import som.interpreter.nodes.specialized.IfTrueIfFalseMessageNode;
 
 abstract class SingleSubAST extends AbstractSubAST {
 
-  private static boolean isControlFlowDividingNode(final Node n) {
+  private static boolean isControlflowDividingNode(final Node n) {
     // TODO un-hardcode this somehow? Use tags?
     // TODO extend list of nodes?
     return n instanceof SequenceNode
@@ -45,15 +45,16 @@ abstract class SingleSubAST extends AbstractSubAST {
       final Map<Node, Map<String, Long>> rawActivations) {
     final List<Node> children = NodeUtil.findNodeChildren(n);
 
-    if (n.getSourceSection() == null) {
-      assert false; // TODO
-      children.forEach(worklist::add);
-      return null;
-    }
+    assert n.getSourceSection() != null;
+    // if (n.getSourceSection() == null) {
+    // children.forEach(worklist::add);
+    // return null;
+    // }
+
     final Map<String, Long> activationsByType =
         rawActivations.getOrDefault(n, new HashMap<>());
 
-    if (isControlFlowDividingNode(n)) {
+    if (isControlflowDividingNode(n)) {
       children.forEach(worklist::add);
       return new SingleSubASTLeaf(n, activationsByType);
     }
@@ -68,8 +69,8 @@ abstract class SingleSubAST extends AbstractSubAST {
       final Node childNode = children.remove(children.size() - 1); // removing last element
                                                                    // takes constant time in
                                                                    // ArrayList
-      if (isControlFlowDividingNode(childNode)) {
-        // consider all children of control flow divider as new root nodes
+      if (isControlflowDividingNode(childNode)) {
+        // consider all children of control flow dividers as new root nodes
         childNode.getChildren().forEach(worklist::add);
         // add a leaf containing the control flow divider node to indicate that we pruned it
         newChildren.add(new CutSubAST(childNode,
@@ -86,10 +87,14 @@ abstract class SingleSubAST extends AbstractSubAST {
     if (newChildren.isEmpty()) {
       return new SingleSubASTLeaf(n, activationsByType);
     }
-    return new SingleSubASTwithChildren(n,
+    final SingleSubASTwithChildren result = new SingleSubASTwithChildren(n,
         // TODO PMD says this call to Collection::toArray may be optimizable
         newChildren.toArray(new SingleSubAST[newChildren.size()]),
         activationsByType);
+    if (result.totalActivations() == 0) { // TODO keep this?
+      return new CutSubAST(result);
+    }
+    return result;
   }
 
   final static class IncrementalAverage implements Serializable {
@@ -171,52 +176,6 @@ abstract class SingleSubAST extends AbstractSubAST {
     this.totalLocalActivations = copyFrom.totalLocalActivations;
   }
 
-  @Override
-  List<AbstractSubAST> commonSubASTs(final AbstractSubAST arg,
-      final List<AbstractSubAST> accumulator) {
-    this.forEachTransitiveRelevantSubAST((mySubAST) -> {
-      // search for item congruent to the result in accumulator to avoid allocating a new list
-      // that will be merged later
-      VirtualSubAST match = null; // TODO DD-anomaly
-      for (final AbstractSubAST a : accumulator) {
-        if (mySubAST.congruent(a)) {
-          if (a instanceof VirtualSubAST) {
-            match = (VirtualSubAST) a;
-          } else if (a instanceof CompoundSubAST) {
-            // TODO do we actually ever enter this branch?
-            assert false;
-            match = new VirtualSubAST((CompoundSubAST) a);
-          } else {
-            assert a instanceof SingleSubAST;
-            assert false;
-            match = new VirtualSubAST((SingleSubAST) a);
-          }
-          accumulator.remove(a);
-          break;
-        }
-      }
-      final VirtualSubAST result;
-      if (match == null) {
-        result = new VirtualSubAST(mySubAST);
-      } else {
-        // TODO this line often adds SingleSubASTs to GroupedSubASTs which already contain them
-        // (contain identical subasts)
-
-        result = (VirtualSubAST) match.add(mySubAST);
-      }
-
-      arg.forEachTransitiveRelevantSubAST((sAST) -> {
-        if (sAST.congruent(mySubAST)) {
-          result.add(sAST);
-        }
-      });
-      if (result.enclosedNodes.size() > 1) {
-        accumulator.add(result);
-      }
-    });
-    return accumulator;
-  }
-
   /**
    * @return false if we can be sure this tree will under no circumstances make a good
    *         superinstruction, otherwise true
@@ -246,7 +205,7 @@ abstract class SingleSubAST extends AbstractSubAST {
   }
 
   @Override
-  final boolean congruent(final GroupedSubAST arg) {
+  final boolean congruent(final CompoundSubAST arg) {
     // leave unpacking their first node to them
     return arg.congruent(this);
   }
@@ -280,5 +239,4 @@ abstract class SingleSubAST extends AbstractSubAST {
                          .mapToLong(IncrementalAverage::get)
                          .reduce(0L, Long::sum);
   }
-
 }

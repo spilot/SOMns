@@ -1,8 +1,6 @@
 package tools.dym.superinstructions.improved;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
@@ -23,8 +21,8 @@ abstract class AbstractSubAST implements Serializable {
    * congruent is symmetric, transitive and reflexive.
    */
   final boolean congruent(final AbstractSubAST arg) {
-    if (arg instanceof GroupedSubAST) {
-      return this.congruent((GroupedSubAST) arg);
+    if (arg instanceof CompoundSubAST) {
+      return this.congruent((CompoundSubAST) arg);
     }
     if (arg instanceof SingleSubAST) {
       return this.congruent((SingleSubAST) arg);
@@ -33,7 +31,7 @@ abstract class AbstractSubAST implements Serializable {
     return false;
   }
 
-  abstract boolean congruent(final GroupedSubAST arg);
+  abstract boolean congruent(final CompoundSubAST arg);
 
   abstract boolean congruent(final SingleSubAST arg);
 
@@ -45,9 +43,6 @@ abstract class AbstractSubAST implements Serializable {
 
   abstract StringBuilder toStringRecursive(final StringBuilder accumulator,
       final String prefix);
-
-  abstract List<AbstractSubAST> commonSubASTs(AbstractSubAST arg,
-      List<AbstractSubAST> accumulator);
 
   abstract boolean isLeaf();
 
@@ -94,6 +89,4 @@ abstract class AbstractSubAST implements Serializable {
    * Traverses the whole tree and executes for every subAST there is.
    */
   abstract void forEachTransitiveRelevantSubAST(Consumer<SingleSubAST> action);
-
-  abstract Optional<VirtualSubAST> commonPart(AbstractSubAST abstractSubAST);
 }

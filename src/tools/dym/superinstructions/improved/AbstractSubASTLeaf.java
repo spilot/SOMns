@@ -68,5 +68,4 @@ abstract class AbstractSubASTLeaf extends SingleSubAST {
     assert arg.equals(this);
     incrementalMeanUnion(arg);
   }
-
 }
