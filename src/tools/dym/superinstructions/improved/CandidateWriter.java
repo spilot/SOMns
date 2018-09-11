@@ -187,11 +187,7 @@ public class CandidateWriter {
           "===============================================================================\n")
             .append(scoringMethod.getDescription());
       formatter.format("%,d", ast.getScore());
-      if (ast instanceof VirtualSubAST) {
-        report.append(" (virtual)\n\n");
-      } else {
-        report.append("\n\n");
-      }
+      report.append("\n\n");
 
       ast.toStringRecursive(report, "");
       if (ast instanceof SingleSubAST) {
