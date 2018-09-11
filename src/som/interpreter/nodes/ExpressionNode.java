@@ -160,9 +160,6 @@ public abstract class ExpressionNode extends SOMNode {
 
   @Override
   public String toString() {
-    if (sourceSection == null) {
-      return getClass().getSimpleName() + " with sourceSection == null";
-    }
-    return getClass().getSimpleName() + "(" + sourceSection.toString() + ")";
+    return getClass().getSimpleName() + "(" + String.valueOf(sourceSection) + ")";
   }
 }
