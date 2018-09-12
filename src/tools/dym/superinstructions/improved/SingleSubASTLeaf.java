@@ -8,8 +8,10 @@ import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
 
 class SingleSubASTLeaf extends AbstractSubASTLeaf {
-  SingleSubASTLeaf(final Node enclosedNode, final Map<String, Long> activationsByType) {
-    super(enclosedNode, activationsByType);
+  SingleSubASTLeaf(final Node enclosedNode,
+      final Map<String, Long> activationsByType,
+      final long totalBenchmarkActivations) {
+    super(enclosedNode, activationsByType, totalBenchmarkActivations);
   }
 
   @Override
@@ -19,7 +21,7 @@ class SingleSubASTLeaf extends AbstractSubASTLeaf {
   }
 
   @Override
-  long computeScore(final ScoreVisitor scoreVisitor) {
+  double computeScore(final ScoreVisitor scoreVisitor) {
     return scoreVisitor.score(this);
   }
 

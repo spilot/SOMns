@@ -8,7 +8,7 @@ import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
 abstract class AbstractSubAST implements Serializable {
 
-  private long                   score;
+  private double                 score;
   private transient ScoreVisitor lastScoreVisitor;
 
   /**
@@ -50,7 +50,7 @@ abstract class AbstractSubAST implements Serializable {
    * The higher a SubASTs score is, the more speedup should be achievable by replacing it with
    * a superinstruction.
    */
-  final long score(final ScoreVisitor scoreVisitor) {
+  final double score(final ScoreVisitor scoreVisitor) {
     if (!isScoreValid(scoreVisitor)) {
       score = computeScore(scoreVisitor);
       lastScoreVisitor = scoreVisitor;
@@ -62,15 +62,15 @@ abstract class AbstractSubAST implements Serializable {
     return lastScoreVisitor != null && lastScoreVisitor == scoreVisitor;
   }
 
-  abstract long computeScore(ScoreVisitor scoreGiver);
+  abstract double computeScore(ScoreVisitor scoreGiver);
 
   final void invalidateScore() {
     this.lastScoreVisitor = null;
   }
 
-  final long getScore() {
+  final double getScore() {
     if (lastScoreVisitor == null) {
-      return Long.MAX_VALUE;
+      return Double.MAX_VALUE;
     }
     return score;
   }

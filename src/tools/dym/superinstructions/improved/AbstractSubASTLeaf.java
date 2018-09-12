@@ -10,8 +10,9 @@ import com.oracle.truffle.api.nodes.Node;
 abstract class AbstractSubASTLeaf extends SingleSubAST {
 
   AbstractSubASTLeaf(final Node enclosedNode,
-      final Map<String, Long> activationsByType) {
-    super(enclosedNode, activationsByType);
+      final Map<String, Long> activationsByType,
+      final long totalBenchmarkActivations) {
+    super(enclosedNode, activationsByType, totalBenchmarkActivations);
 
   }
 

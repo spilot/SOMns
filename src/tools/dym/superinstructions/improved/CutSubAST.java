@@ -11,8 +11,10 @@ public class CutSubAST extends AbstractSubASTLeaf {
   SingleSubAST[] children;
   boolean        nonCompactPrint = true;
 
-  CutSubAST(final Node enclosedNode, final Map<String, Long> activationsByType) {
-    super(enclosedNode, activationsByType);
+  CutSubAST(final Node enclosedNode,
+      final Map<String, Long> activationsByType,
+      final long totalBenchmarkActivations) {
+    super(enclosedNode, activationsByType, totalBenchmarkActivations);
   }
 
   CutSubAST(final SingleSubAST copyFrom) {
@@ -75,7 +77,7 @@ public class CutSubAST extends AbstractSubASTLeaf {
   }
 
   @Override
-  long computeScore(final ScoreVisitor scoreVisitor) {
+  double computeScore(final ScoreVisitor scoreVisitor) {
     return scoreVisitor.score(this);
   }
 

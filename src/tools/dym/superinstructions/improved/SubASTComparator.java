@@ -8,13 +8,13 @@ import tools.dym.superinstructions.improved.SingleSubAST.IncrementalAverage;
 
 class SubASTComparator implements Comparator<AbstractSubAST> {
   static interface ScoreVisitor {
-    long score(CompoundSubAST subAST);
+    double score(CompoundSubAST subAST);
 
-    long score(CutSubAST subAST);
+    double score(CutSubAST subAST);
 
-    long score(SingleSubASTLeaf subAST);
+    double score(SingleSubASTLeaf subAST);
 
-    long score(SingleSubASTwithChildren subAST);
+    double score(SingleSubASTwithChildren subAST);
 
     String getScoreDescription();
 
@@ -31,22 +31,22 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
       new SubASTComparator(new ScoreVisitor() {
 
         @Override
-        public long score(final SingleSubASTwithChildren subAST) {
+        public double score(final SingleSubASTwithChildren subAST) {
           return 1;
         }
 
         @Override
-        public long score(final SingleSubASTLeaf subAST) {
+        public double score(final SingleSubASTLeaf subAST) {
           return 1;
         }
 
         @Override
-        public long score(final CutSubAST subAST) {
+        public double score(final CutSubAST subAST) {
           return 0;
         }
 
         @Override
-        public long score(final CompoundSubAST subAST) {
+        public double score(final CompoundSubAST subAST) {
           return subAST.enclosedNodes.size();
         }
 
@@ -65,7 +65,7 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
       new SubASTComparator(new ScoreVisitor() {
 
         @Override
-        public long score(final SingleSubASTwithChildren subAST) {
+        public double score(final SingleSubASTwithChildren subAST) {
           long childrenActi = 0;
           final ArrayList<SingleSubAST> worklist = subAST.getChildren();
           while (!worklist.isEmpty()) {
@@ -86,7 +86,7 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
         }
 
         @Override
-        public long score(final SingleSubASTLeaf subAST) {
+        public double score(final SingleSubASTLeaf subAST) {
           return subAST.activationsByType.values()
                                          .stream()
                                          .mapToLong(IncrementalAverage::get)
@@ -94,14 +94,14 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
         }
 
         @Override
-        public long score(final CutSubAST subAST) {
+        public double score(final CutSubAST subAST) {
           return 0;
         }
 
         @Override
-        public long score(final CompoundSubAST subAST) {
+        public double score(final CompoundSubAST subAST) {
           return subAST.enclosedNodes.stream()
-                                     .mapToLong(
+                                     .mapToDouble(
                                          (singleSubAST) -> singleSubAST.score(this))
                                      .sum();
         }
@@ -117,9 +117,49 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
         }
       });
 
+  final static SubASTComparator HIGHEST_SHARE_OF_TOTAL_ACTIVATIONS_FIRST =
+      new SubASTComparator(new ScoreVisitor() {
+
+        @Override
+        public double score(final CompoundSubAST subAST) {
+          return subAST.enclosedNodes.stream()
+                                     .mapToDouble((singleSubAST) -> singleSubAST.score(this))
+                                     .sum();
+        }
+
+        @Override
+        public double score(final CutSubAST subAST) {
+          return 0;
+        }
+
+        @Override
+        public double score(final SingleSubASTLeaf subAST) {
+          return subAST.score(HIGHEST_ACTIVATIONS_SAVED_FIRST.scoreVisitor)
+              / subAST.totalBenchmarkActivations.get();
+        }
+
+        @Override
+        public double score(final SingleSubASTwithChildren subAST) {
+          return subAST.score(HIGHEST_ACTIVATIONS_SAVED_FIRST.scoreVisitor)
+              / subAST.totalBenchmarkActivations.get();
+        }
+
+        @Override
+        public String getScoreDescription() {
+          return "Share of total activations of benchmarks: ";
+        }
+
+        @Override
+        public String getSimpleName() {
+          return "percentage";
+        }
+
+      });
+
   @Override
   public int compare(final AbstractSubAST arg0, final AbstractSubAST arg1) {
-    return (int) (arg1.score(this.scoreVisitor) - arg0.score(this.scoreVisitor));
+    return Double.compare(arg1.score(this.scoreVisitor), arg0.score(this.scoreVisitor));
+    // return (int) (arg1.score(this.scoreVisitor) - arg0.score(this.scoreVisitor));
   }
 
   String getDescription() {

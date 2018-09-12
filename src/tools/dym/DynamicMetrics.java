@@ -458,14 +458,14 @@ public class DynamicMetrics extends TruffleInstrument {
     MetricsCsvWriter.fileOut(data, metricsFolder, structuralProbe,
         maxStackDepth, getAllStatementsAlsoNotExecuted());
 
+    long totalActivations = printNodeActivations(metricsFolder);
     identifySuperinstructionCandidates(metricsFolder);
-    printNodeActivations(metricsFolder);
     outputAllTruffleMethodsToIGV();
 
-    candidateWriter.filesOut(rootNodes);
+    candidateWriter.filesOut(rootNodes, totalActivations);
   }
 
-  private void printNodeActivations(final String metricsFolder) {
+  private long printNodeActivations(final String metricsFolder) {
     // count the sum of node activations
     final long activationCount =
         activations.values().stream()
@@ -481,6 +481,7 @@ public class DynamicMetrics extends TruffleInstrument {
     } catch (IOException e) {
       throw new RuntimeException("Could not write total activation count: " + e);
     }
+    return activationCount;
   }
 
   private void identifySuperinstructionCandidates(final String metricsFolder) {

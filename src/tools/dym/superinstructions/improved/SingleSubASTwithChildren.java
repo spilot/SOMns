@@ -14,8 +14,9 @@ class SingleSubASTwithChildren extends SingleSubAST {
 
   SingleSubASTwithChildren(final Node enclosedNode,
       final SingleSubAST[] children,
-      final Map<String, Long> activationsByType) {
-    super(enclosedNode, activationsByType);
+      final Map<String, Long> activationsByType,
+      final long totalBenchmarkActivations) {
+    super(enclosedNode, activationsByType, totalBenchmarkActivations);
     this.children = children;
   }
 
@@ -130,7 +131,7 @@ class SingleSubASTwithChildren extends SingleSubAST {
   }
 
   @Override
-  long computeScore(final ScoreVisitor scoreVisitor) {
+  double computeScore(final ScoreVisitor scoreVisitor) {
     return scoreVisitor.score(this);
   }
 

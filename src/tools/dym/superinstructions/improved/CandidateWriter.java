@@ -67,11 +67,11 @@ public class CandidateWriter {
     }
   }
 
-  public void filesOut(final Set<RootNode> rootNodes) {
+  public void filesOut(final Set<RootNode> rootNodes, final long totalBenchmarkActivations) {
     System.out.println("rootNodes.size()=" + rootNodes.size());
 
     final List<AbstractSubAST> subASTs =
-        extractAllSubASTsOfRootNodes(olderSubASTs, rootNodes);
+        extractAllSubASTsOfRootNodes(olderSubASTs, rootNodes, totalBenchmarkActivations);
 
     System.out.println(subASTs.size() + " subASTs found.");
 
@@ -98,6 +98,9 @@ public class CandidateWriter {
 
       writeHumanReadableReport(virtualSubASTs,
           SubASTComparator.HIGHEST_STATIC_FREQUENCY_FIRST);
+
+      writeHumanReadableReport(virtualSubASTs,
+          SubASTComparator.HIGHEST_SHARE_OF_TOTAL_ACTIVATIONS_FIRST);
     }
   }
 
@@ -136,7 +139,8 @@ public class CandidateWriter {
 
   private List<AbstractSubAST> extractAllSubASTsOfRootNodes(
       final List<AbstractSubAST> preExistingSubASTs,
-      final Set<RootNode> rootNodes) {
+      final Set<RootNode> rootNodes,
+      final long totalBenchmarkActivations) {
     final Set<Node> worklist = new HashSet<>(rootNodes);
     do { // Set::forEach while modifying the Set is undefined behaviour, so we need this
       final Set<Node> tempSet = new HashSet<>(worklist);
@@ -150,7 +154,8 @@ public class CandidateWriter {
         } else {
           final SingleSubAST result =
               // will also add all Nodes we should also consider as root nodes to the worklist
-              SingleSubAST.fromAST(rootNode, worklist, rawActivations);
+              SingleSubAST.fromAST(rootNode, worklist, rawActivations,
+                  totalBenchmarkActivations);
           if (result != null && /*
                                  * calling isRelevant here drastically reduces complexity and
                                  * we
@@ -186,7 +191,8 @@ public class CandidateWriter {
       report.append(
           "===============================================================================\n")
             .append(scoringMethod.getDescription());
-      formatter.format("%,d", ast.getScore());
+      report.append(ast.getScore());
+      // formatter.format("%,f", ast.getScore());
       report.append("\n\n");
 
       ast.toStringRecursive(report, "");

@@ -42,7 +42,8 @@ abstract class SingleSubAST extends AbstractSubAST {
    * recursion on its first child node with a source section.
    */
   static SingleSubAST fromAST(final Node n, final Set<Node> worklist,
-      final Map<Node, Map<String, Long>> rawActivations) {
+      final Map<Node, Map<String, Long>> rawActivations,
+      final long totalBenchmarkActivations) {
     final List<Node> children = NodeUtil.findNodeChildren(n);
 
     assert n.getSourceSection() != null;
@@ -56,10 +57,10 @@ abstract class SingleSubAST extends AbstractSubAST {
 
     if (isControlflowDividingNode(n)) {
       children.forEach(worklist::add);
-      return new SingleSubASTLeaf(n, activationsByType);
+      return new SingleSubASTLeaf(n, activationsByType, totalBenchmarkActivations);
     }
     if (children.isEmpty()) {
-      return new SingleSubASTLeaf(n, activationsByType);
+      return new SingleSubASTLeaf(n, activationsByType, totalBenchmarkActivations);
     }
 
     // now we do the actual work: decide what our result subASTs children will be
@@ -74,23 +75,26 @@ abstract class SingleSubAST extends AbstractSubAST {
         childNode.getChildren().forEach(worklist::add);
         // add a leaf containing the control flow divider node to indicate that we pruned it
         newChildren.add(new CutSubAST(childNode,
-            rawActivations.getOrDefault(childNode, new HashMap<>())));
+            rawActivations.getOrDefault(childNode, new HashMap<>()),
+            totalBenchmarkActivations));
       } else if (childNode.getSourceSection() == null) {
         // skip tree nodes with null SourceSections. Removes WrapperNodes etc. from result
         childNode.getChildren().forEach(children::add);
       } else {
         // this is the "normal case"
-        newChildren.add(fromAST(childNode, worklist, rawActivations));
+        newChildren.add(
+            fromAST(childNode, worklist, rawActivations, totalBenchmarkActivations));
       }
     }
 
     if (newChildren.isEmpty()) {
-      return new SingleSubASTLeaf(n, activationsByType);
+      return new SingleSubASTLeaf(n, activationsByType, totalBenchmarkActivations);
     }
     final SingleSubASTwithChildren result = new SingleSubASTwithChildren(n,
         // TODO PMD says this call to Collection::toArray may be optimizable
         newChildren.toArray(new SingleSubAST[newChildren.size()]),
-        activationsByType);
+        activationsByType,
+        totalBenchmarkActivations);
     if (result.totalActivations() == 0) { // TODO keep this?
       return new CutSubAST(result);
     }
@@ -145,9 +149,10 @@ abstract class SingleSubAST extends AbstractSubAST {
   transient SourceSection         sourceSection;
   Map<String, IncrementalAverage> activationsByType;
   long                            totalLocalActivations;
+  IncrementalAverage              totalBenchmarkActivations;
 
   SingleSubAST(final Node enclosedNode,
-      final Map<String, Long> activationsByType) {
+      final Map<String, Long> activationsByType, final long totalBenchmarkActivations) {
     super();
     this.enclosedNodeType = enclosedNode.getClass();
     this.activationsByType = new HashMap<>();
@@ -158,6 +163,7 @@ abstract class SingleSubAST extends AbstractSubAST {
     this.sourceFileIndex = enclosedNode.getSourceSection().getCharIndex();
     this.sourceSectionLength = enclosedNode.getSourceSection().getCharLength();
     this.sourceSection = enclosedNode.getSourceSection();
+    this.totalBenchmarkActivations = new IncrementalAverage(totalBenchmarkActivations);
     updateLocalActivationsCache();
   }
 
@@ -174,6 +180,7 @@ abstract class SingleSubAST extends AbstractSubAST {
     this.enclosedNodeType = copyFrom.enclosedNodeType;
     this.sourceSection = copyFrom.sourceSection;
     this.totalLocalActivations = copyFrom.totalLocalActivations;
+    this.totalBenchmarkActivations = copyFrom.totalBenchmarkActivations;
   }
 
   /**
@@ -224,6 +231,7 @@ abstract class SingleSubAST extends AbstractSubAST {
         activationsByType.put(type, that.activationsByType.get(type));
       }
     }
+    totalBenchmarkActivations.merge(that.totalBenchmarkActivations);
     updateLocalActivationsCache();
   }
 

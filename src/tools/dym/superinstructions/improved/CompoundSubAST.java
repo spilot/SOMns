@@ -36,7 +36,7 @@ public class CompoundSubAST extends AbstractSubAST {
   }
 
   @Override
-  long computeScore(final ScoreVisitor scoreVisitor) {
+  double computeScore(final ScoreVisitor scoreVisitor) {
     return scoreVisitor.score(this);
   }
 
