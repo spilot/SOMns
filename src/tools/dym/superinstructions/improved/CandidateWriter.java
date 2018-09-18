@@ -191,8 +191,8 @@ public class CandidateWriter {
       report.append(
           "===============================================================================\n")
             .append(scoringMethod.getDescription());
-      report.append(ast.getScore());
-      // formatter.format("%,f", ast.getScore());
+      // report.append(ast.getScore());
+      formatter.format("%,f", ast.getScore());
       report.append("\n\n");
 
       ast.toStringRecursive(report, "");
