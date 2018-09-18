@@ -22,7 +22,9 @@ import com.oracle.truffle.api.instrumentation.ExecutionEventNodeFactory;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
 import com.oracle.truffle.api.nodes.RootNode;
+import com.oracle.truffle.api.nodes.UnexpectedResultException;
 
+import som.interpreter.ReturnException;
 import som.vm.VmSettings;
 
 
@@ -56,6 +58,19 @@ public class CandidateWriter {
       protected void onReturnValue(final VirtualFrame frame, final Object result) {
         countActivation(context.getInstrumentedNode(),
             result == null ? "null" : result.getClass().getSimpleName());
+      }
+
+      @Override
+      protected void onReturnExceptional(final VirtualFrame frame, final Throwable t) {
+        if (t instanceof ReturnException) {
+          countActivation(context.getInstrumentedNode(),
+              String.valueOf(((ReturnException) t).result()));
+        } else if (t instanceof UnexpectedResultException) {
+          countActivation(context.getInstrumentedNode(),
+              String.valueOf(((UnexpectedResultException) t).getResult()));
+        } else {
+          countActivation(context.getInstrumentedNode(), t.getClass().getSimpleName());
+        }
       }
     };
   }

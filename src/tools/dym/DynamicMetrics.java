@@ -404,7 +404,7 @@ public class DynamicMetrics extends TruffleInstrument {
 
     addLoopBodyInstrumentation(instrumenter, loopProfileFactory);
 
-    addActivationInstrumentation(instrumenter);
+    // addActivationInstrumentation(instrumenter);
 
     addBranchProfilingInstrumentation(instrumenter);
 
@@ -459,10 +459,10 @@ public class DynamicMetrics extends TruffleInstrument {
         maxStackDepth, getAllStatementsAlsoNotExecuted());
 
     long totalActivations = printNodeActivations(metricsFolder);
-    identifySuperinstructionCandidates(metricsFolder);
-    outputAllTruffleMethodsToIGV();
-
     candidateWriter.filesOut(rootNodes, totalActivations);
+    // identifySuperinstructionCandidates(metricsFolder);
+
+    outputAllTruffleMethodsToIGV();
   }
 
   private long printNodeActivations(final String metricsFolder) {
