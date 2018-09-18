@@ -18,7 +18,7 @@ abstract class AbstractSubAST implements Serializable {
    * and for all SubAST node pairs (a in A, b in B)
    * (a, b have the same place in the structure of A/B resp. => a instanceof b))
    *
-   * congruent is symmetric, transitive and reflexive.
+   * congruent is symmetric, transitive and reflexive; an equivalence relation.
    */
   final boolean congruent(final AbstractSubAST arg) {
     if (arg instanceof CompoundSubAST) {
@@ -75,6 +75,15 @@ abstract class AbstractSubAST implements Serializable {
     return score;
   }
 
+  /**
+   * Returns a CompoundSubAST containing all SingleSubAST in this and the argument if this and
+   * the argument are not equal.
+   * If this and the argument are equal, returns a SingleSubAST with the mean of their
+   * activations.
+   *
+   * Asserts that this SubAST and the argument are congruent.
+   * 
+   */
   abstract AbstractSubAST add(AbstractSubAST argument);
 
   // abstract AbstractSubAST addWithIncrementalMean(final AbstractSubAST arg);

@@ -120,9 +120,7 @@ abstract class SingleSubAST extends AbstractSubAST {
     }
 
     void add(final long x) {
-      System.out.print("AVG(" + avg + "," + x + ")=");
       avg += (x - avg) / ++N;
-      System.out.println(avg);
     }
 
     void merge(final IncrementalAverage other) {
@@ -195,6 +193,7 @@ abstract class SingleSubAST extends AbstractSubAST {
 
   @Override
   AbstractSubAST add(final AbstractSubAST arg) {
+    assert this.congruent(arg);
     if (arg instanceof CompoundSubAST) {
       return ((CompoundSubAST) arg).add(this);
     }

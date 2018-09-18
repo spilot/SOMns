@@ -70,7 +70,6 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
           final ArrayList<SingleSubAST> worklist = subAST.getChildren();
           while (!worklist.isEmpty()) {
             final SingleSubAST current = worklist.remove(worklist.size() - 1);
-            // childrenActi += current.score(this);
             if (!(current instanceof CutSubAST)) {
               childrenActi +=
                   current.activationsByType.values()
@@ -79,7 +78,8 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
                                            .reduce(0L, Long::sum);
             }
             if (current instanceof SingleSubASTwithChildren) {
-              ((SingleSubASTwithChildren) current).getChildren().forEach(worklist::add);
+              ((SingleSubASTwithChildren) current).getChildren()
+                                                  .forEach(worklist::add);
             }
           }
           return childrenActi;
@@ -101,8 +101,7 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
         @Override
         public double score(final CompoundSubAST subAST) {
           return subAST.enclosedNodes.stream()
-                                     .mapToDouble(
-                                         (singleSubAST) -> singleSubAST.score(this))
+                                     .mapToDouble((singleSubAST) -> singleSubAST.score(this))
                                      .sum();
         }
 
@@ -159,7 +158,6 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
   @Override
   public int compare(final AbstractSubAST arg0, final AbstractSubAST arg1) {
     return Double.compare(arg1.score(this.scoreVisitor), arg0.score(this.scoreVisitor));
-    // return (int) (arg1.score(this.scoreVisitor) - arg0.score(this.scoreVisitor));
   }
 
   String getDescription() {

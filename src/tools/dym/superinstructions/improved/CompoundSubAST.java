@@ -17,7 +17,8 @@ public class CompoundSubAST extends AbstractSubAST {
   }
 
   @Override
-  AbstractSubAST add(final AbstractSubAST arg) {
+  CompoundSubAST add(final AbstractSubAST arg) {
+    assert this.congruent(arg);
     arg.forEachDirectSubAST(this::addIfNew);
     return this;
   }
