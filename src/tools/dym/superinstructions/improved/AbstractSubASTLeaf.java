@@ -20,6 +20,10 @@ abstract class AbstractSubASTLeaf extends SingleSubAST {
     super(copyFrom);
   }
 
+  AbstractSubASTLeaf(final SingleSubAST copyFrom, final Map<String, Long> activationsByType) {
+    super(copyFrom, activationsByType);
+  }
+
   @Override
   boolean isRelevant() {
     return false;

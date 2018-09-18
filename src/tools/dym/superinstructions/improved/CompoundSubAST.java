@@ -1,9 +1,13 @@
 package tools.dym.superinstructions.improved;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
+import som.vm.VmSettings;
 import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
 
@@ -78,11 +82,50 @@ public class CompoundSubAST extends AbstractSubAST {
     return false;
   }
 
+  static SingleSubAST foldMaps(final SingleSubAST lhs, final SingleSubAST rhs) {
+    Map<String, Long> activationsByTypeAccumulator = new HashMap<>();
+    lhs.activationsByType.keySet().forEach(type -> {
+      activationsByTypeAccumulator.put(type, lhs.activationsByType.get(type).get());
+    });
+    rhs.activationsByType.keySet().forEach(type -> {
+      activationsByTypeAccumulator.merge(type,
+          rhs.activationsByType.get(type).get(), Long::sum);
+    });
+    if (lhs.isLeaf()) {
+      assert rhs.isLeaf();
+      if (lhs instanceof CutSubAST) {
+        return new CutSubAST(lhs, activationsByTypeAccumulator);
+      }
+      assert lhs instanceof SingleSubASTLeaf;
+      return new SingleSubASTLeaf(lhs, activationsByTypeAccumulator);
+    } else {
+      assert !rhs.isLeaf();
+      SingleSubASTwithChildren right, left;
+      right = (SingleSubASTwithChildren) rhs;
+      left = (SingleSubASTwithChildren) lhs;
+      assert right.children.length == left.children.length;
+      SingleSubAST[] resultChildren = new SingleSubAST[right.children.length];
+      for (int i = 0; i < right.children.length; i++) {
+        resultChildren[i] = foldMaps(left.children[i], right.children[i]);
+      }
+
+      return new SingleSubASTwithChildren(lhs, resultChildren, activationsByTypeAccumulator);
+    }
+  }
+
   @Override
   StringBuilder toStringRecursive(final StringBuilder accumulator, final String prefix) {
-    enclosedNodes.forEach((subAST) -> {
-      subAST.toStringRecursive(accumulator, prefix).append('\n');
-    });
-    return accumulator;
+    if (VmSettings.SUPERINSTRUCTIONS_REPORT_VERBOSE) {
+      enclosedNodes.forEach((subAST) -> {
+        subAST.toStringRecursive(accumulator, prefix).append('\n');
+      });
+      return accumulator;
+    } else {
+      Optional<SingleSubAST> result = this.enclosedNodes.stream()
+                                                        .reduce(CompoundSubAST::foldMaps);
+      assert result.isPresent() : enclosedNodes;
+      result.get().toStringRecursive(accumulator, prefix).append('\n');
+      return accumulator;
+    }
   }
 }

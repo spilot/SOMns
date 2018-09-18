@@ -181,6 +181,21 @@ abstract class SingleSubAST extends AbstractSubAST {
     this.totalBenchmarkActivations = copyFrom.totalBenchmarkActivations;
   }
 
+  SingleSubAST(final SingleSubAST copyFrom, final Map<String, Long> activationsByType2) {
+    this.sourceFileName = copyFrom.sourceFileName;
+    this.sourceFileIndex = copyFrom.sourceFileIndex;
+    this.sourceSectionLength = copyFrom.sourceSectionLength;
+    this.enclosedNodeType = copyFrom.enclosedNodeType;
+    this.sourceSection = copyFrom.sourceSection;
+    this.totalLocalActivations = copyFrom.totalLocalActivations;
+    this.totalBenchmarkActivations = copyFrom.totalBenchmarkActivations;
+    this.activationsByType = new HashMap<>();
+    activationsByType2.entrySet()
+                      .forEach((entry) -> this.activationsByType.put(
+                          entry.getKey(),
+                          new IncrementalAverage(entry.getValue())));
+  }
+
   /**
    * @return false if we can be sure this tree will under no circumstances make a good
    *         superinstruction, otherwise true

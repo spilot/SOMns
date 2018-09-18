@@ -4,12 +4,12 @@ import java.util.Map;
 
 import com.oracle.truffle.api.nodes.Node;
 
+import som.vm.VmSettings;
 import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
 
 public class CutSubAST extends AbstractSubASTLeaf {
   SingleSubAST[] children;
-  boolean        nonCompactPrint = true;
 
   CutSubAST(final Node enclosedNode,
       final Map<String, Long> activationsByType,
@@ -22,10 +22,14 @@ public class CutSubAST extends AbstractSubASTLeaf {
     this.children = copyFrom.isLeaf() ? null : ((SingleSubASTwithChildren) copyFrom).children;
   }
 
+  CutSubAST(final SingleSubAST copyFrom, final Map<String, Long> activationsByType) {
+    super(copyFrom, activationsByType);
+  }
+
   @Override
   StringBuilder toStringRecursive(final StringBuilder accumulator,
       final String prefix) {
-    if (nonCompactPrint) {
+    if (!VmSettings.SUPERINSTRUCTIONS_REPORT_VERBOSE) {
       accumulator.append("\u001B[31m"); // red text
       if (this.sourceSection != null) {
         accumulator.append(prefix)

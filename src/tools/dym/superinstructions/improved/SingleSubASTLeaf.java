@@ -14,6 +14,10 @@ class SingleSubASTLeaf extends AbstractSubASTLeaf {
     super(enclosedNode, activationsByType, totalBenchmarkActivations);
   }
 
+  SingleSubASTLeaf(final SingleSubAST copyFrom, final Map<String, Long> activationsByType) {
+    super(copyFrom, activationsByType);
+  }
+
   @Override
   public boolean congruent(final SingleSubAST o) {
     return o instanceof SingleSubASTLeaf

@@ -26,6 +26,12 @@ class SingleSubASTwithChildren extends SingleSubAST {
     this.children = children;
   }
 
+  SingleSubASTwithChildren(final SingleSubAST copyFrom,
+      final SingleSubAST[] children, final Map<String, Long> newActivations) {
+    super(copyFrom, newActivations);
+    this.children = children;
+  }
+
   @Override
   boolean congruent(final SingleSubAST obj) {
     if (obj instanceof SingleSubASTwithChildren) {
