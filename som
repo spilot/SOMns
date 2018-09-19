@@ -373,4 +373,6 @@ if args.verbose:
 env = dict(os.environ)
 env['JVMCI_VERSION_CHECK'] = 'ignore'
 
+env['BENCHMARK'] = sys.argv[-4]
+
 os.execvpe(java_bin, all_args, env)
