@@ -166,7 +166,7 @@ abstract class SingleSubAST extends AbstractSubAST {
   }
 
   SingleSubAST(final SingleSubAST copyFrom) {
-    super();
+    super(copyFrom);
     this.activationsByType = new HashMap<>();
     copyFrom.activationsByType.entrySet()
                               .forEach((entry) -> this.activationsByType.put(
@@ -182,6 +182,7 @@ abstract class SingleSubAST extends AbstractSubAST {
   }
 
   SingleSubAST(final SingleSubAST copyFrom, final Map<String, Long> activationsByType2) {
+    super(copyFrom);
     this.sourceFileName = copyFrom.sourceFileName;
     this.sourceFileIndex = copyFrom.sourceFileIndex;
     this.sourceSectionLength = copyFrom.sourceSectionLength;
@@ -192,8 +193,7 @@ abstract class SingleSubAST extends AbstractSubAST {
     this.activationsByType = new HashMap<>();
     activationsByType2.entrySet()
                       .forEach((entry) -> this.activationsByType.put(
-                          entry.getKey(),
-                          new IncrementalAverage(entry.getValue())));
+                          entry.getKey(), new IncrementalAverage(entry.getValue())));
   }
 
   /**

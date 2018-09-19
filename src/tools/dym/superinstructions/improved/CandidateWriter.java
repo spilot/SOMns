@@ -82,11 +82,22 @@ public class CandidateWriter {
     }
   }
 
-  public void filesOut(final Set<RootNode> rootNodes, final long totalBenchmarkActivations) {
+  public long getTotalActivations() {
+    return rawActivations.values()
+                         .stream()
+                         .mapToLong(hm -> hm.values()
+                                            .stream()
+                                            .reduce(0L, Long::sum))
+                         .reduce(0L, Long::sum);
+  }
+
+  public void filesOut(final Set<RootNode> rootNodes) {
     System.out.println("rootNodes.size()=" + rootNodes.size());
 
+    final long total = getTotalActivations();
+
     final List<AbstractSubAST> subASTs =
-        extractAllSubASTsOfRootNodes(olderSubASTs, rootNodes, totalBenchmarkActivations);
+        extractAllSubASTsOfRootNodes(olderSubASTs, rootNodes, total);
 
     System.out.println(subASTs.size() + " subASTs found.");
 
@@ -112,10 +123,11 @@ public class CandidateWriter {
           SubASTComparator.HIGHEST_ACTIVATIONS_SAVED_FIRST);
 
       writeHumanReadableReport(virtualSubASTs,
-          SubASTComparator.HIGHEST_STATIC_FREQUENCY_FIRST);
+          SubASTComparator.HIGHEST_SHARE_OF_TOTAL_ACTIVATIONS_FIRST);
 
       writeHumanReadableReport(virtualSubASTs,
-          SubASTComparator.HIGHEST_SHARE_OF_TOTAL_ACTIVATIONS_FIRST);
+          SubASTComparator.HIGHEST_STATIC_FREQUENCY_FIRST);
+
     }
   }
 
@@ -197,25 +209,25 @@ public class CandidateWriter {
 
   private void writeHumanReadableReport(final List<AbstractSubAST> uniqueASTs,
       final SubASTComparator scoringMethod) {
+
     uniqueASTs.sort(scoringMethod);
 
     final StringBuilder report = new StringBuilder();
-    final Formatter formatter = new Formatter(report);
+    try (final Formatter formatter = new Formatter(report)) {
+      for (final AbstractSubAST ast : uniqueASTs) {
+        report.append(
+            "===============================================================================\n")
+              .append(scoringMethod.getDescription());
 
-    for (final AbstractSubAST ast : uniqueASTs) {
-      report.append(
-          "===============================================================================\n")
-            .append(scoringMethod.getDescription());
-      formatter.format("%,f", ast.getScore());
-      report.append("\n\n");
+        formatter.format("%,f", ast.getScore());
+        report.append("\n\n");
 
-      ast.toStringRecursive(report, "");
-      if (ast instanceof SingleSubAST) {
-        report.append('\n');
+        ast.toStringRecursive(report, "");
+        if (ast instanceof SingleSubAST) {
+          report.append('\n');
+        }
       }
     }
-
-    formatter.close();
 
     final Path reportPath = Paths.get(this.metricsFolder,
         "superinstruction-candidates-stefan-" + scoringMethod.getSimpleName() + ".txt");

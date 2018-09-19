@@ -11,6 +11,13 @@ abstract class AbstractSubAST implements Serializable {
   private double                 score;
   private transient ScoreVisitor lastScoreVisitor;
 
+  AbstractSubAST() {}
+
+  AbstractSubAST(final AbstractSubAST copyFrom) {
+    this.score = copyFrom.score;
+    this.lastScoreVisitor = copyFrom.lastScoreVisitor;
+  }
+
   /**
    * For SubASTs A, B:
    * A.congruent(B) means:
@@ -37,7 +44,7 @@ abstract class AbstractSubAST implements Serializable {
 
   @Override
   public final String toString() {
-    // TODO assert false;
+    assert false;
     return toStringRecursive(new StringBuilder(), "").toString();
   }
 
@@ -82,7 +89,7 @@ abstract class AbstractSubAST implements Serializable {
    * activations.
    *
    * Asserts that this SubAST and the argument are congruent.
-   * 
+   *
    */
   abstract AbstractSubAST add(AbstractSubAST argument);
 
