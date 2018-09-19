@@ -12,7 +12,6 @@ import com.oracle.truffle.api.frame.VirtualFrame;
 import bd.inlining.ScopeAdaptationVisitor;
 import som.compiler.Variable.Local;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
-import som.interpreter.nodes.superinstructions.AssignProductToVariableNode;
 import som.interpreter.nodes.superinstructions.AssignSubtractionResultNode;
 import som.interpreter.nodes.superinstructions.IncrementOperationNode;
 import som.vm.VmSettings;
@@ -131,7 +130,6 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
   @ImportStatic({
       IncrementOperationNode.class,
       AssignSubtractionResultNode.class,
-      AssignProductToVariableNode.class,
       VmSettings.class})
   @NodeChild(value = "exp", type = ExpressionNode.class)
   public abstract static class LocalVariableWriteNode extends LocalVariableNode {
@@ -175,20 +173,6 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
         final @Cached("isIncrementOperation(getExp(), var)") boolean isIncrement) {
       frame.setLong(slot, expValue);
       IncrementOperationNode.replaceNode(this);
-      return expValue;
-    }
-
-    /**
-     * Check for ``AssignProductToVariableNode`` superinstruction and replace where
-     * applicable.
-     */
-    @Specialization(
-        guards = {"SUPERINSTRUCTIONS", "isAssignProduct", "isDoubleKind(expValue)"})
-    public final double writeDoubleAndReplaceWithAssignProduct(final VirtualFrame frame,
-        final double expValue,
-        final @Cached("isAssignProductOperation(getExp(), frame)") boolean isAssignProduct) {
-      frame.setDouble(slot, expValue);
-      AssignProductToVariableNode.replaceNode(this);
       return expValue;
     }
 
