@@ -12,9 +12,6 @@ import com.oracle.truffle.api.frame.VirtualFrame;
 import bd.inlining.ScopeAdaptationVisitor;
 import som.compiler.Variable.Local;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
-import som.interpreter.nodes.superinstructions.AssignProductToVariableNode;
-import som.interpreter.nodes.superinstructions.AssignSubtractionResultNode;
-import som.interpreter.nodes.superinstructions.IncrementOperationNode;
 import som.vm.VmSettings;
 import som.vm.constants.Nil;
 import som.vmobjects.SSymbol;
@@ -129,9 +126,6 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
   }
 
   @ImportStatic({
-      IncrementOperationNode.class,
-      AssignSubtractionResultNode.class,
-      AssignProductToVariableNode.class,
       VmSettings.class})
   @NodeChild(value = "exp", type = ExpressionNode.class)
   public abstract static class LocalVariableWriteNode extends LocalVariableNode {
@@ -149,46 +143,6 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
     @Specialization(guards = "isBoolKind(expValue)")
     public final boolean writeBoolean(final VirtualFrame frame, final boolean expValue) {
       frame.setBoolean(slot, expValue);
-      return expValue;
-    }
-
-    /**
-     * Check for ``AssignSubtractionResultNode`` superinstruction and replace where
-     * applicable.
-     */
-    @Specialization(
-        guards = {"SUPERINSTRUCTIONS", "isAssignSubtract", "isDoubleKind(expValue)"})
-    public final double writeDoubleAndReplaceWithAssignSubtract(final VirtualFrame frame,
-        final double expValue,
-        final @Cached("isAssignSubtractionResultOperation(getExp())") boolean isAssignSubtract) {
-      frame.setDouble(slot, expValue);
-      AssignSubtractionResultNode.replaceNode(this);
-      return expValue;
-    }
-
-    /**
-     * Check for ``IncrementOperationNode`` superinstruction and replace where applicable.
-     */
-    @Specialization(guards = {"SUPERINSTRUCTIONS", "isIncrement", "isLongKind(expValue)"})
-    public final long writeLongAndReplaceWithIncrement(final VirtualFrame frame,
-        final long expValue,
-        final @Cached("isIncrementOperation(getExp(), var)") boolean isIncrement) {
-      frame.setLong(slot, expValue);
-      IncrementOperationNode.replaceNode(this);
-      return expValue;
-    }
-
-    /**
-     * Check for ``AssignProductToVariableNode`` superinstruction and replace where
-     * applicable.
-     */
-    @Specialization(
-        guards = {"SUPERINSTRUCTIONS", "isAssignProduct", "isDoubleKind(expValue)"})
-    public final double writeDoubleAndReplaceWithAssignProduct(final VirtualFrame frame,
-        final double expValue,
-        final @Cached("isAssignProductOperation(getExp(), frame)") boolean isAssignProduct) {
-      frame.setDouble(slot, expValue);
-      AssignProductToVariableNode.replaceNode(this);
       return expValue;
     }
 
