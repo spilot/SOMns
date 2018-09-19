@@ -26,7 +26,7 @@ import som.interpreter.nodes.dispatch.Dispatchable;
 import som.interpreter.nodes.specialized.AndMessageNodeFactory;
 import som.interpreter.nodes.specialized.BooleanInlinedLiteralNode.AndInlinedLiteralNode;
 import som.interpreter.nodes.specialized.BooleanInlinedLiteralNode.OrInlinedLiteralNode;
-import som.interpreter.nodes.specialized.IfInlinedLiteralNodeFactory;
+import som.interpreter.nodes.specialized.IfInlinedLiteralNode;
 import som.interpreter.nodes.specialized.IfMessageNodeGen;
 import som.interpreter.nodes.specialized.IfTrueIfFalseInlinedLiteralsNode;
 import som.interpreter.nodes.specialized.IfTrueIfFalseMessageNodeFactory;
@@ -38,7 +38,7 @@ import som.interpreter.nodes.specialized.IntToDoInlinedLiteralsNodeFactory;
 import som.interpreter.nodes.specialized.IntToDoMessageNodeFactory;
 import som.interpreter.nodes.specialized.NotMessageNodeFactory;
 import som.interpreter.nodes.specialized.OrMessageNodeFactory;
-import som.interpreter.nodes.specialized.whileloops.WhileInlinedLiteralsNodeFactory;
+import som.interpreter.nodes.specialized.whileloops.WhileInlinedLiteralsNode;
 import som.interpreter.nodes.specialized.whileloops.WhilePrimitiveNodeFactory;
 import som.interpreter.nodes.specialized.whileloops.WhileWithStaticBlocksNode.WhileWithStaticBlocksNodeFactory;
 import som.primitives.ActivityJoinFactory;
@@ -225,9 +225,6 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
     allFactories.add(HashPrimFactory.getInstance());
     allFactories.add(IfTrueIfFalseMessageNodeFactory.getInstance());
 
-    allFactories.add(IfInlinedLiteralNodeFactory.getInstance());
-    allFactories.add(WhileInlinedLiteralsNodeFactory.getInstance());
-
     allFactories.add(IntToDoMessageNodeFactory.getInstance());
     allFactories.add(IntDownToDoMessageNodeFactory.getInstance());
     allFactories.add(IntToByDoMessageNodeFactory.getInstance());
@@ -262,10 +259,10 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
     List<Class<? extends Node>> nodes = new ArrayList<>();
     nodes.add(AndInlinedLiteralNode.class);
     nodes.add(OrInlinedLiteralNode.class);
-    // nodes.add(IfInlinedLiteralNode.class);
+    nodes.add(IfInlinedLiteralNode.class);
     nodes.add(IfTrueIfFalseInlinedLiteralsNode.class);
 
-    // nodes.add(WhileInlinedLiteralsNode.class);
+    nodes.add(WhileInlinedLiteralsNode.class);
     return nodes;
   }
 
@@ -275,9 +272,6 @@ public class Primitives extends PrimitiveLoader<VM, ExpressionNode, SSymbol> {
     factories.add(IntDownToDoInlinedLiteralsNodeFactory.getInstance());
     factories.add(IntTimesRepeatLiteralNodeFactory.getInstance());
     factories.add(IntToDoInlinedLiteralsNodeFactory.getInstance());
-
-    factories.add(IfInlinedLiteralNodeFactory.getInstance());
-    factories.add(WhileInlinedLiteralsNodeFactory.getInstance());
 
     return factories;
   }

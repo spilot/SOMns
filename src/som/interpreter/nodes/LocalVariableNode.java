@@ -13,7 +13,6 @@ import bd.inlining.ScopeAdaptationVisitor;
 import som.compiler.Variable.Local;
 import som.interpreter.nodes.nary.ExprWithTagsNode;
 import som.interpreter.nodes.superinstructions.AssignProductToVariableNode;
-import som.interpreter.nodes.superinstructions.AssignSubtractionResultNode;
 import som.interpreter.nodes.superinstructions.IncrementOperationNode;
 import som.vm.VmSettings;
 import som.vm.constants.Nil;
@@ -130,7 +129,6 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
 
   @ImportStatic({
       IncrementOperationNode.class,
-      AssignSubtractionResultNode.class,
       AssignProductToVariableNode.class,
       VmSettings.class})
   @NodeChild(value = "exp", type = ExpressionNode.class)
@@ -149,20 +147,6 @@ public abstract class LocalVariableNode extends ExprWithTagsNode implements Send
     @Specialization(guards = "isBoolKind(expValue)")
     public final boolean writeBoolean(final VirtualFrame frame, final boolean expValue) {
       frame.setBoolean(slot, expValue);
-      return expValue;
-    }
-
-    /**
-     * Check for ``AssignSubtractionResultNode`` superinstruction and replace where
-     * applicable.
-     */
-    @Specialization(
-        guards = {"SUPERINSTRUCTIONS", "isAssignSubtract", "isDoubleKind(expValue)"})
-    public final double writeDoubleAndReplaceWithAssignSubtract(final VirtualFrame frame,
-        final double expValue,
-        final @Cached("isAssignSubtractionResultOperation(getExp())") boolean isAssignSubtract) {
-      frame.setDouble(slot, expValue);
-      AssignSubtractionResultNode.replaceNode(this);
       return expValue;
     }
 
