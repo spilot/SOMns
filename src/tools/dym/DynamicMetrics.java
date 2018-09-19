@@ -2,8 +2,10 @@ package tools.dym;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -466,13 +468,28 @@ public class DynamicMetrics extends TruffleInstrument {
   }
 
   private void printNodeActivations(final String metricsFolder, final long totalActivations) {
-    final String report = "printNodeActivations: " + totalActivations;
+    final String report;
+    if (System.getenv().containsKey("BENCHMARK")) {
+      report = String.valueOf(System.getenv("BENCHMARK"))
+          + ": printNodeActivations: "
+          + totalActivations + '\n';
+    } else {
+      report = "printNodeActivations: "
+          + totalActivations + '\n';
+    }
     final Path reportPath = Paths.get(metricsFolder, "total-activations.txt");
     try {
-      Files.write(reportPath, report.getBytes());
+      Files.write(reportPath, report.getBytes(), StandardOpenOption.APPEND);
+    } catch (NoSuchFileException e) {
+      try {
+        Files.write(reportPath, report.getBytes());
+      } catch (IOException ex) {
+        throw new RuntimeException("Could not write total activation count: " + ex);
+      }
     } catch (IOException e) {
       throw new RuntimeException("Could not write total activation count: " + e);
     }
+
   }
 
   private void identifySuperinstructionCandidates(final String metricsFolder) {
