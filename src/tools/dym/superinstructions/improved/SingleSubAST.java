@@ -12,6 +12,7 @@ import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
 import com.oracle.truffle.api.source.SourceSection;
 
+import som.interpreter.nodes.SOMNode;
 import som.interpreter.nodes.SequenceNode;
 import som.interpreter.nodes.specialized.IfInlinedLiteralNode;
 import som.interpreter.nodes.specialized.IfMessageNode;
@@ -41,16 +42,15 @@ abstract class SingleSubAST extends AbstractSubAST {
    * If we encounter a node with no source section in another place, we skip it by continuing
    * recursion on its first child node with a source section.
    */
-  static SingleSubAST fromAST(final Node n, final Set<Node> worklist,
+  static SingleSubAST fromAST(final Node maybeWrappedNode, final Set<Node> worklist,
       final Map<Node, Map<String, Long>> rawActivations,
       final long totalBenchmarkActivations) {
+
+    final Node n = SOMNode.unwrapIfNecessary(maybeWrappedNode);
+
     final List<Node> children = NodeUtil.findNodeChildren(n);
 
     assert n.getSourceSection() != null;
-    // if (n.getSourceSection() == null) {
-    // children.forEach(worklist::add);
-    // return null;
-    // }
 
     final Map<String, Long> activationsByType =
         rawActivations.getOrDefault(n, new HashMap<>());
