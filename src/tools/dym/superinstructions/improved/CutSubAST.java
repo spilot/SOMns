@@ -29,7 +29,7 @@ public class CutSubAST extends AbstractSubASTLeaf {
   @Override
   StringBuilder toStringRecursive(final StringBuilder accumulator,
       final String prefix) {
-    if (!VmSettings.SUPERINSTRUCTIONS_REPORT_VERBOSE) {
+    if (VmSettings.SUPERINSTRUCTIONS_REPORT_VERBOSE) {
       accumulator.append("\u001B[31m"); // red text
       if (this.sourceSection != null) {
         accumulator.append(prefix)
