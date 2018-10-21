@@ -8,7 +8,7 @@ import tools.dym.superinstructions.improved.SingleSubAST.IncrementalAverage;
 
 class SubASTComparator implements Comparator<AbstractSubAST> {
   static interface ScoreVisitor {
-    double score(CompoundSubAST subAST);
+    double score(CongruentSubASTs subAST);
 
     double score(CutSubAST subAST);
 
@@ -46,7 +46,7 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
         }
 
         @Override
-        public double score(final CompoundSubAST subAST) {
+        public double score(final CongruentSubASTs subAST) {
           return subAST.enclosedNodes.size();
         }
 
@@ -99,7 +99,7 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
         }
 
         @Override
-        public double score(final CompoundSubAST subAST) {
+        public double score(final CongruentSubASTs subAST) {
           return subAST.enclosedNodes.stream()
                                      .mapToDouble((singleSubAST) -> singleSubAST.score(this))
                                      .sum();
@@ -120,7 +120,7 @@ class SubASTComparator implements Comparator<AbstractSubAST> {
       new SubASTComparator(new ScoreVisitor() {
 
         @Override
-        public double score(final CompoundSubAST subAST) {
+        public double score(final CongruentSubASTs subAST) {
           return subAST.enclosedNodes.stream()
                                      .mapToDouble((singleSubAST) -> singleSubAST.score(this))
                                      .sum();

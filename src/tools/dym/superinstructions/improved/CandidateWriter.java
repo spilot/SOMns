@@ -29,13 +29,19 @@ import som.vm.VmSettings;
 
 
 public class CandidateWriter {
-  static final String CANDIDATE_DATA_FILE_NAME = "/candidates.data";
+  final static String CANDIDATE_DATA_FILE_NAME = "/candidates.data";
 
   final String metricsFolder;
 
   List<AbstractSubAST> olderSubASTs;
 
   final Map<Node, Map<String, Long>> rawActivations = new HashMap<>();
+
+  final static SubASTComparator[] SCORING_FUNCTIONS = {
+      SubASTComparator.HIGHEST_ACTIVATIONS_SAVED_FIRST,
+      SubASTComparator.HIGHEST_SHARE_OF_TOTAL_ACTIVATIONS_FIRST,
+      SubASTComparator.HIGHEST_STATIC_FREQUENCY_FIRST
+  };
 
   @SuppressWarnings("unchecked")
   public CandidateWriter(final String metricsFolder) {
@@ -119,15 +125,9 @@ public class CandidateWriter {
 
       System.out.println("collected " + virtualSubASTs.size() + " virtual subASTs");
 
-      writeHumanReadableReport(virtualSubASTs,
-          SubASTComparator.HIGHEST_ACTIVATIONS_SAVED_FIRST);
-
-      writeHumanReadableReport(virtualSubASTs,
-          SubASTComparator.HIGHEST_SHARE_OF_TOTAL_ACTIVATIONS_FIRST);
-
-      writeHumanReadableReport(virtualSubASTs,
-          SubASTComparator.HIGHEST_STATIC_FREQUENCY_FIRST);
-
+      for (final SubASTComparator function : SCORING_FUNCTIONS) {
+        writeHumanReadableReport(virtualSubASTs, function);
+      }
     }
   }
 
@@ -181,7 +181,7 @@ public class CandidateWriter {
         } else {
           final SingleSubAST result =
               // will also add all Nodes we should also consider as root nodes to the worklist
-              SingleSubAST.fromAST(rootNode, worklist, rawActivations,
+              SingleSubAST.fromAST(rootNode, worklist::add, rawActivations,
                   totalBenchmarkActivations);
           if (result != null && /*
                                  * calling isRelevant here drastically reduces complexity and

@@ -11,17 +11,17 @@ import som.vm.VmSettings;
 import tools.dym.superinstructions.improved.SubASTComparator.ScoreVisitor;
 
 
-public class CompoundSubAST extends AbstractSubAST {
+public class CongruentSubASTs extends AbstractSubAST {
   List<SingleSubAST> enclosedNodes;
 
-  CompoundSubAST(final SingleSubAST firstNode) {
+  CongruentSubASTs(final SingleSubAST firstNode) {
     super();
     this.enclosedNodes = new ArrayList<>();
     enclosedNodes.add(firstNode);
   }
 
   @Override
-  CompoundSubAST add(final AbstractSubAST arg) {
+  CongruentSubASTs add(final AbstractSubAST arg) {
     assert this.congruent(arg);
     arg.forEachDirectSubAST(this::addIfNew);
     return this;
@@ -46,7 +46,7 @@ public class CompoundSubAST extends AbstractSubAST {
   }
 
   @Override
-  boolean congruent(final CompoundSubAST arg) {
+  boolean congruent(final CongruentSubASTs arg) {
     // we don't need to check every node against arg because all our enclosedNodes are mutually
     // congruent
     return this.getFirstNode().congruent(arg.getFirstNode());
@@ -122,7 +122,7 @@ public class CompoundSubAST extends AbstractSubAST {
       return accumulator;
     } else {
       Optional<SingleSubAST> result = this.enclosedNodes.stream()
-                                                        .reduce(CompoundSubAST::foldMaps);
+                                                        .reduce(CongruentSubASTs::foldMaps);
       assert result.isPresent() : enclosedNodes;
       result.get().toStringRecursive(accumulator, prefix).append('\n');
       return accumulator;

@@ -28,8 +28,8 @@ abstract class AbstractSubAST implements Serializable {
    * congruent is symmetric, transitive and reflexive; an equivalence relation.
    */
   final boolean congruent(final AbstractSubAST arg) {
-    if (arg instanceof CompoundSubAST) {
-      return this.congruent((CompoundSubAST) arg);
+    if (arg instanceof CongruentSubASTs) {
+      return this.congruent((CongruentSubASTs) arg);
     }
     if (arg instanceof SingleSubAST) {
       return this.congruent((SingleSubAST) arg);
@@ -38,7 +38,7 @@ abstract class AbstractSubAST implements Serializable {
     return false;
   }
 
-  abstract boolean congruent(final CompoundSubAST arg);
+  abstract boolean congruent(final CongruentSubASTs arg);
 
   abstract boolean congruent(final SingleSubAST arg);
 

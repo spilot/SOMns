@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import com.oracle.truffle.api.nodes.Node;
@@ -42,7 +41,8 @@ abstract class SingleSubAST extends AbstractSubAST {
    * If we encounter a node with no source section in another place, we skip it by continuing
    * recursion on its first child node with a source section.
    */
-  static SingleSubAST fromAST(final Node maybeWrappedNode, final Set<Node> worklist,
+  static SingleSubAST fromAST(final Node maybeWrappedNode,
+      final Consumer<Node> considerAsNewRoot,
       final Map<Node, Map<String, Long>> rawActivations,
       final long totalBenchmarkActivations) {
 
@@ -56,7 +56,7 @@ abstract class SingleSubAST extends AbstractSubAST {
         rawActivations.getOrDefault(n, new HashMap<>());
 
     if (isControlflowDividingNode(n)) {
-      children.forEach(worklist::add);
+      children.forEach(considerAsNewRoot);
       return new SingleSubASTLeaf(n, activationsByType, totalBenchmarkActivations);
     }
     if (children.isEmpty()) {
@@ -72,7 +72,7 @@ abstract class SingleSubAST extends AbstractSubAST {
                                                                    // ArrayList
       if (isControlflowDividingNode(childNode)) {
         // consider all children of control flow dividers as new root nodes
-        childNode.getChildren().forEach(worklist::add);
+        childNode.getChildren().forEach(considerAsNewRoot);
         // add a leaf containing the control flow divider node to indicate that we pruned it
         newChildren.add(new CutSubAST(childNode,
             rawActivations.getOrDefault(childNode, new HashMap<>()),
@@ -83,7 +83,7 @@ abstract class SingleSubAST extends AbstractSubAST {
       } else {
         // this is the "normal case"
         newChildren.add(
-            fromAST(childNode, worklist, rawActivations, totalBenchmarkActivations));
+            fromAST(childNode, considerAsNewRoot, rawActivations, totalBenchmarkActivations));
       }
     }
 
@@ -209,15 +209,15 @@ abstract class SingleSubAST extends AbstractSubAST {
   @Override
   AbstractSubAST add(final AbstractSubAST arg) {
     assert this.congruent(arg);
-    if (arg instanceof CompoundSubAST) {
-      return ((CompoundSubAST) arg).add(this);
+    if (arg instanceof CongruentSubASTs) {
+      return ((CongruentSubASTs) arg).add(this);
     }
     assert arg instanceof SingleSubAST;
     if (arg.equals(this)) {
       addWithIncrementalMean((SingleSubAST) arg);
       return this;
     }
-    return new CompoundSubAST(this).add(arg);
+    return new CongruentSubASTs(this).add(arg);
   }
 
   @Override
@@ -226,7 +226,7 @@ abstract class SingleSubAST extends AbstractSubAST {
   }
 
   @Override
-  final boolean congruent(final CompoundSubAST arg) {
+  final boolean congruent(final CongruentSubASTs arg) {
     // leave unpacking their first node to them
     return arg.congruent(this);
   }
