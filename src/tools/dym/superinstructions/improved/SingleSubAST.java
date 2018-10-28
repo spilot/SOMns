@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
@@ -48,7 +49,11 @@ abstract class SingleSubAST extends AbstractSubAST {
 
     final Node n = SOMNode.unwrapIfNecessary(maybeWrappedNode);
 
-    final List<Node> children = NodeUtil.findNodeChildren(n);
+    final List<Node> children =
+        NodeUtil.findNodeChildren(n)
+                .stream()
+                .map(node -> SOMNode.unwrapIfNecessary(node))
+                .collect(Collectors.toList());
 
     assert n.getSourceSection() != null;
 
@@ -57,7 +62,7 @@ abstract class SingleSubAST extends AbstractSubAST {
 
     if (isControlflowDividingNode(n)) {
       children.forEach(considerAsNewRoot);
-      return new SingleSubASTLeaf(n, activationsByType, totalBenchmarkActivations);
+      return new CutSubAST(n, activationsByType, totalBenchmarkActivations);
     }
     if (children.isEmpty()) {
       return new SingleSubASTLeaf(n, activationsByType, totalBenchmarkActivations);
